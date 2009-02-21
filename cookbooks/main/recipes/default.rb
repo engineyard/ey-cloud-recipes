@@ -1,5 +1,5 @@
-execute "testing" do
+eexecute "testing" do
   command %Q{
     echo "i ran at #{Time.now}" >> /root/yessir
   }
-end  
+end
