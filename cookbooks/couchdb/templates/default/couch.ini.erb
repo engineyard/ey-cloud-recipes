@@ -1,0 +1,21 @@
+[Couch]
+
+ConsoleStartupMsg=Apache CouchDB is starting.
+
+DbRootDir=<%= @basedir %>
+
+Port=<%= @port %>
+
+BindAddress=<%= @bind_address %>
+
+DocumentRoot=<%= @doc_root %>
+
+LogFile=<%= @logfile %>
+
+UtilDriverDir=<%= @driver_dir %>
+
+LogLevel=<%= @loglevel %>
+
+[Couch Query Servers]
+
+javascript=/usr/bin/couchjs /usr/share/couchdb/server/main.js
