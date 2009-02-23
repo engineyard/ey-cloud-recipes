@@ -4,4 +4,5 @@ execute "testing" do
   }
 end
 
-require_recipe "couchdb"
+# uncomment if you want to run couchdb recipe
+# require_recipe "couchdb"
