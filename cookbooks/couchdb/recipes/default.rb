@@ -41,7 +41,6 @@ execute "add-couchdb-to-default-run-level" do
   command %Q{
     rc-update add couchdb default
   }
-  not_if "rc-status | grep couchdb"
 end
 
 execute "ensure-couchdb-is-running" do
