@@ -48,5 +48,5 @@ execute "ensure-couchdb-is-running" do
   command %Q{
     /etc/init.d/couchdb restart
   }
-  only_if "/etc/init.d/couchdb status | grep 'Apache CouchDB is not running'"
+  not_if "/etc/init.d/couchdb status | grep 'Apache CouchDB has started. Time to relax.'"
 end
