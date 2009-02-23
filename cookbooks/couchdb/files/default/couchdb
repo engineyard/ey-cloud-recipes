@@ -1,0 +1,122 @@
+#!/sbin/runscript
+# Copyright 1999-2008 Gentoo Foundation
+# by Gerardo Puerta Cardelles / Vicente Jimenez Aguilar
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+
+# TODO:
+# * Try to use start-stop-daemon to stop the CouchDB server.
+# * Change init configuration file from /etc/default/couchdb to /etc/conf.d/couchdb
+
+depend() {
+ need net
+ # or just use?
+ need localmount
+ after bootmisc
+}
+
+COUCHDB=/usr/bin/couchdb
+
+# Gentoo doesn't have /lib/lsb
+# LSB_LIBRARY=/lib/lsb/init-functions
+
+# Better put this file into /etc/conf.d
+#
+# for a second version?
+CONFIGURATION_FILE=/etc/default/couchdb
+
+
+sourceconfig() {
+ if test -r $CONFIGURATION_FILE
+ then
+   . $CONFIGURATION_FILE
+ fi
+}
+
+checkpidfileoption() {
+ if test -n "$COUCHDB_PID_FILE"; then
+   pidfile_option="-p $COUCHDB_PID_FILE"
+   # Option for the start-stop-daemon (needed?)
+   couchdb_pidfile="--pidfile $COUCHDB_PID_FILE"
+   # Could be the same variable as both understand -p
+   # but prefered to keep then separated
+ fi
+
+}
+
+checkmoreoptions(){
+ if test -n "$COUCHDB_USER"
+ then
+   # Option for the start-stop-daemon
+   couchdb_user="--chuid $COUCHDB_USER"
+ fi
+
+ # Options for the $COUCHDB command
+ command_options=""
+ if test -n "$COUCHDB_INI_FILE"; then
+   command_options="$command_options -c $COUCHDB_INI_FILE"
+ fi
+ if test -n "$COUCHDB_STDOUT_FILE"; then
+   command_options="$command_options -o $COUCHDB_STDOUT_FILE"
+ fi
+ if test -n "$COUCHDB_STDERR_FILE"; then
+   command_options="$command_options -e $COUCHDB_STDERR_FILE"
+ fi
+ if test -n "$COUCHDB_RESPAWN_TIMEOUT"; then
+   command_options="$command_options -r $COUCHDB_RESPAWN_TIMEOUT"
+ fi
+}
+
+
+start() {
+ ebegin "Starting Apache CouchDB"
+ if test ! -x $COUCHDB 
+ then
+   eend $?
+ fi
+# Gentoo doesn't have /lib/lsb
+# if test -r $LSB_LIBRARY
+# then
+#   . $LSB_LIBRARY
+# fi
+
+ sourceconfig
+ checkpidfileoption
+ checkmoreoptions
+ # All options are used plus -b for the background (needed -b option?)
+ start-stop-daemon --start $couchdb_user $couchdb_pidfile --oknodo --exec $COUCHDB -- $pidfile_option $command_options -b
+ eend $?
+}
+
+stop() {
+# Imposible to use start-stop-daemon because of respawn.
+# Help needed! Tried everything.
+# Event sending just a -1 signal but the script respawn another instance.
+# Examples of commands tried:
+#  start-stop-daemon --stop $couchdb_pidfile --signal 1
+#  start-stop-daemon --stop --exec $COUCHDB
+
+ ebegin "Stopping Apache CouchDB"
+ sourceconfig
+ checkpidfileoption
+ # Only -p option is useful when is different from default /var/run/couchdb.pid
+ # Added -d option for the shutdown
+ $COUCHDB $pidfile_option -d
+ eend $?
+}
+
+status() {
+ sourceconfig
+ checkpidfileoption
+ # Only -p option is useful when is different from default /var/run/couchdb.pid
+ # added -s option for status display
+ $COUCHDB $pidfile_option -s
+ # WARNING: due to how $COUCHDB reads arguments,
+ # option -p needs to be put BEFORE -s because when the -s option is read,
+ # the script check status and exit without reading more options.
+ # So if we use a PID file other than the default /var/run/couchdb.pid
+ # and we put no -p option BEFORE the -s option
+ # the script always displays "Apache CouchDB is not running." as the status.
+}
+
