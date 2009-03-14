@@ -6,3 +6,4 @@ end
 
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
+require_recipe "integrity"
