@@ -7,32 +7,27 @@
 # All rights reserved - Do Not Redistribute
 #
 
-  require 'digest/sha1'
-  
-  gem_package 'foca-integrity-email' do
-    action :install
-    source "http://gems.github.com"
-  end
-  
-  gem_package 'foca-sinatra-ditties' do
-    action :install
-    source "http://gems.github.com"
-  end
-  
-  gem_package 'do_sqlite3' do
-    action :install
-  end
-  
-  gem_package 'integrity' do
-    action :install
-    version '0.1.9.0'
-  end
-  
-  
-Chef::Log.info('apps: ' + node[:applications].inspect)
+require 'digest/sha1'
 
+gem_package 'foca-integrity-email' do
+  action :install
+  source "http://gems.github.com"
+end
 
-  Chef::Log.info("owner: #{node[:owner_name]}  pass: #{node[:owner_pass]}")
+gem_package 'foca-sinatra-ditties' do
+  action :install
+  source "http://gems.github.com"
+end
+
+gem_package 'do_sqlite3' do
+  action :install
+end
+
+gem_package 'integrity' do
+  action :install
+  version '0.1.9.0'
+end
+  
 
 node[:applications].each do |app,data|
   
@@ -62,3 +57,8 @@ node[:applications].each do |app,data|
   
 end
 
+
+execute "restart-apache" do
+  command "/etc/init.d/apache2 restart"
+  action :run
+end
