@@ -28,7 +28,15 @@
     version '0.1.9.0'
   end
   
+  
+Chef::Log.info('apps: ' + node[:applications].inspect)
+
+
+  Chef::Log.info("owner: #{node[:owner_name]}  pass: #{node[:owner_pass]}")
+
 node[:applications].each do |app,data|
+  
+  
   
   execute "install integrity" do
     command "integrity install --passenger /data/#{app}/current"
