@@ -7,8 +7,6 @@
 # All rights reserved - Do Not Redistribute
 #
 
-if any_app_needs_recipe?('integrity')
-
   require 'digest/sha1'
   
   gem_package 'foca-integrity-email' do
@@ -30,9 +28,7 @@ if any_app_needs_recipe?('integrity')
     version '0.1.9.0'
   end
   
-end
-
-if_app_needs_recipe("integrity") do |app,data,index|
+node[:applications].each do |app,data|
   
   execute "install integrity" do
     command "integrity install --passenger /data/#{app}/current"
