@@ -32,6 +32,7 @@ execute "add mbari use flags" do
   not_if "cat /etc/portage/package.use/local | grep 'dev-lang/ruby mbari'"
 end
 
-package "dev-lang/ruby-1.8.6_p287-r2" do
+package "dev-lang/ruby" do
+  version "1.8.6_p287-r2"
   action :install
 end
