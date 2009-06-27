@@ -35,7 +35,7 @@ end
   
 execute "start-mongodb" do
   command %Q{
-    mongod run &
+    mongod run 
   }
   not_if "pgrep mongod"
 end  
