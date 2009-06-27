@@ -11,13 +11,13 @@ depend() {
 
 start() {
 	ebegin "Starting mongodb"
-	start-stop-daemon --start --quiet --exec /data/mongodb/bin/mongod run > /dev/null 2>&1 &
+	start-stop-daemon --start --quiet --exec /usr/local/mongodb/bin/mongod run > /dev/null 2>&1 &
 	eend $?
 }
 
 stop() {
 	ebegin "Stopping mongodb"
-	start-stop-daemon --stop --quiet --exec /data/mongodb/bin/mongod
+	start-stop-daemon --stop --quiet --exec /usr/local/mongodb/bin/mongod
 	eend $?
 }
 
