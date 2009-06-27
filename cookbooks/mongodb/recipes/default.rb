@@ -2,7 +2,7 @@
 # Cookbook Name:: mongodb
 # Recipe:: default
 
-USER = "grocio"
+USER = "<youruser>"
 
 directory "/data/db" do
   owner USER
