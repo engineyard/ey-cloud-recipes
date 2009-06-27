@@ -29,3 +29,6 @@ require_recipe 'postgres'
 
 #uncomment to run the ssmtp recipe
 #require_recipe "ssmtp"
+
+#uncomment to run the mongodb recipe
+# require_recipe "mongodb"
