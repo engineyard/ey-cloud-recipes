@@ -33,12 +33,27 @@ execute "install-mongomapper" do
     gem install jnunemaker-mongomapper --source http://gems.github.com
   }
 end
-  
-execute "start-mongodb" do
+
+remote_file "/etc/init.d/mongodb" do
+  source "mongodb"
+  owner "root"
+  group "root"
+  mode 0755
+end
+
+execute "add-mongodb-to-default-run-level" do
   command %Q{
-    mongod run 
+    rc-update add mongodb default
+  }
+  not_if "rc-status | grep mongodb"
+end
+
+execute "ensure-couchdb-is-running" do
+  command %Q{
+    /etc/init.d/mongodb start
   }
   not_if "pgrep mongod"
-end  
+end
+
 
 
