@@ -29,7 +29,7 @@ end
   
 execute "install-mongomapper" do
   command %Q{
-    gem install mongomapper --no-rdoc --no-ri
+    gem install jnunemaker-mongomapper --source http://gems.github.com
   }
 end
   
