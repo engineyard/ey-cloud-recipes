@@ -18,6 +18,7 @@ execute "install-mongodb" do
     mv mongodb-linux-i686-0.9.5 /usr/local/mongodb &&
     rm mongodb-linux-i686-0.9.5.tgz
   }
+  not_if "/usr/local/mongodb"
 end
   
 execute "add-to-path" do
