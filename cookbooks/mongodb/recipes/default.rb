@@ -2,11 +2,10 @@
 # Cookbook Name:: mongodb
 # Recipe:: default
 
-USER = "<youruser>"
 
 directory "/data/db" do
-  owner USER
-  group USER
+  owner node[:owner_name]
+  group node[:owner_name]
   mode 0755
   recursive true
 end
