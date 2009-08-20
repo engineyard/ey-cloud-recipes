@@ -1,0 +1,11 @@
+/var/log/engineyard/sphinx/*/*.log {
+  daily
+  missingok
+  dateext
+  rotate 30
+  compress
+  notifempty
+  sharedscripts
+  extension gz
+  copytruncate
+}
