@@ -3,11 +3,11 @@ require 'pp'
 # Cookbook Name:: thinking_sphinx
 # Recipe:: default
 #
-#if_app_needs_recipe("thinking_sphinx") do |app,data,index|
 
 if ['solo', 'app', 'app_master'].include?(node[:instance_role])
 
-  run_for_app("rede") do |app_name, data|
+  # be sure to replace "app_name" with the name of your application.
+  run_for_app("app_name") do |app_name, data|
   
     directory "/var/run/sphinx" do
       owner node[:owner_name]
@@ -27,6 +27,7 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       group "root"
       mode 0755
       source "sphinx.logrotate"
+      backup false
       action :create
     end
 
