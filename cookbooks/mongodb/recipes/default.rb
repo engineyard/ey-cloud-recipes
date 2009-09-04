@@ -3,7 +3,14 @@
 # Recipe:: default
 
 
-directory "/data/db" do
+directory "/data/master" do
+  owner node[:owner_name]
+  group node[:owner_name]
+  mode 0755
+  recursive true
+end
+
+directory "/data/slave" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
@@ -12,10 +19,10 @@ end
   
 execute "install-mongodb" do
   command %Q{
-    curl -O http://downloads.mongodb.org/linux/mongodb-linux-i686-1.0.0.tgz &&
-    tar zxvf mongodb-linux-i686-1.0.0.tgz &&
-    mv mongodb-linux-i686-1.0.0 /usr/local/mongodb &&
-    rm mongodb-linux-i686-1.0.0.tgz
+    curl -O http://downloads.mongodb.org/linux/mongodb-linux-x86_64-1.0.0.tgz &&
+    tar zxvf mongodb-linux-x86_64-1.0.0.tgz &&
+    mv mongodb-linux-x86_64-1.0.0 /usr/local/mongodb &&
+    rm mongodb-linux-x86_64-1.0.0.tgz
   }
   not_if { File.directory?('/usr/local/mongodb') }
 end
