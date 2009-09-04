@@ -12,10 +12,10 @@ end
   
 execute "install-mongodb" do
   command %Q{
-    curl -O http://downloads.mongodb.org/linux/mongodb-linux-i686-0.9.5.tgz &&
-    tar zxvf mongodb-linux-i686-0.9.5.tgz &&
-    mv mongodb-linux-i686-0.9.5 /usr/local/mongodb &&
-    rm mongodb-linux-i686-0.9.5.tgz
+    curl -O http://downloads.mongodb.org/linux/mongodb-linux-i686-1.0.0.tgz &&
+    tar zxvf mongodb-linux-i686-1.0.0.tgz &&
+    mv mongodb-linux-i686-1.0.0 /usr/local/mongodb &&
+    rm mongodb-linux-i686-1.0.0.tgz
   }
   not_if { File.directory?('/usr/local/mongodb') }
 end
@@ -47,7 +47,7 @@ execute "add-mongodb-to-default-run-level" do
   not_if "rc-status | grep mongodb"
 end
 
-execute "ensure-couchdb-is-running" do
+execute "ensure-mongodb-is-running" do
   command %Q{
     /etc/init.d/mongodb start
   }
