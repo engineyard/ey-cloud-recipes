@@ -1,23 +1,16 @@
-#!/sbin/runscript
-# Copyright 1999-2004 Gentoo Foundation
-# Distributed under the terms of the GNU General Public License, v2 or later
-# $Header: /var/cvsroot/gentoo-x86/app-admin/monit/files/monit.initd-4.10.1,v 1.1 2008/02/06 19:47:56 caleb Exp $
-
-opts="${opts} reload"
-
 depend() {
-	use net
+  use net
 }
 
 start() {
-	ebegin "Starting mongodb"
-	start-stop-daemon --start --quiet --exec /usr/local/mongodb/bin/mongod run > /dev/null 2>&1 &
-	eend $?
+  ebegin "Starting mongodb"
+  /usr/local/mongodb/bin/mongod --master --port 27017 --dbpath /data/masterdb/ > /dev/null 2>&1 &
+  /usr/local/mongodb/bin/mongod --slave --port 27018 --dbpath /data/slavedb/ > /dev/null 2>&1 &
+  eend $?
 }
 
 stop() {
-	ebegin "Stopping mongodb"
-	start-stop-daemon --stop --quiet --exec /usr/local/mongodb/bin/mongod
-	eend $?
+  ebegin "Stopping mongodb"
+  start-stop-daemon --stop --quiet --exec /usr/local/mongodb/bin/mongod
+  eend $?
 }
-
