@@ -8,13 +8,17 @@ directory "/data/master" do
   group node[:owner_name]
   mode 0755
   recursive true
+  not_if { File.directory?('/data/master') }
 end
 
+# The recipe is not using a slave yet but it will create the directory
+# so that it is there for the future
 directory "/data/slave" do
   owner node[:owner_name]
   group node[:owner_name]
   mode 0755
   recursive true
+  not_if { File.directory?('/data/slave') }
 end
   
 execute "install-mongodb" do
@@ -34,12 +38,6 @@ execute "add-to-path" do
   not_if "grep 'export PATH=$PATH:/usr/local/mongodb/bin' /etc/profile"
 end
   
-execute "install-mongomapper" do
-  command %Q{
-    gem install jnunemaker-mongomapper --source http://gems.github.com
-  }
-end
-
 remote_file "/etc/init.d/mongodb" do
   source "mongodb"
   owner "root"
