@@ -54,6 +54,4 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
     end
   
   end
-  
-
 end
