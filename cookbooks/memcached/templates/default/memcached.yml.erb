@@ -9,7 +9,7 @@ defaults:
   sessions: false
   session_servers: false
   fragments: true
-  memory: 512 
+  memory: 64
   servers: localhost:11211
   benchmarking: true
   raise_errors: true
@@ -17,7 +17,7 @@ defaults:
   fastest_hash: false
 
 <%= @node[:environment][:framework_env] %>:
-  memory: 512
+  memory: 64
   benchmarking: false
   sessions: false
   fragments: true
