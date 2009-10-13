@@ -1,0 +1,26 @@
+defaults:
+  ttl: 1800
+  readonly: false
+  urlencode: false
+  c_threshold: 10000
+  compression: true
+  debug: false
+  namespace: playmesh 
+  sessions: false
+  session_servers: false
+  fragments: true
+  memory: 512 
+  servers: localhost:11211
+  benchmarking: true
+  raise_errors: true
+  fast_hash: false
+  fastest_hash: false
+
+<%= @node[:environment][:framework_env] %>:
+  memory: 512
+  benchmarking: false
+  sessions: false
+  fragments: true
+  servers:
+  - <%=  @server_names.join(":11211\n  - ") %>:11211
+

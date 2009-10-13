@@ -16,3 +16,5 @@ end
 # uncomment to turn on ultrasphinx 
 # require_recipe "ultrasphinx"
 
+#uncomment to turn on memcached
+# require_recipe "memcached"
