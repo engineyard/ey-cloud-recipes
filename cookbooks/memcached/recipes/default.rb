@@ -20,10 +20,6 @@ case node[:instance_role]
      })
    end
 
-   link "/data/#{app_name}/current/config/memcached.yml" do
-     to "/data/#{app_name}/shared/config/memcached.yml"
-   end
- 
    template "/etc/conf.d/memcached" do
      owner 'root'
      group 'root'
