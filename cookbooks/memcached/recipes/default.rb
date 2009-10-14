@@ -9,7 +9,7 @@ node[:applications].each do |app_name,data|
 
 case node[:instance_role]
  when "app", "app_master"
-   template "/data/#{app_name}/current/config/memcached.yml" do
+   template "/data/#{app_name}/shared/config/memcached.yml" do
      source "memcached.yml.erb"
      owner user[:username]
      group user[:username]
@@ -18,6 +18,10 @@ case node[:instance_role]
          :app_name => app_name,
          :server_names => node[:members]
      })
+   end
+
+   link "/data/#{app_name}/current/config/memcached.yml" do
+     to "/data/#{app_name}/shared/config/memcached.yml"
    end
  
    template "/etc/conf.d/memcached" do
