@@ -17,4 +17,7 @@ end
 # require_recipe "ultrasphinx"
 
 #uncomment to turn on memcached
- require_recipe "authorized_keys"
+# require_recipe "memcached"
+
+#uncomment to run the authorized_keys recipe
+require_recipe "authorized_keys"
