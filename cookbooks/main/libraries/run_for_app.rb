@@ -1,8 +1,9 @@
 class Chef
   class Recipe
-    def run_for_app(app, &block)
+    def run_for_app(*apps, &block)
+      apps.map! {|a| a.to_s }
       node[:applications].map{|k,v| [k,v] }.sort_by {|a,b| a }.each do |name, app_data|
-        if name == app
+        if apps.include?(name)
           block.call(name, app_data)
         end
       end
