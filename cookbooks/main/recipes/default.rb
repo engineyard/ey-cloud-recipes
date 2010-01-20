@@ -21,3 +21,6 @@ end
 
 #uncomment to run the authorized_keys recipe
 #require_recipe "authorized_keys"
+
+#uncomment to run the eybackup_slave recipe
+#require_recipe "eybackup_slave"
