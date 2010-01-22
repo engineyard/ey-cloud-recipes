@@ -77,13 +77,13 @@ cron "eybackup" do
   action :delete
 end
 
-cron "eybackup -e postgresql" do
+cron "eybackup postgresql" do
   minute   '10'
   hour     cron_hour
   day      '*'
   month    '*'
   weekday  '*'
-  command  "eybackup"
+  command  "eybackup -e postgresql"
   not_if { node[:backup_window].to_s == '0' }
 end
 
