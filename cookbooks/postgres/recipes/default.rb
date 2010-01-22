@@ -14,22 +14,21 @@ directory '/db/postgresql' do
   recursive true
 end
 
+directory '/var/lib/postgresql' do
+  action :delete
+  recursive true
+end
+
 link "setup-postgresq-db-my-symlink" do
   to '/db/postgresql'
   target_file postgres_root
-end
-
-execute "setup-postgresql-db-symlink" do
-  command "rm -rf /var/lib/postgresql; ln -s /data/postgresql /var/lib/postgresql"
-  action :run
-  only_if "if [ ! -L #{postgres_root} ]; then exit 0; fi; exit 1;"
 end
 
 execute "init-postgres" do
   command "initdb -D #{postgres_root}/#{postgres_version}/data"
   action :run
   user 'postgres'
-  only_if "if [ ! -d #{postgres_root}/#{postgres_version}/data ]; then exit 0; fi; exit 1;"
+  only_if "[ ! -d #{postgres_root}/#{postgres_version}/data ]"
 end
 
 execute "enable-postgres" do
@@ -92,15 +91,17 @@ node[:applications].each do |app_name,data|
   db_name = "#{app_name}_#{node[:environment][:framework_env]}"
 
   execute "create-db-user-#{user[:username]}" do
-    command "`psql -c '\\du' | grep -q '#{user[:username]}'`; if [ $? -eq 1 ]; then\n  psql -c \"create user #{user[:username]} with encrypted password \'#{user[:password]}\'\"\nfi"
+    command "psql -c \"create user #{user[:username]} with encrypted password \'#{user[:password]}\'\""
     action :run
     user 'postgres'
+    not_if "psql -c '\\du' | grep -q '#{user[:username]}'"
   end
 
   execute "create-db-#{db_name}" do
-    command "`psql -c '\\l' | grep -q '#{db_name}'`; if [ $? -eq 1 ]; then\n  createdb #{db_name}\nfi"
+    command "createdb #{db_name}"
     action :run
     user 'postgres'
+    not_if "psql -c '\\l' | grep -q '#{db_name}'"
   end
 
   execute "grant-perms-on-#{db_name}-to-#{user[:username]}" do
