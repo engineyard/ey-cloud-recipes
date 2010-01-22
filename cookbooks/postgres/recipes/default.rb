@@ -91,17 +91,15 @@ node[:applications].each do |app_name,data|
   db_name = "#{app_name}_#{node[:environment][:framework_env]}"
 
   execute "create-db-user-#{user[:username]}" do
-    command "psql -c \"create user #{user[:username]} with encrypted password \'#{user[:password]}\'\""
+    command "psql -c '\\du' | grep -q '#{user[:username]}' || psql -c \"create user #{user[:username]} with encrypted password \'#{user[:password]}\'\""
     action :run
     user 'postgres'
-    not_if "psql -c '\\du' | grep -q '#{user[:username]}'"
   end
 
   execute "create-db-#{db_name}" do
-    command "createdb #{db_name}"
+    command "psql -c '\\l' | grep -q '#{db_name}' || createdb #{db_name}"
     action :run
     user 'postgres'
-    not_if "psql -c '\\l' | grep -q '#{db_name}'"
   end
 
   execute "grant-perms-on-#{db_name}-to-#{user[:username]}" do
