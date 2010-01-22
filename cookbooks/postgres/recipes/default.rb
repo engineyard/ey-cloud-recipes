@@ -43,6 +43,50 @@ execute "restart-postgres" do
   not_if "/etc/init.d/postgresql-8.3 status | grep -q start"
 end
 
+gem_package "pg" do
+  action :install
+end
+
+template "/etc/.postgresql.backups.yml" do
+  owner 'root'
+  group 'root'
+  mode 0600
+  source "postgresql.backups.yml.erb"
+  variables({
+    :dbuser => user[:username],
+    :dbpass => user[:password],
+    :keep   => node[:backup_window] || 14,
+    :id     => node[:aws_secret_id],
+    :key    => node[:aws_secret_key],
+    :env    => node[:environment][:name]
+  })
+end
+
+
+#set backup interval
+cron_hour = if node[:backup_interval].to_s == '24'
+              "1"    # 0100 Pacific, per support's request
+              # NB: Instances run in the Pacific (Los Angeles) timezone
+            elsif node[:backup_interval]
+              "*/#{node[:backup_interval]}"
+            else
+              "1"
+            end
+
+cron "eybackup" do
+  action :delete
+end
+
+cron "eybackup -e postgresql" do
+  minute   '10'
+  hour     cron_hour
+  day      '*'
+  month    '*'
+  weekday  '*'
+  command  "eybackup"
+  not_if { node[:backup_window].to_s == '0' }
+end
+
 node[:applications].each do |app_name,data|
   user = node[:users].first
   db_name = "#{app_name}_#{node[:environment][:framework_env]}"
@@ -94,4 +138,5 @@ node[:applications].each do |app_name,data|
         :db_pass => user[:password]
     })
   end
+
 end
