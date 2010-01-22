@@ -53,8 +53,8 @@ template "/etc/.postgresql.backups.yml" do
   mode 0600
   source "postgresql.backups.yml.erb"
   variables({
-    :dbuser => user[:username],
-    :dbpass => user[:password],
+    :dbuser => node[:users].first[:username],
+    :dbpass => node[:users].first[:password],
     :keep   => node[:backup_window] || 14,
     :id     => node[:aws_secret_id],
     :key    => node[:aws_secret_key],
