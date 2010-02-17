@@ -145,6 +145,7 @@ node[:applications].each do |app_name,data|
         :app_name => app_name,
         :db_pass => user[:password]
       })
+      not_if do File.exists?("/data/#{app_name}/shared/config/#{prefix}database.yml") end
     end
   end
 end
