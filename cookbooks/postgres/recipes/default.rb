@@ -40,6 +40,17 @@ if node[:instance_role] == 'db_master'
     mode 0600
   end
 
+  template "/var/lib/postgresql/8.3/data/pg_hba.conf" do
+    owner 'postgres'
+    group 'root'
+    mode 0600
+    source "pg_hba.conf.erb"
+    variables({
+      :dbuser => node[:users].first[:username],
+      :dbpass => node[:users].first[:password]
+    })
+  end
+
   execute "enable-postgres" do
     command "rc-update add postgresql-#{postgres_version} default"
     action :run
