@@ -27,7 +27,7 @@ if node[:instance_role] == 'db_master'
   end
 
   execute "init-postgres" do
-    command "initdb -D #{postgres_root}/#{postgres_version}/data"
+    command "initdb -D #{postgres_root}/#{postgres_version}/data --encoding=UTF8 --locale=en_US.UTF-8"
     action :run
     user 'postgres'
     only_if "[ ! -d #{postgres_root}/#{postgres_version}/data ]"
