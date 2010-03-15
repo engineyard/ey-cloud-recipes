@@ -1,8 +1,8 @@
-execute "testing" do
-  command %Q{
-    echo "i ran at #{Time.now}" >> /root/cheftime
-  }
-end
+#execute "testing" do
+#  command %Q{
+#    echo "i ran at #{Time.now}" >> /root/cheftime
+#  }
+#end
 
 require_recipe 'postgres'
 
@@ -32,3 +32,6 @@ require_recipe 'postgres'
 
 #uncomment to run the mongodb recipe
 # require_recipe "mongodb"
+
+#uncomment to run the sunspot recipe
+# require_recipe "sunspot"
