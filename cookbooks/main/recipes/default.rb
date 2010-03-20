@@ -35,3 +35,9 @@ require_recipe 'postgres'
 
 #uncomment to run the sunspot recipe
 # require_recipe "sunspot"
+#
+#uncomment to run the exim recipe
+#require_recipe "exim"
+
+#uncomment to run the exim::auth recipe
+#require_recipe "exim::auth"
