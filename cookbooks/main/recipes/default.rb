@@ -10,7 +10,7 @@
 # require_recipe "couchdb"
 
 # uncomment to turn use the MBARI ruby patches for decreased memory usage and better thread/continuationi performance
-require_recipe "mbari-ruby"
+# require_recipe "mbari-ruby"
 
 # uncomment to turn on thinking sphinx 
 require_recipe "thinking_sphinx"
