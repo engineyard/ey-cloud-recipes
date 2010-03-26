@@ -4,25 +4,25 @@
 #  }
 #end
 
-require_recipe 'postgres'
+# require_recipe 'postgres'
 
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
 
 # uncomment to turn use the MBARI ruby patches for decreased memory usage and better thread/continuationi performance
-# require_recipe "mbari-ruby"
+require_recipe "mbari-ruby"
 
 # uncomment to turn on thinking sphinx 
-# require_recipe "thinking_sphinx"
+require_recipe "thinking_sphinx"
 
 # uncomment to turn on ultrasphinx 
 # require_recipe "ultrasphinx"
 
 #uncomment to turn on memcached
-# require_recipe "memcached"
+require_recipe "memcached"
 
 #uncomment to run the authorized_keys recipe
-#require_recipe "authorized_keys"
+require_recipe "authorized_keys"
 
 #uncomment to run the eybackup_slave recipe
 #require_recipe "eybackup_slave"
