@@ -26,6 +26,7 @@ require_recipe "memcached"
 
 #uncomment to run the eybackup_slave recipe
 require_recipe "eybackup_slave"
+require_recipe "delayed_job"
 
 #uncomment to run the ssmtp recipe
 #require_recipe "ssmtp"
