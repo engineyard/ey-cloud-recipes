@@ -4,7 +4,8 @@
 #  }
 #end
 
-require_recipe 'postgres'
+# uncomment if you want to run postgres recipe
+#require_recipe 'postgres'
 
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
