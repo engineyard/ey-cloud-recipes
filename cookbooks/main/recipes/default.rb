@@ -1,10 +1,11 @@
-execute "testing" do
-  command %Q{
-    echo "i ran at #{Time.now}" >> /root/cheftime
-  }
-end
+#execute "testing" do
+#  command %Q{
+#    echo "i ran at #{Time.now}" >> /root/cheftime
+#  }
+#end
 
-require_recipe 'postgres'
+# uncomment if you want to run postgres recipe
+#require_recipe 'postgres'
 
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
@@ -26,3 +27,15 @@ require_recipe 'postgres'
 
 #uncomment to run the ssmtp recipe
 #require_recipe "ssmtp"
+
+#uncomment to run the mongodb recipe
+# require_recipe "mongodb"
+
+#uncomment to run the sunspot recipe
+# require_recipe "sunspot"
+#
+#uncomment to run the exim recipe
+#require_recipe "exim"
+
+#uncomment to run the exim::auth recipe
+#require_recipe "exim::auth"

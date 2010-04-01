@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+
+timestamp = Time.now.strftime("%Y-%m-%d-%H-%M-%S")
+file_name = "mongodump-#{timestamp}"
+file_path = ARGV.first
+full_path = "#{file_path}/#{file_name}"
+
+unless File.exists?(file_path)
+  puts "Making #{file_path}"
+  FileUtils.mkdir_p(file_path)
+end
+
+puts "Dumping all mongodb databases"
+%x{mongodump -o #{full_path}}
+
+puts "Taring mongodb dump"
+%x{tar -cvvjf #{full_path}.tar.bz2 #{full_path}/}
+
+puts "Removing uncompressed dump"
+%x{rm -rf #{full_path}}
