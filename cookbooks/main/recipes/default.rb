@@ -42,3 +42,5 @@
 
 #uncomment to use the ntp recipes for fixing clock issues
 #require_recipe "ntp"
+#
+#require_recipe "logrotate"
