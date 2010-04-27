@@ -13,8 +13,8 @@ Modify main/recipes/default.rb and add
 exim_auth "auth" do
   my_hostname = "mywebsite.com"
   smtp_username = "user"
-  smtp_password "password"
-  smtp_host "smtp.sendgrid.com"
+  smtp_password = "password"
+  smtp_host = "smtp.sendgrid.com"
 end
 
 = RECIPES:
