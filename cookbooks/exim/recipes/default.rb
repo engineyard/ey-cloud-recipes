@@ -4,8 +4,6 @@
 #
 # Configuration settings
 
-any_app_needs_recipe?('exim')
-
   package "mail-mta/ssmtp" do
     action :remove
     ignore_failure true
