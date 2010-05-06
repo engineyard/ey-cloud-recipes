@@ -103,7 +103,7 @@ end
 
 execute "Edit the config files inline to change nginx from listening on port 80 to listening on port 81" do
   command %Q{
-    perl -p -i -e's{listen 81;}{listen 80;}' /etc/nginx/servers/*.conf
+    perl -p -i -e's{listen 80;}{listen 81;}' /etc/nginx/servers/*.conf
   }
 end
 
