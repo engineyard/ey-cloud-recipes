@@ -6,6 +6,16 @@
 require 'etc'
 
 # This needs to be in keywords: www-servers/varnish ~x86
+# This makes sure that it is.
+
+execute "unmask-varnish" do
+  command %Q{
+    echo "www-servers/varnish ~amd64 ~x86" >> /etc/portage/package.keywords/ec2
+  }
+  not_if "grep www-servers/varnish /etc/portage/package.keywords/ec2"
+end
+
+# Install varnish.
 package "www-servers/varnish" do
   action :install
 end
