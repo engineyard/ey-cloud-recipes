@@ -92,7 +92,7 @@ end
 # Make sure the cache directory exists.
 unless FileTest.exist? CACHE_DIR
   user = Etc::getpwnam(node[:owner_name])
-  File.mkdir(CACHE_DIR)
+  Dir.mkdir(CACHE_DIR)
   File.chown(user.uid,user.gid,CACHE_DIR)
 end
 
