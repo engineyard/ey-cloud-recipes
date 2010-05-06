@@ -127,6 +127,12 @@ end
 
 # Start/restart varnish
 
+execute "Reload monit" do
+  command %Q{
+    monit reload
+  }
+end
+
 execute "Start varnish" do
   command %Q{
     monit restart varnish_80
