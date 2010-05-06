@@ -1,0 +1,35 @@
+# Here is a simple default VCL file for your app. You will want to customize this for your own needs.
+
+backend default {
+   .host = "127.0.0.1";
+   .port = "81"; 
+} 
+
+sub vcl_recv {
+  set req.grace = 120s; 
+} 
+  
+sub vcl_fetch {
+  # If a thread is fetching this object, set the grace period on it to
+  # 120 seconds so that stale content can be served from cache for that period.
+  set obj.grace = 120s;
+  
+  # If the normal TTL on the content is less than 10 seconds, set it to 10 seconds.
+  # Rails apps often come out of the box being cache-unfriendly. This is an easy
+  # workaround that forces them to be cached anyway. The right answer is to fix the
+  # app, though.
+  # if (obj.ttl < 120s) {
+  #   set obj.ttl = 120s;
+  # }
+} 
+
+sub vcl_deliver {
+  # This just inserts a diagnostic header to let us know if the content
+  # was served via a cache hit, or whether it was a miss.
+  
+  if (obj.hits > 0) {
+    set resp.http.X-Cache = "HIT";
+  } else {
+    set resp.http.X-Cache = "MISS";
+  }
+}
