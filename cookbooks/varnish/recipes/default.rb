@@ -82,6 +82,12 @@ template '/etc/monit.d/varnishd.monitrc' do
   })
 end
 
+# Install the app VCL file.
+template '/etc/varnish/app.vcl' do
+  owner node[:owner_name]
+  group node[:owner_name]
+  source 'app.vcl.erb'
+end
 
 # Make sure the cache directory exists.
 unless FileTest.exist? CACHE_DIR
