@@ -25,47 +25,47 @@ when /m1.small/ # 1.7G RAM, 1 ECU, 32-bit, 1 core
   THREAD_POOLS=1
   THREAD_POOL_MAX=1000
   OVERFLOW_MAX=2000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /m1.large/ # 7.5G RAM, 4 ECU, 64-bit, 2 cores
   THREAD_POOLS=2
   THREAD_POOL_MAX=2000
   OVERFLOW_MAX=4000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /m1.xlarge/ # 15G RAM, 8 ECU, 64-bit, 4 cores
   THREAD_POOLS=4
   THREAD_POOL_MAX=4000
   OVERFLOW_MAX=8000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /c1.medium/ # 1.7G RAM, 5 ECU, 32-bit, 2 cores
   THREAD_POOLS=2
   THREAD_POOL_MAX=2000
   OVERFLOW_MAX=4000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /c1.xlarge/ # 7G RAM, 20 ECU, 64-bit, 8 cores
   THREAD_POOLS=8
   THREAD_POOL_MAX=8000 # This might be too much.
   OVERFLOW_MAX=16000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /m2.xlarge/ # 17.1G RAM, 6.5 ECU, 64-bit, 2 cores
   THREAD_POOLS=2
   THREAD_POOL_MAX=2000
   OVERFLOW_MAX=4000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /m2.2xlarge/ # 34.2G RAM, 13 ECU, 64-bit, 4 cores
   THREAD_POOLS=4
   THREAD_POOL_MAX=4000
   OVERFLOW_MAX=8000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 when /m2.4xlarge/ # 68.4G RAM, 26 ECU, 64-bit, 8 cores
   THREAD_POOLS=8
   THREAD_POOL_MAX=8000 # This might be too much.
   OVERFLOW_MAX=16000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 else # This shouldn't happen, but do something rational if it does.
   THREAD_POOLS=1
   THREAD_POOL_MAX=2000
   OVERFLOW_MAX=2000
-  CACHE="file,#{CACHE_DIR},100GB"
+  CACHE="file,#{CACHE_DIR},1GB"
 end
 
 
