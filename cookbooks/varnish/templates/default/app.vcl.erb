@@ -1,4 +1,5 @@
-# Here is a simple default VCL file for your app. You will want to customize this for your own needs.
+# Here is a simple default VCL file for your app. You will want to customize
+# this for your own needs.
 
 backend default {
    .host = "127.0.0.1";
@@ -7,6 +8,14 @@ backend default {
 
 sub vcl_recv {
   set req.grace = 120s; 
+
+# This following section can be used to give Varnish regular expression to
+# compare the requested URL to. If there is a match, the requested item
+# will not be served from cache, nor cached by Varnish. The request will
+# be passed immediately to the backend.
+# if (req.url ~ "/do_not_cache_me") {
+#   return (pass);
+# }
 } 
   
 sub vcl_fetch {
