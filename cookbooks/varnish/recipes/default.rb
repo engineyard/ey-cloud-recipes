@@ -6,7 +6,7 @@
 require 'etc'
 
 # This needs to be in keywords: www-servers/varnish ~x86
-package "varnish" do
+package "www-servers/varnish" do
   action :install
 end
 
