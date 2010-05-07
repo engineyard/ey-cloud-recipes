@@ -121,7 +121,7 @@ if ['solo','app_master'].include?(node[:instance_role])
 
     execute "Edit the haproxy.cfg file to point it at varnish instead of nginx" do
       command %Q{
-        perl -p -i -e's{(server\s+[\w\-]+\s+[\w\-\.]+):81}{$1:82}' /etc/haproxy.cfg
+        perl -p -i -e's{(server\\s+[\\w\\-]+\\s+[\\w\\-\\.]+):81}{$1:82}' /etc/haproxy.cfg
       }
     end
 
