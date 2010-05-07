@@ -133,6 +133,12 @@ execute "Reload monit" do
   }
 end
 
+execute "Add varnish_80 to monit monitor" do
+  command %Q{
+    monit monitor varnish_80
+  }
+end
+
 execute "Start varnish" do
   command %Q{
     monit restart varnish_80
