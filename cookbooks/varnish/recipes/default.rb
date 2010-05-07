@@ -127,10 +127,8 @@ end
 
 # Start/restart varnish
 
-execute "Reload monit and restart varnish" do
+execute "Stop Varnish and bounce monit" do
   command %Q{
-    monit reload
-    monit monitor varnish_80
-    monit restart varnish_80
+    monit quit
   }
 end
