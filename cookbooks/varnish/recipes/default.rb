@@ -113,7 +113,7 @@ end
 
 execute "Edit the config files inline to change nginx from listening on port 80 to listening on port 81" do
   command %Q{
-    for k in `grep -l 'listen 80;' *.conf`; do perl -p -i -e's{listen 80;}{listen 81;}' $k; mv $k "keep.$k"; done
+    bash -c 'for k in `grep -l "listen 80;" *.conf`; do perl -p -i -e"s{listen 80;}{listen 81;}" $k; mv $k "keep.$k"; done'
   }
 end
 
