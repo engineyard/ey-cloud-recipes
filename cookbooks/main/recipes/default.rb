@@ -44,3 +44,6 @@
 #require_recipe "ntp"
 #
 #require_recipe "logrotate"
+#
+#uncomment to use the solr recipe
+#require_recipe "solr"
