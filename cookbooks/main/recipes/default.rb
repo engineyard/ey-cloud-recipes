@@ -40,6 +40,9 @@
 #uncomment to run the exim::auth recipe
 #require_recipe "exim::auth"
 
+#uncomment to run the resque recipe
+#require_recipe "resque"
+
 #uncomment to use the ntp recipes for fixing clock issues
 #require_recipe "ntp"
 #
