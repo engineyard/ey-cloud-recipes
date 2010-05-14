@@ -22,7 +22,7 @@ if ['db_slave'].include?(node[:instance_role])
     day      '*'
     month    '*'
     weekday  '*'
-    command  "eybackup"
+    command  "/usr/local/ey_resin/bin/eybackup"
     not_if { node[:backup_window].to_s == '0' }
   end  
 end
