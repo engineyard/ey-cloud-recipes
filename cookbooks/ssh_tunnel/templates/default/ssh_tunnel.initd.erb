@@ -1,0 +1,79 @@
+#!/sbin/runscript
+
+PIDFILE=/var/run/${SVCNAME}.pid
+
+# connection params
+SSH_HOST='<%= @ssh_hostname %>'
+SSH_PORT=<%= @ssh_port %>
+SSH_USER='<%= @ssh_user %>'
+SSH_KEY='<%= @ssh_private_key %>'
+SSH_KNOWN_HOSTS='<%= @ssh_known_hosts %>'
+
+# forwarding params
+CONNECT_PORT=<%= @connect_port %>            # local connection port
+FORWARD_HOST='<%= @forward_host %>'
+FORWARD_PORT=<%= @forward_port %>               # mysql port
+
+# forwarding options
+# FWD -> Standard port forward using -L
+# REV -> Reverse tunnel using -R
+# DUAL -> Bi-directional, useful for binary log purge scripts
+DIRECTION="<%= @tunnel_direction %>"
+
+CMD="<%= @ssh_cmd %>"
+
+depend() {
+    use net
+}
+ 
+start() {
+    ebegin "Starting ssh tunnel"
+    
+    FORWARD_TYPE="-L"
+    if [ "$DIRECTION" = "REV" ]
+    then
+      FORWARD_TYPE="-R"
+    elif [ "$DIRECTION" = "DUAL" ]
+	then
+      FORWARD_TYPE="-R ${CONNECT_PORT}:${FORWARD_HOST}:${FORWARD_PORT} -L" 
+    fi
+    
+    ARGS="-f -p ${SSH_PORT} -N $FORWARD_TYPE ${CONNECT_PORT}:${FORWARD_HOST}:${FORWARD_PORT} ${SSH_USER}@${SSH_HOST}"
+    
+    if [ -n "$SSH_KEY" ]
+    then
+        ARGS="-i ${SSH_KEY} ${ARGS}"
+    fi
+    
+    if [ -n "$SSH_KNOWN_HOSTS" ]
+    then
+        ARGS="-o UserKnownHostsFile=${SSH_KNOWN_HOSTS} ${ARGS}"
+    else
+        ARGS="-o StrictHostKeyChecking=no ${ARGS}"
+    fi
+    
+    start-stop-daemon --start --pidfile ${PIDFILE} --exec ${CMD} -- ${ARGS}
+    pid="$(ps aux | grep "[s]sh.*${ARGS}" | awk '{print $2}')";
+    echo $pid > ${PIDFILE}
+    
+    eend $? "Failed to start ssh tunnel"
+} 
+
+stop() {
+    ebegin "Stopping ssh tunnel"
+    
+    start-stop-daemon --stop -o --pidfile ${PIDFILE}
+    rm ${PIDFILE}
+    
+    eend $? "Failed to stop ssh tunnel"
+}
+
+restart() {
+    ebegin "Restarting ssh tunnel"
+    
+    svc_stop
+    svc_start
+    
+    eend $? "Failed to restart ssh tunnel"
+}
+
