@@ -1,8 +1,3 @@
-# uncomment which database type you're using. currently, mysql is the
-# only supported database type.
-db_type = "mysql"
-#db_type = "postgresql"
-
 # set backup interval
 cron_hour = if node[:backup_interval].to_s == '24'
               "1"    # 0100 Pacific, per support's request
@@ -15,13 +10,13 @@ cron_hour = if node[:backup_interval].to_s == '24'
 
 
 if ['db_master'].include?(node[:instance_role])
-  cron "#{db_type}" do
+  cron "mysql" do
     action :delete
   end
 end
 
 if ['db_slave'].include?(node[:instance_role])
-  cron "#{db_type}" do
+  cron "mysql" do
     minute   '10'
     hour     cron_hour
     day      '*'
