@@ -43,9 +43,9 @@
 #uncomment to run the resque recipe
 #require_recipe "resque"
 
-#uncomment to use the ntp recipes for fixing clock issues
-#require_recipe "ntp"
-#
+#uncomment to run the redis recipe
+#require_recipe "redis"
+
 #require_recipe "logrotate"
 #
 #uncomment to use the solr recipe
