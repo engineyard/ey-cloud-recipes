@@ -1,0 +1,13 @@
+/data/mongodb/log/mongodb.log {
+  monthly
+  rotate 10
+  size 5M
+  compress
+  delaycompress
+  notifempty
+  sharedscripts
+  missingok
+  postrotate
+  /bin/kill -USR1 `cat /var/run/mongodb/mongodb.pid`
+  endscript
+}
