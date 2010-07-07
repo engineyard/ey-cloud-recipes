@@ -32,7 +32,7 @@ template "/etc/redis_util.conf" do
     :logfile => '/data/redis/redis.log',
     :port  => '6379',
     :loglevel => 'notice',
-    :timeout => 3000,
+    :timeout => 300000,
   })
 end
 
