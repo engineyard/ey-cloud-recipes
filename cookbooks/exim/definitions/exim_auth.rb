@@ -11,7 +11,7 @@ define :exim_auth, :my_hostname => nil, :smtp_host => nil, :username => nil, :pa
   include_recipe "exim::default"
 
   template "/data/exim/exim.conf" do
-    cookbook "exim_ey"
+    cookbook "exim"
     source "exim.conf.erb"
     owner "root"
     group "root"

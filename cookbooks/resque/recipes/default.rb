@@ -4,11 +4,6 @@
 #
 if ['solo', 'util'].include?(node[:instance_role])
   
-  package "sys-apps/ey-monit-scripts" do
-    action :install
-    version "0.17"
-  end
-
   execute "install resque gem" do
     command "gem install resque redis redis-namespace yajl-ruby -r"
     not_if { "gem list | grep resque" }
