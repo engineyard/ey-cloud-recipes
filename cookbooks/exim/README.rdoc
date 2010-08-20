@@ -1,52 +1,35 @@
-= WARNING:
-
-This Cookbook contains an that configures exim to SmartRelay to another SMTP server; as well as support SMTP Authentication so you can securely deploy a SMTP Server on Amazon EC2 to relay email via Sendgrid for example.
-
 = DESCRIPTION:
 
-This cookbook removes ssmtp, and installs Exim and moves Exim's configuration files to the EBS for usage.
+This cookbook configures exim on a utility instance to send email from.
 
 = USAGE:
 
-Modify main/recipes/default.rb and add
+Step 1) Start a utility instance with the name "exim"
 
-exim_auth "auth" do
-  my_hostname = "mywebsite.com"
-  smtp_username = "user"
-  smtp_password = "password"
-  smtp_host = "smtp.sendgrid.com"
+Step 2) Modify main/recipes/default.rb like so,
+
+exim_instance = if node.engineyard.environment.solo_cluster?
+                  node.engineyard.environment.instances.first
+                else
+                  node.engineyard.environment.utility_instances.find {|x| x.name == "exim"}
+                end
+
+if node.engineyard == exim_instance
+  exim_auth "auth" do
+    my_hostname "domain.com"
+    smtp_host "smtp.gmail.com:587"
+    username 'username"
+    password 'password"
+  end
+else
+  Chef::Log.info "Util server is #{exim_instance.id}"
+  ssmtp_conf "default" do
+    mailhub exim_instance.public_hostname
+    rewrite_domain "domain.com"
+    from_line_override true
+  end
 end
 
-= RECIPES:
+Then commit and ey-recipes -D <ENV>
 
-== default
-
-This Cookbook will create /data/exim on your EBS and then copy the Exim configuration files over to it if they are not there already, and then start exim.  This allows you to modify and keep the exim.conf and the passwd file (if you choose to enable that) on the EBS which allows great customization.
-
-= /data/exim/passwd:
-
-This is the 'passwd' file for SMTP Authentication (clients connecting to Exim to relay out to your sendgrid account for example), it's format is very specific.
-
-#{username}:#{cryptedpassword}:#{plaintextpassword}
-
-You need to use the sytem crypt() function to generate the cryptedpassword.  Great example is passwd deploy and then grep deploy /etc/shadow
-
-= SMTP VARIABLES:
-
-== my_hostname 
-
-The hostname you want Exim to think it is.  You can set this to your domain name so email appears to come from the same domain as your web site.
-
-== smtp_username
-
-The Username you use to authenticate against on the Smarthost.
-
-== smtp_password
-
-The Password you use to authenticate on the Smarthost.
-
-== smtp_host 
-
-The Smarthost IP or FQDN, (e.g. smtp.sendgrid.com)
-
-= NOTE: If your ey-cloud-recipes repo is private you can ignore my warnings, or if you host it on a private server.
+Step 3) Push this up to a private repository/or remove *sensitive* *information* and push up to your github after you have deployed.
