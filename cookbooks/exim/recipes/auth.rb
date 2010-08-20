@@ -29,6 +29,11 @@ execute  "symlink ssmtp" do
   not_if { FileTest.exists?("/usr/sbin/ssmtp") }
 end
 
+execute "setup_symlink" do
+  command "rm -rf /etc/exim && ln -sfv /data/exim /etc/exim"
+  action :run
+end
+
 package "mail-client/mailx" do
   action :install
 end
