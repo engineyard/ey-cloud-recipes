@@ -37,10 +37,3 @@ end
 package "mail-client/mailx" do
   action :install
 end
-
-execute "ensure-exim-is-running" do
-  command %Q{
-   /etc/init.d/exim start
-  }
-  not_if "pgrep exim"
-end
