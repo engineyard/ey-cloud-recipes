@@ -16,4 +16,11 @@ define :exim_auth, :my_hostname => nil, :smtp_host => nil, :username => nil, :pa
     backup 2
     variables(:p => params)
   end
+
+  execute "ensure-exim-is-running" do
+    command %Q{
+     /etc/init.d/exim start
+    }
+    not_if "pgrep exim"
+  end
 end
