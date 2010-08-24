@@ -8,28 +8,11 @@ Step 1) Start a utility instance with the name "exim"
 
 Step 2) Modify main/recipes/default.rb like so,
 
-exim_instance = if node.engineyard.environment.solo_cluster?
-                  node.engineyard.environment.instances.first
-                else
-                  node.engineyard.environment.utility_instances.find {|x| x.name == "exim"}
-                end
-
-if node.engineyard == exim_instance
-  exim_auth "auth" do
-    my_hostname "domain.com"
-    smtp_host "smtp.gmail.com:587"
-    username 'username"
-    password 'password"
-  end
-else
-  Chef::Log.info "Util server is #{exim_instance.id}"
-  ssmtp_conf "default" do
-    mailhub exim_instance.public_hostname
-    rewrite_domain "domain.com"
-    from_line_override true
-  end
+exim_auth "auth" do
+  my_hostname "domain.com"
+  smtp_host "smtp.gmail.com:587"
+  username 'username"
+  password 'password"
 end
 
-Then commit and ey-recipes -D <ENV>
-
-Step 3) Push this up to a private repository/or remove *sensitive* *information* and push up to your github after you have deployed.
+Then commit and ey recipes upload -e <ENV> and then apply ey recipes apply -e <ENV>
