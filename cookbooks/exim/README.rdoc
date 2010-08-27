@@ -16,9 +16,15 @@ Step 1) Modify main/recipes/default.rb to uncomment the exim_auth block like bel
 
 exim_auth "auth" do
   my_hostname "domain.com"
-  smtp_host "smtp.gmail.com:587"
-  username 'username"
-  password 'password"
+  smtp_host "smtp.sendgrid.com"
+  username "username"
+  password "password"
 end
 
 Then commit and ey recipes upload -e <ENV> and then apply ey recipes apply -e <ENV>
+
+= NOTES:
+
+There is no queue monitoring with this enabled.  As ideally you would be sending directly to Sendgrid.  
+
+Additionally it is not monitored under monit, as we have not found a reason to do so yet.  You are more then welcome to add one if you'd like it's very trivial.
