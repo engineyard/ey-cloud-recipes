@@ -12,9 +12,12 @@ appname = "appname"
 
 # If you want to install on a specific utility instance rather than
 # all application instances, uncomment and set the utility instance
-# name here.
 utility_name = nil
 # utility_name = "sphinx"
+# name here. Note that if you use a utility instance, your very first
+# deploy may fail because the initial database migration will not have
+# run by the time this executes on the utility instance. If that occurs
+# just deploy again and the recipe should succeed.
 
 # If you want to have scheduled reindexes in cron, enter the minute
 # interval here. This is passed directly to cron via /, so you should

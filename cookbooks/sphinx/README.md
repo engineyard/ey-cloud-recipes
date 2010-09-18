@@ -38,6 +38,11 @@ Add the following before_migrate.rb [deploy hooks](http://docs.engineyard.com/ap
     run "ln -nfs #{shared_path}/config/sphinx #{release_path}/config/sphinx"
     run "ln -nfs #{shared_path}/config/sphinx.yml #{release_path}/config/sphinx.yml"
 
+Also note that if you use a dedicated utility instance, the recipe run will likely fail
+on that instance the very first run because the database migrations will not have run yet
+on your application master. If this occurs, simply deploy again and the recipe should
+succeed the second time around.
+
 Additional Resources
 ========
 
