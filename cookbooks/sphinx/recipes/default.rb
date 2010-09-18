@@ -67,7 +67,8 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       mode 0644
       variables({
         :app_name => app_name,
-        :user => node[:owner_name]
+        :user => node[:owner_name],
+        :flavor => flavor
       })
     end
 
@@ -79,7 +80,6 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       variables({
         :app_name => app_name,
         :user => node[:owner_name],
-        :flavor => flavor,
         :mem_limit => 32
       })
     end
