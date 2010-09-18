@@ -30,6 +30,7 @@ Namely:
   * Uncomment the flavor you want to use (thinking_sphinx or ultrasphinx).
   * Set the cron_interval to specify how frequently you want to reindex.
 
-Add the following before_migrate.rb [deploy hook](http://docs.engineyard.com/appcloud/howtos/deployment/use-deploy-hooks-with-engine-yard-appcloud):
+Add the following before_migrate.rb [deploy hooks](http://docs.engineyard.com/appcloud/howtos/deployment/use-deploy-hooks-with-engine-yard-appcloud):
 
+    run "ln -nfs #{shared_path}/config/sphinx #{release_path}/config/sphinx"
     run "ln -nfs #{shared_path}/config/sphinx.yml #{release_path}/config/sphinx.yml"

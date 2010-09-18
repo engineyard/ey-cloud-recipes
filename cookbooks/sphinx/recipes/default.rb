@@ -44,6 +44,13 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       mode 0755
     end
 
+    directory "/data/#{app_name}/shared/config/sphinx" do
+      recursive true
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0755
+    end
+
     remote_file "/etc/logrotate.d/sphinx" do
       owner "root"
       group "root"
@@ -60,8 +67,7 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       mode 0644
       variables({
         :app_name => app_name,
-        :user => node[:owner_name],
-        :flavor => flavor
+        :user => node[:owner_name]
       })
     end
 
@@ -73,7 +79,6 @@ if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       variables({
         :app_name => app_name,
         :user => node[:owner_name],
-        :flavor => flavor.eql?("thinking_sphinx") ? "thinkingsphinx" : flavor,
         :flavor => flavor,
         :mem_limit => 32
       })
