@@ -31,6 +31,13 @@ if utility_name
         message "configuring #{flavor}"
       end
 
+      directory "/data/#{app_name}/shared/config/sphinx" do
+        recursive true
+        owner node[:owner_name]
+        group node[:owner_name]
+        mode 0755
+      end
+
       template "/data/#{app_name}/shared/config/sphinx.yml" do
         owner node[:owner_name]
         group node[:owner_name]
