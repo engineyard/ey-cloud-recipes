@@ -20,6 +20,9 @@ For ultrasphinx:
 
     script/plugin install git://github.com/fauna/ultrasphinx.git
 
+Also note that searchd won't actually start unless you've already specified indexes
+in your application.
+
 Using it
 ========
 
@@ -34,3 +37,11 @@ Add the following before_migrate.rb [deploy hooks](http://docs.engineyard.com/ap
 
     run "ln -nfs #{shared_path}/config/sphinx #{release_path}/config/sphinx"
     run "ln -nfs #{shared_path}/config/sphinx.yml #{release_path}/config/sphinx.yml"
+
+Additional Resources
+========
+
+You can get additional information on sphinx configuration and setup here:
+
+  * [thinking_sphinx](http://freelancing-god.github.com/ts/en/)
+  * [ultrasphinx](http://blog.evanweaver.com/files/doc/fauna/ultrasphinx/files/README.html)
