@@ -18,6 +18,9 @@ appname = "appname"
 #
 # Uncommenting this line as-is will reindex once every 10 minutes.
 # cron_interval = 10
+# If you don't want scheduled reindexes, just leave this set to nil.
+# Setting it equal to 10 would run the cron job every 10 minutes.
+cron_interval = nil
 
 if ['solo', 'app', 'app_master'].include?(node[:instance_role])
 
