@@ -138,7 +138,7 @@ if utility_name
         cwd "/data/#{app_name}/current"
       end
 
-      execute "monit quit"
+      execute "monit reload"
 
       if cron_interval
         cron "sphinx index" do
@@ -238,7 +238,7 @@ else
         cwd "/data/#{app_name}/current"
       end
 
-      execute "monit quit"
+      execute "monit reload"
 
       if cron_interval
         cron "sphinx index" do
