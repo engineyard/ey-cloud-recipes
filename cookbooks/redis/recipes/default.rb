@@ -5,12 +5,17 @@
 
 if ['util'].include?(node[:instance_role])
 
+execute "set_overcommit_memory" do
+  command "echo 1 > /proc/sys/vm/overcommit_memory"
+  action :run
+end
+
 enable_package "dev-db/redis" do
-  version "1.3.12_pre1"
+  version "2.0.2"
 end
 
 package "dev-db/redis" do
-  version "1.3.12_pre1"
+  version "2.0.2"
   action :install
 end
 

@@ -8,6 +8,7 @@ remote_file "/etc/logrotate.d/nginx" do
   owner "root"
   group "root"
   mode "0655"
+  backup 0
 end
 
 cron "logrotate -f /etc/logrotate.d/nginx" do
