@@ -8,29 +8,29 @@ This cookbook holds 2 definitions, one called enable_package and one called upda
 
 For example if you want to install Libxml 2.7.6 on the AppCloud you would use the following as a recipe.
 
-enable_package "dev-libs/libxml2" do
-  version "2.7.6"
-end
+	enable_package "dev-libs/libxml2" do
+	  version "2.7.6"
+	end
 
-package "dev-libs/libxml2" do
-  version "2.7.6"
-  action :install
-end
+	package "dev-libs/libxml2" do
+	  version "2.7.6"
+	  action :install
+	end
 
 = ALTERNATIVE USAGE:
 
-enable_package "dev-lang/ruby" do
-  version "1.8.7_p299"
-end
+	enable_package "dev-lang/ruby" do
+	  version "1.8.7_p299"
+	end
 
-package_use "dev-lang/ruby" do
-  flags "threads"
-end
+	package_use "dev-lang/ruby" do
+	  flags "threads"
+	end
 
-package "dev-lang/ruby" do
-  version "1.8.7_p299"
-  action :install
-end
+	package "dev-lang/ruby" do
+	  version "1.8.7_p299"
+	  action :install
+	end
 
 = LEGEND:
 
