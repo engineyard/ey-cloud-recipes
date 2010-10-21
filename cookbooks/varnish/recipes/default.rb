@@ -10,15 +10,12 @@ if ['solo','app_master'].include?(node[:instance_role])
   # This needs to be in keywords: www-servers/varnish ~x86
   # This makes sure that it is.
 
-  execute "unmask-varnish" do
-    command %Q{
-      echo "www-servers/varnish ~amd64 ~x86" >> /etc/portage/package.keywords/ec2
-    }
-    not_if "grep www-servers/varnish /etc/portage/package.keywords/ec2"
+  enable_package "www-servers/varnish" do
+    version '2.0.6'
   end
 
-  # Install varnish.
   package "www-servers/varnish" do
+    version '2.0.6'
     action :install
   end
 
