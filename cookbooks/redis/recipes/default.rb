@@ -24,6 +24,7 @@ directory "/data/redis" do
   group 'redis'
   mode 0755
   recursive true
+  action :create
 end
 
 template "/etc/redis_util.conf" do
