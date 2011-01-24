@@ -1,0 +1,19 @@
+= DESCRIPTION:
+
+This cookbook installs and configures a suite of mysql administrative tools on your database instances.  
+
+= USAGE:
+
+Step 1) In the ./recipes/default.rb set the value to TRUE for any tools you want installed on your database instances.
+
+Step 2) For any tools driven by cron adjust the individual cron settings to run at the desired interval.
+
+Step 3) Commit and upload: `ey recipes upload -e <ENV>` and then apply: `ey recipes apply -e <ENV>`
+
+= TOOLS:
+
+automate_flush_hosts - runs mysqladmin flush-hosts command (default monthly) to help prevent encountering the error "`real_connect':Mysql::Error: Host 'ip-10-10-10-10.ec2.internal' is blocked because of many connection errors; unblock with 'mysqladmin flush-hosts""
+
+= NOTES:
+
+It may be necessary to increase the scheduling frequency of automate_flush_hosts by adjusting the recipe.
