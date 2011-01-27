@@ -42,5 +42,5 @@ ticket requesting support on this cookbook as it is not supported.
 
 [1]: http://www.postgresql.org/docs/manuals/
 [2]: http://www.postgresql.org/
-[3]: 
-[4]: 
+[3]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/postgresql9/attributes/postgresql.rb
+[4]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/postgresql9/recipes/eybackup.rb#L28-L32
