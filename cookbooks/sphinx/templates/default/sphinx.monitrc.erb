@@ -1,6 +1,6 @@
 check process sphinx_<%= @app_name %>_9312
   with pidfile /var/run/sphinx/<%= @app_name %>.pid
-  start program = "/engineyard/bin/<%= @flavor %>_searchd <%= @app_name %> start" as uid <%= @user %> and gid <%= @user %>
-  stop program = "/engineyard/bin/<%= @flavor %>_searchd <%= @app_name %> stop" as uid <%= @user %> and gid <%= @user %>
+  start program = "/engineyard/bin/<%= @flavor %>_searchd <%= @app_name %> start <%= @node[:environment][:framework_env] %>" as uid <%= @user %> and gid <%= @user %>
+  stop program = "/engineyard/bin/<%= @flavor %>_searchd <%= @app_name %> stop <%= @node[:environment][:framework_env] %>" as uid <%= @user %> and gid <%= @user %>
   group sphinx_<%= @app_name %>
 
