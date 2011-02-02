@@ -70,3 +70,6 @@
 #uncomment to include the mysql_administrative_tools recipe
 # additional configuration of this recipe is required
 #require_recipe "mysql_administrative_tools"
+
+#upgrade rubygems to 1.5.0
+require_recipe "rubygems"
