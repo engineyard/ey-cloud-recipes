@@ -54,6 +54,10 @@ migrations will not have run yet on your application master. If this occurs, sim
 and the recipe should succeed the second time around. This should only occur going forward
 if you set new indexes on fields that are in migrations that have to be run.
 
+Warranty
+========
+This recipe is provided as is, if you have any problems with it please open an issue or make a send a pull request with your fix.
+
 Additional Resources
 ========
 
