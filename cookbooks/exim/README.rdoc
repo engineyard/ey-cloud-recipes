@@ -14,12 +14,12 @@ Please keep your SMTP credentials private, do not ever post them in a public git
 
 Step 1) Modify main/recipes/default.rb to uncomment the exim_auth block like below with your credentials.
 
-exim_auth "auth" do
-  my_hostname "domain.com"
-  smtp_host "smtp.sendgrid.net"
-  username "username"
-  password "password"
-end
+    exim_auth "auth" do
+      my_hostname "domain.com"
+      smtp_host "smtp.sendgrid.net"
+      username "username"
+      password "password"
+    end
 
 Then commit and ey recipes upload -e <ENV> and then apply ey recipes apply -e <ENV>
 
