@@ -47,7 +47,7 @@ Using it
 Caveats
 --------
 
-Replica sets should normally be in a size of 3 or greater.  However, if you prefer to only have 2 nodes, this recipe will configure the solo|db_master instance as an Arbiter to ensure that if there is a failover that the vote can pass.  There is and will be 0 support for 32-bit in this recipe.
+Replica sets should normally be in a size of 3 or greater.  However, if you prefer to only have 2 nodes, this recipe will configure the solo|db_master instance as an Arbiter to ensure that if there is a failover that the vote can pass.  This recipe does not and will not support 32-bit instances.  Please ensure you use 64-bit instances (Any type of Large, not Small or Medium) when you create the Utility slices.
 
 
 Legend
@@ -70,7 +70,7 @@ Known Bugs
 --------
 
 This recipe likely is broken on 32-bit.  You should not be running
-mongodb this way normally so I am not inclined to fix this.
+mongodb this way normally so we will not be addressing this.
 
 Warranty
 --------
