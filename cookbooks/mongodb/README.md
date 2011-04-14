@@ -1,11 +1,11 @@
 ey-cloud-recipes/mongodb v1.8.1+
 --------
 
-A chef recipe for enabling mongodb v1.8.1+ on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a basic MongoDB instance, or an Replica Set.
+A chef recipe for enabling mongodb v1.8.1+ on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a basic MongoDB instance, or a Replica Set.
 
 It makes a few assumptions:
 
-  * You will be running MongoDB on utility instance(s).
+  * You will be running MongoDB on a utility instance(s).
   * You will want [journaling][3] enabled.
   * If you want to use replication you will it will be using Replica
     sets.
@@ -69,7 +69,7 @@ Use MongoS on each app instance instead of dropping mongo.yml?
 Known Bugs
 --------
 
-This recipe likely is broken on 32-bit.  You should not be running
+This recipe is likely broken on 32-bit.  You should not be running
 mongodb this way normally so we will not be addressing this.
 
 Warranty
