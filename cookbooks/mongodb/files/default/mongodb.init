@@ -1,0 +1,36 @@
+#!/sbin/runscript
+# Copyright 1999-2009 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+  need net
+}
+
+MONGODB_EXEC="${MONGODB_EXEC:-/usr/bin/mongod}"
+MONGODB_DATA="${MONGODB_DATA:-/var/lib/mongodb}"
+MONGODB_LOG="${MONGODB_LOG:-/var/log/mongodb/mongodb.log}"
+MONGODB_USER="${MONGODB_USER:-mongodb}"
+MONGODB_PID_FILE="${MONGODB_PID_FILE:-/var/run/mongodb/mongodb.pid}"
+
+MONGODB_IP="${MONGODB_IP:-127.0.0.1}"
+MONGODB_PORT="${MONGODB_PORT:-27017}"
+
+start() {
+  ebegin "Starting ${SVCNAME}"
+
+  args="--dbpath $MONGODB_DATA --port $MONGODB_PORT --bind_ip $MONGODB_IP" 
+  args="${args} --logpath $MONGODB_LOG --logappend $MONGODB_OPTIONS"
+
+  start-stop-daemon --background --start --chuid ${MONGODB_USER} --pidfile \
+    "${MONGODB_PID_FILE}" --make-pidfile --exec ${MONGODB_EXEC} \
+     -- ${args} run
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping ${SVCNAME}"
+  start-stop-daemon --stop --exec ${MONGODB_EXEC} --pidfile ${MONGODB_PID_FILE}
+  eend $? "Failed to stop ${SVCNAME}"
+}
+
