@@ -8,6 +8,6 @@ package "www-servers/nginx" do
 end
 
 service "nginx" do
-  supports :status => true, :stop => true, :restart => true, :staus => true
+  supports :status => true, :stop => true, :restart => true, :status => true
   action :restart
 end
