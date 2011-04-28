@@ -20,7 +20,9 @@ template "/etc/.postgresql.backups.yml" do
     :id     => node[:aws_secret_id],
     :key    => node[:aws_secret_key],
     :env    => node[:environment][:name],
-    :databases => node.engineyard.apps.map {|app| app.database_name }
+    :region => node.engineyard.environment.region,
+    :backup_bucket => node.engineyard.environment.backup_bucket,
+    :databases => node.engineyard.apps.map {|app| app.database_name.downcase }
   })
 end
 

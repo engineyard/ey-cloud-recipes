@@ -64,31 +64,80 @@ execute "init-postgres" do
  not_if { FileTest.directory?("#{postgres_root}/#{postgres_version}/data") }
 end
 
-template "#{postgres_root}/#{postgres_version}/data/postgresql.conf" do
-  source "#{postgres_version}/postgresql.conf.erb"
-  owner "postgres"
-  group "root"
-  mode 0600
-  backup 0
-  notifies :restart, resources(:service => "postgresql-#{postgres_version}")
-  variables(
-    :sysctl_shared_buffers => node[:sysctl_shared_buffers],
-    :shared_buffers => node[:shared_buffers],
-    :maintenance_work_mem => node[:maintenance_work_mem],
-    :work_mem => node[:work_mem],
-    :max_stack_depth => "6MB", # not large enough for 8? updating limits would do it but that's the AMI and I don't want to dance with ulimit -s to work around it.
-    :effective_cache_size => node[:effective_cache_size],
-    :default_statistics_target => node[:default_statistics_target],
-    :logging_collector => node[:logging_collector],
-    :log_rotation_age => node[:log_rotation_age],
-    :log_rotation_size => node[:log_rotation_size],
-    :checkpoint_timeout => node[:checkpoint_timeout],
-    :checkpoint_segments => node[:checkpoint_segments],
-    :wal_buffers => node[:wal_buffers],
-    :wal_writer_delay => node[:wal_writer_delay],
-    :postgres_root => postgres_root,
-    :postgres_version => postgres_version
-  )
+if ['db_master'].include?(node[:instance_role])
+  template "#{postgres_root}/#{postgres_version}/data/postgresql.conf" do
+    source "#{postgres_version}/postgresql.conf.erb"
+    owner "postgres"
+    group "root"
+    mode 0600
+    backup 0
+    notifies :restart, resources(:service => "postgresql-#{postgres_version}")
+    variables(
+      :sysctl_shared_buffers => node[:sysctl_shared_buffers],
+      :shared_buffers => node[:shared_buffers],
+      :maintenance_work_mem => node[:maintenance_work_mem],
+      :work_mem => node[:work_mem],
+      :max_stack_depth => "6MB", # not large enough for 8? updating limits would do it but that's the AMI and I don't want to dance with ulimit -s to work around it.
+      :effective_cache_size => node[:effective_cache_size],
+      :default_statistics_target => node[:default_statistics_target],
+      :logging_collector => node[:logging_collector],
+      :log_rotation_age => node[:log_rotation_age],
+      :log_rotation_size => node[:log_rotation_size],
+      :checkpoint_timeout => node[:checkpoint_timeout],
+      :checkpoint_segments => node[:checkpoint_segments],
+      :wal_buffers => node[:wal_buffers],
+      :wal_writer_delay => node[:wal_writer_delay],
+      :postgres_root => postgres_root,
+      :postgres_version => postgres_version,
+      :hot_standby => "off"
+    )
+  end
+end
+
+if ['db_slave'].include?(node[:instance_role])
+    template "#{postgres_root}/#{postgres_version}/data/postgresql.conf" do
+    source "#{postgres_version}/postgresql.conf.erb"
+    owner "postgres"
+    group "root"
+    mode 0600
+    backup 0
+    notifies :restart, resources(:service => "postgresql-#{postgres_version}")
+    variables(
+      :sysctl_shared_buffers => node[:sysctl_shared_buffers],
+      :shared_buffers => node[:shared_buffers],
+      :maintenance_work_mem => node[:maintenance_work_mem],
+      :work_mem => node[:work_mem],
+      :max_stack_depth => "6MB", # not large enough for 8? updating limits would do it but that's the AMI and I don't want to dance with ulimit -s to work around it.
+      :effective_cache_size => node[:effective_cache_size],
+      :default_statistics_target => node[:default_statistics_target],
+      :logging_collector => node[:logging_collector],
+      :log_rotation_age => node[:log_rotation_age],
+      :log_rotation_size => node[:log_rotation_size],
+      :checkpoint_timeout => node[:checkpoint_timeout],
+      :checkpoint_segments => node[:checkpoint_segments],
+      :wal_buffers => node[:wal_buffers],
+      :wal_writer_delay => node[:wal_writer_delay],
+      :postgres_root => postgres_root,
+      :postgres_version => postgres_version,
+      :hot_standby => "on"
+    )
+  end
+
+  template "#{postgres_root}/#{postgres_version}/data/recovery.conf" do
+    source "#{postgres_version}/recovery.conf.erb"
+    owner "postgres"
+    group "root"
+    mode 0600
+    backup 0
+    variables(
+      :standby_mode => "on",
+      :primary_host => node.engineyard.environment.db_host,
+      :primary_port => 5432,
+      :primary_user => "postgres",
+      :primary_password => node[:owner_pass],
+      :trigger_file => "/tmp/postgresql.trigger"
+    )
+  end
 end
 
 file "#{postgres_root}/#{postgres_version}/custom.conf" do
@@ -125,6 +174,12 @@ password = node.engineyard.ssh_password
 execute "create-db-user#{username}" do
   command  %{psql -U postgres postgres -c \"CREATE USER #{username} with ENCRYPTED PASSWORD '#{password}' createdb\"}
   not_if %{psql -U postgres -c "select * from pg_roles" | grep #{username}}
+end
+
+if ['solo','db_master'].include?(node[:instance_role])
+  execute "alter-db-user-postgres" do
+    command %{psql -Upostgres postgres -c \"ALTER USER postgres with ENCRYPTED PASSWORD '#{password}'\"}
+  end
 end
 
 node.engineyard.apps.each do |app|

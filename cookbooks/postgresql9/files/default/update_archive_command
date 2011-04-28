@@ -1,0 +1,2 @@
+#!/bin/bash
+cd /db/postgresql/8.3/data;cat postgresql.conf | grep -v archive_command > /tmp/postgresql.conf && echo \'archive_command = rsync -a %p postgres@$1:/db/postgresql8.3/wal/%f\' >> /tmp/postgresql.conf && cp /tmp/postgresql.conf /db/postgresql/8.3/data && rm /tmp/postgresql.conf

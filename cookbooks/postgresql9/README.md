@@ -8,18 +8,26 @@ Overview
 
 This Cookbook provides the recipes to install/setup postgresql 9.0.2
 
-If you wish to use this in production you should consider customizing mysql's configuration files so it can use the minimal settings possible.  It currently is required to be enabled and running on AppCloud, so **disabling/turning** off **mysql** is **never** an option.
-
 Warning
 --------
 
 1. This cookbook **deletes** the [mysql backup][4] crontab if you do not wish this behavior please change/delete/omit it here.
 
-2. This recipe currently offers **zero** replication support.  It may be added in the future.
-
-3. Backups made with this recipe will not likely displayed on the
-   Dashboard.  You will need to use S3 in order to retrieve and/or see
+2. Backups made with this recipe will not likely displayed on the
+   Dashboard, you will need to use S3 to retrieve backups and display
    them.
+
+3. We slim MySQL down to a very small process which should not exceed
+   256M.  This makes MySQL unusable for any real usage; however MySQL is
+   still required to be running for AppCloud automation to work so we
+   leave it running.
+
+Replication
+--------
+
+Currently i'm abusing the mysql replication process.  Because of this it
+may have unforseen side effects.  Using hot_standby for everything and
+the slave has hot_standby enabled so it is queryable.
 
 Customization
 --------
@@ -29,18 +37,28 @@ Ideally it's suggested if you need to make customizations to the configuration t
 Usage
 --------
 
-Add the following to main/recipes/default.rb
+Remove old postgres recipe from your ey-cloud-recipes fork and add this as a submodule like this,
+
+``rm -rf cookbooks/postgres*``  
+
+``git submodule update --init``  
+``git submodule add git://github.com/damm/ey-postgresql9.git cookbooks/postgresql9``  
+
+Now add it to main/recipes/default.rb like the following,  
 
 ``require_recipe "postgresql9::default"``
+
+Cruft
+--------
+
+Pardon any cruft in this cookbook, there may be bits not used and bits that never did anything.  As a whole this recipe works as described however there is some more cleaning to be done.
 
 Warranty
 --------
 
-This cookbook comes with no warranty of any kind.  Additionally
-PostgreSQL is not supported on AppCloud at this time.  **DO NOT** file a
-ticket requesting support on this cookbook as it is not supported.
+Currently Postgresql is not supported on AppCloud.  This recipe is unsupported at this time, it should work 'as is'.  I currently do use some features that are not properly exposed which may in the future break things, I will try and keep this up to date if this happens.
 
 [1]: http://www.postgresql.org/docs/manuals/
 [2]: http://www.postgresql.org/
-[3]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/postgresql9/attributes/postgresql.rb
-[4]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/postgresql9/recipes/eybackup.rb#L28-L32
+[3]: http://github.com/damm/ey-postgresql9/blob/master/postgres/attributes/postgresql.rb
+[4]: http://github.com/damm/ey-postgresql9/blob/master/postgres/recipes/eybackup.rb#L28-L32

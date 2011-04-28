@@ -13,7 +13,7 @@ node.engineyard.apps.each do |app|
     variables({
       :dbuser => node.engineyard.environment.ssh_username,
       :dbpass => node.engineyard.environment.ssh_password,
-      :dbname => app.database_name,
+      :dbname => app.database_name.downcase,
       :dbhost => node.engineyard.environment.db_host,
       :dbtype => dbtype,
       :slaves => node.engineyard.environment.db_slaves_hostnames
