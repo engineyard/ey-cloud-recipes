@@ -25,9 +25,7 @@ Warning
 Replication
 --------
 
-Currently i'm abusing the mysql replication process.  Because of this it
-may have unforseen side effects.  Using hot_standby for everything and
-the slave has hot_standby enabled so it is queryable.
+Currently i'm abusing the mysql replication process  However due to how replication works with postgresql this should have no negative side effects however it is possible this could lead to problems in the future.  We will update this logic when it's possible to do this properly.
 
 Customization
 --------
@@ -37,12 +35,9 @@ Ideally it's suggested if you need to make customizations to the configuration t
 Usage
 --------
 
-Remove old postgres recipe from your ey-cloud-recipes fork and add this as a submodule like this,
+Remove old postgres recipe from your ey-cloud-recipes fork if you haven't already,
 
 ``rm -rf cookbooks/postgres*``  
-
-``git submodule update --init``  
-``git submodule add git://github.com/damm/ey-postgresql9.git cookbooks/postgresql9``  
 
 Now add it to main/recipes/default.rb like the following,  
 
