@@ -35,7 +35,7 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
     end
     
     execute "monit-reload-restart" do
-       command "sleep 30 && monit reload && monit restart all dj_#{app_name}h"
+       command "sleep 30 && monit reload && monit restart all dj_#{app_name}"
        action :run
     end
       
