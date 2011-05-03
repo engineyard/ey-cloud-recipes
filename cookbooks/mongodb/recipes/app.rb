@@ -23,7 +23,7 @@ if node[:utility_instances].empty?
       else
         hosts = @node[:mongo_utility_instances].select { |instance| instance[:name].match(/#{mongo_app_name}/) }.map { |instance| [ instance[:hostname], @node[:mongo_port].to_i ] }
         variables(:yaml_file => {
-          node.engineyard.environment.framework_env => { 
+          node[:environment][:framework_env] => {
             :hosts => hosts} })
       end
     end
