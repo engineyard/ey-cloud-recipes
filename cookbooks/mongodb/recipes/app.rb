@@ -18,7 +18,7 @@ if node[:utility_instances].empty?
       mode 0755
       if @node[:instance_role] == "solo" && @node[:mongo_utility_instances].length == 0
         variables(:yaml_file => {
-          node.engineyard.environment.framework_env => { 
+          node[:environment][:framework_env] => {
             :hosts => [ [ "localhost", @node[:mongo_port].to_i ] ] } } )
       else
         hosts = @node[:mongo_utility_instances].select { |instance| instance[:name].match(/#{mongo_app_name}/) }.map { |instance| [ instance[:hostname], @node[:mongo_port].to_i ] }
