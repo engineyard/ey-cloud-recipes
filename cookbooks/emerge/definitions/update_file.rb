@@ -21,6 +21,7 @@ define :update_file, :action => :append do
         File.open(filepath, mode) do |f|
           f.puts params[:body]
         end
+        not_if(params[:not_if]) if params[:not_id]
       end
     end
 
@@ -28,6 +29,7 @@ define :update_file, :action => :append do
 
     execute "truncate-#{filepath}" do
       command "> #{filepath}"
+      not_if(params[:not_if]) if params[:not_id]
     end
 
   end
