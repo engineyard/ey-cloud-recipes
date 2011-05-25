@@ -39,7 +39,7 @@ tunnel_vars = {
   :skip_hostkey_auth => false,
   # the path to the known hosts file with the public key of the remote server
   # only set if :skip_hostkey_auth is set to false
-  # note that if :skip_hostkey_auth is set to false then you need to make a
+  # note that if :skip_hostkey_auth is set to true then you need to make a
   # manual connection to the remote host *before* deploying this recipe
   # and use the path to the known_hosts file that the remote host's public 
   # key is written to here.  It's also even better to copy that key entry to 
