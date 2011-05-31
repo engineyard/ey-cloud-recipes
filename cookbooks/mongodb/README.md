@@ -34,9 +34,9 @@ Using it
     * For a stand alone instance,
       * mongodb_#{app.name}
     * For an replica set,
-      * mongodb_repl#{app.name}_1
-      * mongodb_repl#{app.name}_2
-      * mongodb_repl#{app.name}_3
+      * mongodb_repl#{setname}_1
+      * mongodb_repl#{setname}_2
+      * mongodb_repl#{setname}_3
       * ...
     * Sharding? TODO
 
