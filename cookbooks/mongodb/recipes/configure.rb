@@ -1,6 +1,7 @@
 user = @node[:users].first
 
 if ['db_master','solo'].include? @node[:instance_role]
+  #under /mnt because it's an arbiter
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
@@ -54,6 +55,7 @@ if @node[:mongo_journaling]
 end
 
 if @node[:mongo_replset]
+     Chef::Log.info "conf.rb knows it's a replica too"
   mongodb_options[:extra_opts]  << "--replSet #{@node[:mongo_replset]}"
 end
 

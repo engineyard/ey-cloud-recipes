@@ -8,8 +8,10 @@ if node[:utility_instances].empty?
     end
   mongo_app_names = @node[:applications].keys
   
+  # Chef::Log.info "app.rb - mongo_replication_sets = #{mongo_replication_sets} | node app keys = #{@node[:applications].keys}"
   
   mongo_app_names.each do |mongo_app_name|
+     # Chef::Log.info "looping for mongo_app_name = #{mongo_app_name}"
      
     template "/data/#{mongo_app_name}/shared/config/mongodb.yml" do
       source "mongodb.yml.erb"
@@ -28,6 +30,7 @@ if node[:utility_instances].empty?
           node[:environment][:framework_env] => {
             :hosts => hosts} })
       end
+      
     end
   end
 end

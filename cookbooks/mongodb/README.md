@@ -58,9 +58,7 @@ Legend
 TODO
 --------
 
-Get backups running. With 1.4.x the idea is to be able to take backups without
-the need to shutdown a slave, but issues regarding that have not been fully 
-worked out yet.
+Get backups running. 
 
 Sharding?
 
