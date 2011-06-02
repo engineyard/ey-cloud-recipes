@@ -1,3 +1,4 @@
+# TO-DO: replace with portage version. Check for 32bit on i686 systems (for arbiter only installs)
 file_to_fetch = "http://fastdl.mongodb.org/linux/#{@node[:mongo_name]}.tgz"
 
 execute "fetch #{file_to_fetch}" do
