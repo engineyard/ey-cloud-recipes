@@ -5,6 +5,13 @@ Riak Cookbook for EngineYard AppCloud
 
 A truly fault-tolerant system, Riak has no single point of failure. No machines are special or central in Riak, so developers and operations professionals can decide exactly how fault-tolerant they want and need their applications to be.
 
+Don't forget to check out the [Riak Fast Track][9]!!!
+
+Special Note
+--------
+
+You should *NOT* enable *BOTH* riak and riaksearch cookbooks at the same time.  Pick one solution or the other.
+
 Overview
 --------
 
@@ -74,7 +81,7 @@ Currently this Cookbook provides the following methods of using Riak:
 > and sometimes it takes a minute or two to converge the ring
 > changing the gossip interval in the conf alleviates this somewhat
 
-Depdencies
+Dependencies
 --------
 
 This cookbook depends on the dnapi|emerge cookbook, you can add it as a
@@ -110,3 +117,4 @@ How to get Support
 [6]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/attributes/riak.rb#L3
 [7]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#L6
 [8]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#51
+[9]: http://wiki.basho.com/The-Riak-Fast-Track.html
