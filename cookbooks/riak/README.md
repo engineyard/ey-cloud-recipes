@@ -13,28 +13,55 @@ This cookbook once complete will attempt to provide one method of "Hosting" a Ri
 Design
 --------
 
-* 2-3+ utility instances (m1.large or larger)
+* 3+ utility instances 64-bit (m1.large +)
 
 * Riak 0.14 with Bitcask
-* Erlang R13B04
-* haproxy on each app instance listening on port 8098 directing to the utility instances.
+* Erlang R13B04 (installed from a custom binary package)
+* haproxy is configured on 8097-8098 (pbc,http) with the http backend using /ping to ensure the backend is up.
 
 Notes
 --------
 
 This Cookbook automates the creation (join) action of a Riak 'Ring' on AppCloud.  As your needs may vary it is suggested to fork this recipe and make any customization you do on the fork.  You can omit the main cookbook it is only there for my testing purposes.
 
+Backups
+--------
+
+This cookbook does not automate not facilitate any backup method currently.  There are possible ways of handling backups including depending on EBS snapshots and fsync() which may or may not work properly depending on the what files are being written at that time.  A better suggestion would be to create a cronscript such as, (with the proper session cookie and riak hostname provided) 
+
+> /data/riak/bin/riak-admin backup riak@ip-10-112-15-117.ec2.internal riakinfo backup`date +%Y%m%d`
+> gzip backup`date %Y%m%d`
+> upload_to_s3()
+
+* Note upload_to_s3() is a figurative example you should be able to upload this using [fog][3]
+
+Benchmarks
+--------
+
+I [damm][4] have been benchmarking Riak on AppCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the the EBS unit.  
+
+* You are free to enable the [basho_bench][7] [recipe][8] and then git clone git://github.com/basho/basho_bench.git to properly determine if your dataset / type would be a good fit for Riak.
+
+> Note the recipe is there for the utility instance if you prefer to use the Erlang Riakclient instead of setting up / configuring Riak on your web instances.  Otherwise using the app instances via haproxy should replicate your usage.
+
+Adding Instances w/out a Snapshot
+--------
+
+* It is possible to add a member to the ring without an EBS snapshot.  You should choose the appropriate size and then add the instance and then verify with riak-admin ringready to determine when the new node member has loaded enough data to become 'ready'.  Then you can run custom chef recipes on your app instances to rebuild the haproxy template and then restart haproxy when ready.  (Note: Haproxy automation may be improved in the future)
+
+
 Specifics of Usage
 --------
 
 Currently this Cookbook provides the following methods of using Riak:
 
-1. Riak K/V only
+1. Riak K/V only.
 
   * Add an utility instance with the following naming scheme,
 
   * riak_0
   * riak_1
+  * riak_2
   ...
 
   * Note you must always start with _0 as that is the 'ring master'.  
@@ -45,6 +72,8 @@ Currently this Cookbook provides the following methods of using Riak:
 > if you try and do more than 4 or 5 nodes the gossip is a little heavy for ec2 right now
 > and sometimes it takes a minute or two to converge the ring
 > changing the gossip interval in the conf alleviates this somewhat
+
+Backup Method 
 
 Depdencies
 --------
@@ -80,3 +109,9 @@ How to get Support
 
 [1]: http://wiki.basho.com/display/RIAK/Riak
 [2]: http://www.engineyard.com/products/technology/stack
+[3]: https://github.com/geemus/fog
+[4]: https://github.com/damm
+[5]: https://github.com/damm/basho_bench
+[6]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/attributes/riak.rb#L3
+[7]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#L6
+[8]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#51
