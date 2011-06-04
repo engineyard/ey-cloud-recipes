@@ -29,11 +29,11 @@ Backups
 
 This cookbook does not automate not facilitate any backup method currently.  There are possible ways of handling backups including depending on EBS snapshots and fsync() which may or may not work properly depending on the what files are being written at that time.  A better suggestion would be to create a cronscript such as, (with the proper session cookie and riak hostname provided) 
 
-> ``/data/riak/bin/riak-admin backup riak@ip-10-112-15-117.ec2.internal riakinfo backup`date +%Y%m%d```  
-
-> gzip backup`date %Y%m%d`
+> ``/data/riak/bin/riak-admin backup riak@ip-10-112-15-117.ec2.internal riakinfo backup-todaysdate()``  
+> ``gzip backup-todaysdate()``  
 > upload_to_s3()
 
+* Note todaysdate() could be ``date '+%Y%m%d'`` 
 * Note upload_to_s3() is a figurative example you should be able to upload this using [fog][3]
 
 Benchmarks
