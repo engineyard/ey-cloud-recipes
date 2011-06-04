@@ -1,0 +1,20 @@
+## Name of the riak node
+-name riak@<%= @node['ec2']['local_hostname'] %>
+
+## Cookie for distributed erlang
+-setcookie <%= @node['environment']['name'] %>
+
+## Heartbeat management; auto-restarts VM if it dies or becomes unresponsive
+## (Disabled by default..use with caution!)
+##-heart
+
+## Enable kernel poll and a few async threads
++K true
++A 64
+
+## Increase number of concurrent ports/sockets
+-env ERL_MAX_PORTS 65535
+
+## Tweak GC to run more often 
+-env ERL_FULLSWEEP_AFTER 0
+

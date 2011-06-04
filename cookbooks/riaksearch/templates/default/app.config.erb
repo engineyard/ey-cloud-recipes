@@ -1,0 +1,161 @@
+%% -*- tab-width: 4;erlang-indent-level: 4;indent-tabs-mode: nil -*-
+%% ex: ts=4 sw=4 et
+[
+ %% Riak Core config
+ {riak_core, [
+              %% Default location of ringstate
+              {ring_state_dir, "data/ring" },
+
+              %% http is a list of IP addresses and TCP ports that the Riak
+              %% HTTP interface will bind.
+              {http, [ {"0.0.0.0", 8098 } ]},
+
+              %% https is a list of IP addresses and TCP ports that the Riak
+              %% HTTPS interface will bind.
+              %{https, [{ "0.0.0.0", 8098 }]},
+
+              %% default cert and key locations for https can be overridden
+              %% with the ssl config variable
+              %{ssl, [
+              %       {certfile, "etc/cert.pem"},
+              %       {keyfile, "etc/key.pem"}
+              %      ]},
+              
+              %% riak_handoff_port is the TCP port that Riak uses for
+              %% intra-cluster data handoff.
+              {handoff_port, 8099 }
+             ]},
+
+ % Riak KV config
+ {riak_kv, [
+            %% Storage_backend specifies the Erlang module defining the storage
+            %% mechanism that will be used on this node.
+            {storage_backend, riak_kv_bitcask_backend},
+
+            %% pb_ip is the IP address that the Riak Protocol Buffers interface
+            %% will bind to.  If this is undefined, the interface will not run.
+            {pb_ip,   "0.0.0.0" },
+
+            %% pb_port is the TCP port that the Riak Protocol Buffers interface
+            %% will bind to
+            {pb_port, 8087 },
+
+            %% raw_name is the first part of all URLS used by the Riak raw HTTP
+            %% interface.  See riak_web.erl and raw_http_resource.erl for
+            %% details.
+            %{raw_name, "riak"},
+
+            %% mapred_name is URL used to submit map/reduce requests to Riak.
+            {mapred_name, "mapred"},
+
+            %% js_vm_count is the number of Javascript VMs to start per Riak
+            %% node.  8 is a good default for smaller installations. A larger
+            %% number like 12 or 16 is appropriate for installations handling
+            %% lots of map/reduce processing.
+            {js_vm_count, <%= @js_vm_count %>},
+
+            %% js_max_vm_mem is the maximum amount of memory, in megabytes,
+            %% allocated to the Javascript VMs. If unset, the default is
+            %% 8MB.
+            {js_max_vm_mem, <%= @js_max_vm_mem %>},
+
+            %% js_source_dir should point to a directory containing Javascript
+            %% source files which will be loaded by Riak when it initializes
+            %% Javascript VMs.
+            %{js_source_dir, "/tmp/js_source"},
+
+            %% vnode_mr_timeout controls how much time Riak will permit a map
+            %% function to execute on a given vnode before trying another vnode.
+            %% Value is in milliseconds and defaults to 1000ms if not set.
+            %{vnode_mr_timeout, 1000},
+
+            %% By default, each Riak node will own ring_creation_size/(number of nodes in the cluster) partitions. It is generally a good idea to specify a “ring_creation_size” a few times the number
+            %% of nodes in your cluster (e.g. specify 64-256 partitions for a 4-node cluster). This gives you room to expand the number of nodes in the cluster, without worrying about under-use
+            %% due to owning too few partitions. This number should be a power of 2 (64, 128, 256, etc.).
+            {ring_creation_size, 64},
+
+            %% riak_stat enables the use of the "riak-admin status" command to
+            %% retrieve information the Riak node for performance and debugging needs
+            {riak_kv_stat, true}
+           ]},
+
+ {riak_search, [
+                {search_backend, merge_index_backend},
+                {java_home, "/usr"},
+                {max_search_results, 100000}
+               ]},
+ {qilr, [
+         %% NOTE: Change with 0.14 release: by default, JVM text analyzer is
+         %% disabled via missing/commented 'analysis_port' option or
+         %% via {analysis_port, undefined}. 
+         %% Uncomment the following line in order to use JVM Lucene-based text analyzers.
+         %% {analysis_port, 6095 },
+         
+         {backend_conn_count, 50 }
+        ]},
+
+ {riak_solr, [
+              {solr_name, "solr"},
+              {default_schema, "search"}
+             ]},
+
+ %% Merge Index Config
+ {merge_index, [
+                {data_root, "data/merge_index"},
+                {buffer_rollover_size, 1048576},
+                {buffer_delayed_write_size, 524288},
+                {buffer_delayed_write_ms, 2000},
+                {max_compact_segments, 20},
+                {fold_batch_size, 100},
+                {segment_query_read_ahead_size, 65536},
+                {segment_compaction_read_ahead_size, 5242880},
+                {segment_file_buffer_size, 20971520},
+                {segment_delayed_write_size, 20971520},
+                {segment_delayed_write_ms, 10000},
+                {segment_full_read_size, 5242880},
+                {segment_block_size, 32767},
+                {segment_values_staging_size, 1000},
+                {segment_values_compression_threshold, 0},
+                {segment_values_compression_level, 1}
+               ]},
+
+ %% Bitcask Config
+ {bitcask, [
+            {data_root, "<%= @data_root %>"},
+            {max_file_size, <%= @max_file_size %>},
+            {sync_strategy, <%= @sync_strategy %>},
+            {merge_window, <%= @merge_window %>},
+            {frag_merge_trigger, <%= @frag_merge_trigger %>},
+            {dead_bytes_merge_trigger, <%= @dead_bytes_merge_trigger %>},
+            {frag_threshold, <%= @frag_threshold %>},
+            {dead_bytes_threshold, <%= @dead_bytes_threshold %>},
+            {small_file_threshold, <%= @small_file_threshold %>},
+            {expiry_secs, <%= @expiry_secs %>}
+           ]},
+
+ %% Luwak Config
+ {luwak, [
+             {enabled, false}
+         ]},
+
+%% Riak_err Config
+{riak_err, [
+            %% Info/error/warning reports larger than this will be considered
+            %% too big to be formatted safely with the user-supplied format
+            %% string.
+            {term_max_size, 65536},
+
+            %% Limit the total size of formatted info/error/warning reports.
+            {fmt_max_bytes, 65536}
+           ]},        
+
+ %% SASL config
+ {sasl, [
+         {sasl_error_logger, {file, "log/sasl-error.log"}},
+         {errlog_type, error},
+         {error_logger_mf_dir, "log/sasl"},      % Log directory
+         {error_logger_mf_maxbytes, 10485760},   % 10 MB max file size
+         {error_logger_mf_maxfiles, 5}           % 5 files max
+        ]}
+].
+
