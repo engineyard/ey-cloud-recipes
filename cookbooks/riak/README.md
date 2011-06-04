@@ -8,7 +8,7 @@ A truly fault-tolerant system, Riak has no single point of failure. No machines 
 Overview
 --------
 
-This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on AppCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scaleable stable Riak configuration with the least disruption of automation possible.
+This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on AppCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
 
 Design
 --------
@@ -17,7 +17,7 @@ Design
 
 * Riak 0.14 with Bitcask
 * Erlang R13B04 (installed from a custom binary package)
-* haproxy is configured on 8097-8098 (pbc,http) with the http backend using /ping to ensure the backend is up.
+* haproxy is configured on 8097-8098 (pbc,http) with the http back-end using /ping to ensure the back-end is up.
 
 Notes
 --------
@@ -39,7 +39,7 @@ This cookbook does not automate not facilitate any backup method currently.  The
 Benchmarks
 --------
 
-I [damm][4] have been benchmarking Riak on AppCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the the EBS unit.  
+I [damm][4] have been benchmarking Riak on AppCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the EBS unit.  
 
 * You are free to enable the [basho_bench][7] [recipe][8] and then git clone git://github.com/basho/basho_bench.git to properly determine if your dataset / type would be a good fit for Riak.
 
@@ -74,8 +74,6 @@ Currently this Cookbook provides the following methods of using Riak:
 > and sometimes it takes a minute or two to converge the ring
 > changing the gossip interval in the conf alleviates this somewhat
 
-Backup Method 
-
 Depdencies
 --------
 
@@ -89,11 +87,7 @@ submodule as follows,
 Installation
 --------
 
-This cookbook can be added as a submodule, provided you have the proper
-dependencies you can add it as such,
-
-``git submodule add git://github.com/damm/ey-riak.git cookbooks/``  
-
+Ensure you have the Dependencies installed in your local cookbooks repository ...
 Add the following to your main/recipes/default.rb
 
 ``require_recipe "riak"``  
@@ -105,7 +99,7 @@ How to get Support
 * This Github repository.
 * This Cookbook provides a technology that is not listed in the Engine Yard [Technology Stack][2]
 
-* Additionally because of that there is *NO SUPPORT* for this recipe by EngineYard at this time.  If you have any problems with this reciple please open an issue, add a comment.  If you open a ticket regarding this cookbook you will be directed to this Github repository to open an issue.
+* Additionally because of that there is *NO SUPPORT* for this recipe by EngineYard at this time.  If you have any problems with this recipe please open an issue, add a comment.  If you open a ticket regarding this cookbook you will be directed to this Github repository to open an issue.
 
 
 [1]: http://wiki.basho.com/display/RIAK/Riak
