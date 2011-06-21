@@ -35,6 +35,12 @@ Ideally it's suggested if you need to make customizations to the configuration t
 Usage
 --------
 
+Simply uncomment the postgres line in main/recipes/default.rb
+
+
+Old postgres recipe
+--------
+
 Remove old postgres recipe from your ey-cloud-recipes fork if you haven't already,
 
 ``rm -rf cookbooks/postgres*``  

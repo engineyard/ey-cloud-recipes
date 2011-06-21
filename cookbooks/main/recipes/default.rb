@@ -5,7 +5,7 @@
 #end
 
 # uncomment if you want to run postgres recipe
-#require_recipe 'postgres'
+#require_recipe "postgresql9::default"
 
 # uncomment if you want to run couchdb recipe
 # require_recipe "couchdb"
