@@ -1,16 +1,26 @@
 mongo_version("1.8.1")
-mongo_name("mongodb-linux-#{@attribute["kernel"]["machine"]}-static-legacy-#{@attribute["mongo_version"]}")
-mongo_path("/opt/mongodb-linux-#{@attribute["kernel"]["machine"]}-static-legacy-#{@attribute["mongo_version"]}")
+mongo_name("mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
+mongo_path("/opt/mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
 mongo_base("/data/mongodb")
 mongo_port("27017")
+total_memory(`cat /proc/meminfo`.scan(/^MemTotal:\s+(\d+)\skB$/).flatten.first.to_i * 1024)
+total_memory_mb(total_memory / 1024 / 1024)
+oplog_memory_percentage("0.1")
+oplog_size((total_memory_mb * oplog_memory_percentage.to_f).to_i)
+mongo_utility_instances( @attribute["utility_instances"].select { |ui| ui["name"].match(/mongodb/) } )
+
 if @attribute["utility_instances"].empty?
   # We have detected no utility instances, so we are skipping the logic for this portion of the recipe.
-  else
-    mongo_utility_instances( @attribute["utility_instances"].select { |ui| ui["name"].match(/mongodb/) } )
-    if mongo_utility_instances[0]["name"].match(/repl/)
-      mongo_replset ( mongo_utility_instances[1]["name"].sub("mongodb_","").sub("repl","").split("_")[0] )
-    else
-      mongo_replset( false )
+else
+    if (@attribute[:instance_role] == 'util' && @attribute[:name].match(/^mongodb_repl/)) 
+        Chef::Log.info "got a replica"
+              
+        mongo_replset ( @attribute["name"].sub("mongodb_repl","").split("_")[0] )
+    else  
+        mongo_replset( false )
+        Chef::Log.info "Node is not a member of a replica set role: #{@attribute[:instance_role]}"
     end
-  end
+    
+end
+
 mongo_journaling ( true )

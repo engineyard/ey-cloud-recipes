@@ -1,10 +1,11 @@
 user = @node[:users].first
 
 if ['db_master','solo'].include? @node[:instance_role]
-  #under /mnt because it's an arbiter
+  #under /mnt because it's an arbiter. No data saved
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
+  #add /db
   mongo_data = @node[:mongo_base] + "/data"
   mongo_log = @node[:mongo_base] + "/log"
 end
@@ -55,9 +56,12 @@ if @node[:mongo_journaling]
 end
 
 if @node[:mongo_replset]
-     Chef::Log.info "conf.rb knows it's a replica too"
+     # Chef::Log.info "conf.rb knows it's a replica too"
   mongodb_options[:extra_opts]  << "--replSet #{@node[:mongo_replset]}"
 end
+
+#Add Oplog Size calculation
+mongodb_options[:extra_opts]  << "--oplogSize #{@node[:oplog_size]}"
 
 template "/etc/conf.d/mongodb" do
   source "mongodb.conf.erb"

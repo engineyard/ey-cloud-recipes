@@ -11,3 +11,4 @@ execute "untar /tmp/#{@node[:mongo_name]}.tgz" do
   command "cd /tmp; tar zxf #{@node[:mongo_name]}.tgz -C /opt"
   not_if { FileTest.directory?("/opt/#{@node[:mongo_name]}") }
 end
+
