@@ -4,7 +4,7 @@
 #
 # Save credentials on app_master
 if ['app_master','app','solo'].include? @node[:instance_role]
-  Chef::Log.info "running app mongo.yml code"
+  Chef::Log.info "creating app mongo.yml code"
   require_recipe "mongodb::app"
 end
 
@@ -16,14 +16,13 @@ when "i686"
 else
   
   if (@node[:instance_role] == 'util' && @node[:name].match(/mongodb/)) || (@node[:instance_role] == "solo" &&  @node[:mongo_utility_instances].length == 0)
-    Chef::Log.info "installing in util with mongo"
+    # Chef::Log.info "installing in util with mongo"
     
     require_recipe "mongodb::install"
     require_recipe "mongodb::configure"
     require_recipe "mongodb::start"
     
     if @node[:mongo_replset]
-      Chef::Log.info "Setting up Replica set"
       require_recipe "mongodb::replset"
     end
   end

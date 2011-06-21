@@ -11,26 +11,28 @@ user = @node[:users].first
 mongo_arbiter="na"
  
 if @node[:mongo_replset]
-  Chef::Log.info "Setting up Replica set #{node[:mongo_replset]}"
   
-  # mongo_nodes = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl#{@node[:mongodb_replset]}/) }
+  mongo_nodes = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl#{@node[:mongodb_replset]}/) }
   
-  # if @node[:name].match(/_1$/)
-  #   setup_js = "#{node[:mongo_base]}/setup_replset.js"
-  #   
-  #   template setup_js do
-  #     source "setup_replset.js.erb"
-  #     owner user[:username]
-  #     group user[:username]
-  #     mode '0755'
-  #     variables({ :mongo_replset => @node[:mongo_replset],
-  #                 :mongo_nodes => mongo_nodes,
-  #                 :mongo_port => @node[:mongo_port],
-  #                 :mongo_arbiter => mongo_arbiter
-  #              })
-  #   end
+  Chef::Log.info "Setting up Replica set: #{node[:mongo_replset]} \n mongo_nodes: #{mongo_nodes} \n executing on node #{@node[:name]}"
+  
+  if (@node[:name].match(/_1$/) && mongo_nodes.length > 1)
+     Chef::Log.info "Found first member of RS in #{@node[:name]}"
+    setup_js = "#{node[:mongo_base]}/setup_replset.js"
+    
+    template setup_js do
+      source "setup_replset.js.erb"
+      owner user[:username]
+      group user[:username]
+      mode '0755'
+      variables({ :mongo_replset => @node[:mongo_replset],
+                  :mongo_nodes => mongo_nodes,
+                  :mongo_port => @node[:mongo_port],
+                  :mongo_arbiter => mongo_arbiter
+               })
+    end
 
-    #----- skip set initialization for now -----
+    #----- wait for set members to be up and initialize -----
     # mongo_nodes.each do |mongo_node|
     #   execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
     #     #Add a timeout or you'll get stuck forever here
@@ -61,5 +63,7 @@ if @node[:mongo_replset]
     #   Chef::Log.info "Replica set node initialized" 
     # end
 
-  # end
+  else
+    Chef::Log.info "Not enough set members defined, skipping Replica set configuration until more members are found"
+  end
 end
