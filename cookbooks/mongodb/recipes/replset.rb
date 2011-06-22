@@ -33,10 +33,8 @@ if @node[:mongo_replset]
     end
 
     #----- wait for set members to be up and initialize -----
-    mongo_nodes.each do |mongo_node|
-      Chef::Log.info "waiting for mongo on #{mongo_node[:hostname]} to come up"
+    mongo_nodes.each do |mongo_node|      
       # execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
-        
         # ruby_block "wait for set members to come up" do
         #   block do
         #     times = 10000
@@ -50,17 +48,22 @@ if @node[:mongo_replset]
         #     end
         #     Chef::Log.info "Set member #{mongo_node[:hostname]} not found"
         #   end
-        # end     
-        
+        # end    
       # end
+      
+      # -- old approach -- No timeouts
+      execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
+        command "until echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet; do sleep 10s; done"
+      end
+      
     end
     
     # ----- configure the set
-    # execute "setup replset #{@node[:mongo_replset]}" do
-    #   command "#{@node[:mongo_path]}/bin/mongo local #{setup_js}"
-    #   only_if "echo 'rs.status()' | #{@node[:mongo_path]}/bin/mongo local --quiet | grep -q 'run rs.initiate'"
-    #   Chef::Log.info "Replica set node initialized" 
-    # end
+    execute "setup replset #{@node[:mongo_replset]}" do
+      command "#{@node[:mongo_path]}/bin/mongo local #{setup_js}"
+      only_if "echo 'rs.status()' | #{@node[:mongo_path]}/bin/mongo local --quiet | grep -q 'run rs.initiate'"
+      Chef::Log.info "Replica set node initialized" 
+    end
 
   else
     Chef::Log.info "Not first node in replica or not enough set members defined, skipping set configuration"
