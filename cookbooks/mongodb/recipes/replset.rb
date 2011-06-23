@@ -34,27 +34,23 @@ if @node[:mongo_replset]
 
     #----- wait for set members to be up and initialize -----
     mongo_nodes.each do |mongo_node|      
-      # execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
-        # ruby_block "wait for set members to come up" do
-        #   block do
-        #     times = 10000
-        #     (1..times).each do |iter|
-        #       if command "echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet;"
-        #         Chef::Log.info "woot! set member #{mongo_node[:hostname]} found alive"
-        #         break
-        #       else
-        #         sleep 1
-        #       end
-        #     end
-        #     Chef::Log.info "Set member #{mongo_node[:hostname]} not found"
-        #   end
-        # end    
-      # end
+      ruby_block "wait for set members to come up" do
+        times = 1000
+        (1..times).each do |iter|
+          if command "echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet;"
+            Chef::Log.info "woot! set member #{mongo_node[:hostname]} found alive"
+            break
+          else
+            sleep 1
+          end
+        end
+        Chef::Log.info "Set member #{mongo_node[:hostname]} not found"
+      end
       
       # -- old approach -- No timeouts
-      execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
-        command "until echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet; do sleep 10s; done"
-      end
+      # execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
+      #   command "until echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet; do sleep 10s ; done"
+      # end
       
     end
     
