@@ -4,12 +4,6 @@
 #  }
 #end
 
-# uncomment if you want to run couchdb recipe
-# require_recipe "couchdb"
-
-# uncomment to turn use the MBARI ruby patches for decreased memory usage and better thread/continuationi performance
-# require_recipe "mbari-ruby"
-
 # uncomment to turn on thinking sphinx/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # require_recipe "sphinx"
 
@@ -36,9 +30,6 @@
 #  password "password"
 #end
 
-#uncomment to run the exim::auth recipe
-#require_recipe "exim::auth"
-
 #uncomment to run the resque recipe
 #require_recipe "resque"
 
@@ -55,8 +46,6 @@
 
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
-
-#require_recipe 'nginx'
 
 #uncomment to include the mysql_replication_check recipe
 #require_recipe "mysql_replication_check"

@@ -1,0 +1,19 @@
+path:
+  work: /var/lib/elasticsearch/work
+  logs: /var/log/elasticsearch
+
+cluster:
+  name: <%= @elasticsearch_clustername %>
+
+discovery:
+  zen:
+    ping:
+      multicast:
+        enabled: false
+      unicast:
+      enabled: true
+      hosts: <%= @elasticsearch_instances %>
+
+index:
+  number_of_shards: <%= @elasticsearch_defaultshards %>
+  number_of_replicas: <%= @elasticsearch_defaultreplicas %>
