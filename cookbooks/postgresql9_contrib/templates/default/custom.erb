@@ -1,0 +1,9 @@
+# ------------------------------------
+# PostgreSQL Custom configuration file
+# ------------------------------------
+#
+# This file was created by the postgresql9_contrib custom chef run 
+# and consists of lines of the form:
+#
+#   name = value
+<% config_options.each { |key, value|  key + ' = ' + value + "\n" } %>
