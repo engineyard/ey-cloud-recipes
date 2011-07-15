@@ -5,16 +5,18 @@
 # Credit goes to GoTime for their original recipe ( http://cookbooks.opscode.com/cookbooks/elasticsearch )
 
 if ['util'].include?(node[:instance_role])
-  if node['name'].include?('elasticsearch_')
+  if node['utility_instances'].empty?
+    Chef::Log.info "No utility instances found"
+  else
     elasticsearch_instances = []
     elasticsearch_expected = 0
-    current_id  = node['engineyard']['this']
-    node['engineyard']['environment']['instances'].each do |elasticsearch|
-      unless current_id == elasticsearch['id']
-        elasticsearch_instances << "#{elasticsearch['private_hostname']}:9300"
-        elasticsearch_expected = elasticsearch_expected + 1
+    node['utility_instances'].each do |elasticsearch|
+      if elasticsearch['name'].include?("elasticsearch_")
+        elasticsearch_expected = elasticsearch_expected + 1 unless node['fqdn'] == elasticsearch['hostname']
+        elasticsearch_instances << "#{elasticsearch['hostname']}:9300" unless node['fqdn'] == elasticsearch['hostname']
       end
     end
+  end
 
     Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
     remote_file "/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip" do
@@ -126,9 +128,9 @@ if ['util'].include?(node[:instance_role])
         :aws_access_key => node[:aws_secret_key],
         :aws_access_id => node[:aws_secret_id],
         :elasticsearch_s3_gateway_bucket => node[:elasticsearch_s3_gateway_bucket],
-        :elasticsearch_instances => elasticsearch_instances.join(', '),
+        :elasticsearch_instances => elasticsearch_instances.join('", "'),
         :elasticsearch_defaultreplicas => node[:elasticsearch_defaultreplicas],
-        :elasticsearch_expected => elasticsearch_expected -1,
+        :elasticsearch_expected => elasticsearch_expected,
         :elasticsearch_defaultshards => node[:elasticsearch_defaultshards],
         :elasticsearch_clustername => node[:elasticsearch_clustername]
       )
@@ -149,7 +151,6 @@ if ['util'].include?(node[:instance_role])
       command "monit reload"
     end
   end
-end
 
 # This portion of the recipe should run on all instances in your environment.  We are going to drop elasticsearch.yml for you so you can parse it and provide the instances to your application.
 elasticsearch_hosts = []
