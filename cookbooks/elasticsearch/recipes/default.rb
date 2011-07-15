@@ -7,9 +7,12 @@
 if ['util'].include?(node[:instance_role])
   if node['name'].include?('elasticsearch_')
     elasticsearch_instances = []
-    node['utility_instances'].each do |elasticsearch|
-      if elasticsearch['name'].include?("elasticsearch_")
-        elasticsearch_instances << "#{elasticsearch['hostname']}:9300"
+    elasticsearch_expected = 0
+    current_id  = node['engineyard']['this']
+    node['engineyard']['environment']['instances'].each do |elasticsearch|
+      unless current_id == elasticsearch['id']
+        elasticsearch_instances << "#{elasticsearch['private_hostname']}:9300"
+        elasticsearch_expected = elasticsearch_expected + 1
       end
     end
 
@@ -123,8 +126,9 @@ if ['util'].include?(node[:instance_role])
         :aws_access_key => node[:aws_secret_key],
         :aws_access_id => node[:aws_secret_id],
         :elasticsearch_s3_gateway_bucket => node[:elasticsearch_s3_gateway_bucket],
-        :elasticsearch_instances => elasticsearch_instances,
+        :elasticsearch_instances => elasticsearch_instances.join(', '),
         :elasticsearch_defaultreplicas => node[:elasticsearch_defaultreplicas],
+        :elasticsearch_expected => elasticsearch_expected -1,
         :elasticsearch_defaultshards => node[:elasticsearch_defaultshards],
         :elasticsearch_clustername => node[:elasticsearch_clustername]
       )

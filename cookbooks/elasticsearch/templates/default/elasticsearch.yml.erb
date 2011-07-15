@@ -1,19 +1,20 @@
 path:
   work: /var/lib/elasticsearch/work
   logs: /var/log/elasticsearch
+  data: /data/elasticsearch
+  
 
 cluster:
   name: <%= @elasticsearch_clustername %>
 
 discovery:
   zen:
-    ping:
-      multicast:
-        enabled: false
-      unicast:
-      enabled: true
-      hosts: <%= @elasticsearch_instances %>
+    minimum_master_nodes: 1
+    ping.timeout: 3s
+    ping.multicast.enabled: false
+    ping.unicast.hosts: ["<%= @elasticsearch_instances %>"]
 
-index:
-  number_of_shards: <%= @elasticsearch_defaultshards %>
-  number_of_replicas: <%= @elasticsearch_defaultreplicas %>
+gateway:
+  recover_after_nodes: 1
+  recover_after_time: 5m
+  expected_nodes: <%= @elasticsearch_expected %>
