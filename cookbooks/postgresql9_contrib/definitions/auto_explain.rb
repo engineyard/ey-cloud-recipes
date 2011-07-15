@@ -8,6 +8,6 @@ config_options = {'shared_preload_libraries' => "'auto_explain'",
 
 sql_per_db =""
 
-include_recipe "postgresql9_contrib::ext"
+include_recipe "postgresql9_contrib::ext_autoexplain"
 
 end

@@ -9,7 +9,7 @@ template "#{postgres_root}/#{postgres_version}/custom.conf" do
   mode 0600
   backup 0
   # notifies :restart, resources(:service => "postgresql-#{postgres_version}")
-  variables (config_options )
+  variables(config_options )
 end
 
 
