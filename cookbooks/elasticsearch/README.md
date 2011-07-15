@@ -17,14 +17,20 @@ Dependencies
 Using it
 --------
 
-  * Somehow get the cookcookb provided in this git repo as a cookbook called 'elasticsearch' in your local ey-cloud-recipes fork.  Submodules work, so do other methods.
+  * There is two ways to run this recipe.  By default you can use the 'default' recipe and use this in an clustered configuration that requires utility instances.  Alternatively you can use the alternate recipe called 'non_util' which will configure your app_master/solo instance to have elasticsearch.  You would add to main/recipes/default.rb the following,
+
+``require_recipe "elasticsearch::non_util"``  
+
+  * Otheriwse you would do the following
 
 ``require_recipe "elasticsearch"``  
 
-  * Upload recipes to your environment
+  * Now you should upload the recipes to your environment,
+  
+``ey recipes upload -e <environment>`` 
 
-``ey recipes upload -e <environment>``  
-
+  * If you picked the non_util recipe you can ignore naming your utility instances.  Upload the recipe, click apply and you should find the neccesary things done;otherwise name your utility instances like below.
+  
   * Add an utility instance with the following naming scheme(s)
       * elasticsearch_0
       * elasticsearch_1

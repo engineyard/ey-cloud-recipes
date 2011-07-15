@@ -4,20 +4,7 @@
 #
 # Credit goes to GoTime for their original recipe ( http://cookbooks.opscode.com/cookbooks/elasticsearch )
 
-if ['util'].include?(node[:instance_role])
-  if node['utility_instances'].empty?
-    Chef::Log.info "No utility instances found"
-  else
-    elasticsearch_instances = []
-    elasticsearch_expected = 0
-    node['utility_instances'].each do |elasticsearch|
-      if elasticsearch['name'].include?("elasticsearch_")
-        elasticsearch_expected = elasticsearch_expected + 1 unless node['fqdn'] == elasticsearch['hostname']
-        elasticsearch_instances << "#{elasticsearch['hostname']}:9300" unless node['fqdn'] == elasticsearch['hostname']
-      end
-    end
-  end
-
+if ['solo','app_master'].include?(node[:instance_role])
   Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
   remote_file "/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip" do
     source "https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
@@ -109,35 +96,6 @@ if ['util'].include?(node[:instance_role])
     mode 0755
   end
 
-  max_mem = ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m"
-  template "/usr/share/elasticsearch/elasticsearch.in.sh" do
-    source "elasticsearch.in.sh.erb"
-    mode 0644
-    backup 0
-    variables(
-      :es_max_mem => ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m"
-    )
-  end
-
-  # include_recipe "elasticsearch::s3_bucket"
-  template "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/config/elasticsearch.yml" do
-    source "elasticsearch.yml.erb"
-    owner "elasticsearch"
-    group "nogroup"
-    variables(
-      :aws_access_key => node[:aws_secret_key],
-      :aws_access_id => node[:aws_secret_id],
-      :elasticsearch_s3_gateway_bucket => node[:elasticsearch_s3_gateway_bucket],
-      :elasticsearch_instances => elasticsearch_instances.join('", "'),
-      :elasticsearch_defaultreplicas => node[:elasticsearch_defaultreplicas],
-      :elasticsearch_expected => elasticsearch_expected,
-      :elasticsearch_defaultshards => node[:elasticsearch_defaultshards],
-      :elasticsearch_clustername => node[:elasticsearch_clustername]
-    )
-    mode 0600
-    backup 0
-  end
-
   template "/etc/monit.d/elasticsearch_#{node[:elasticsearch_clustername]}.monitrc" do
     source "elasticsearch.monitrc.erb"
     owner "elasticsearch"
@@ -152,25 +110,18 @@ if ['util'].include?(node[:instance_role])
   end
 end
 
-# This portion of the recipe should run on all instances in your environment.  We are going to drop elasticsearch.yml for you so you can parse it and provide the instances to your application.
+solo = node[:instance_role] == 'solo'
 if ['solo','app_master','app','util'].include?(node[:instance_role])
-  elasticsearch_hosts = []
-  node['utility_instances'].each do |elasticsearch|
-    if elasticsearch['name'].include?("elasticsearch_")
-      elasticsearch_hosts << "#{elasticsearch['hostname']}:9200"
-    end
-
-    node.engineyard.apps.each do |app|
-      template "/data/#{app.name}/shared/config/elasticsearch.yml" do
-        owner node[:owner_name]
-        group node[:owner_name]
-        mode 0660
-        source "es.yml.erb"
-        backup 0
-        variables(:yaml_file => {
-          node.engineyard.environment.framework_env => { 
-          :hosts => elasticsearch_hosts} })
-      end
+  node.engineyard.apps.each do |app|
+    template "/data/#{app.name}/shared/config/elasticsearch.yml" do
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0660
+      source "es.yml.erb"
+      backup 0
+      variables(:yaml_file => {
+        node.engineyard.environment.framework_env => { 
+        :hosts => solo ? "127.0.0.1:9200" : "#{node[:master_app_server][:public_ip]}:9200" }})
     end
   end
 end
