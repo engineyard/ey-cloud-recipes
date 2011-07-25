@@ -1,1 +1,0 @@
-require_recipe "postgresql9_contrib::postgis_install"
