@@ -20,15 +20,3 @@ template "#{@node[:postgres_root]}#{@node[:postgres_version]}/custom_autoexplain
   })
 end
 
-
-# ---- Execute sql ----
-# Chef::Log.info "Execute sql" 
-
-if #{sql_per_db}.empty() 
-  Chef::Log.info "No sql to execute"
-else
-  Chef::Log.info "executing custom sql for extension"
-
-end
-  
-  
