@@ -56,15 +56,7 @@
 
 #enable contrib modules for a given Postgresql9 database
 if node[:instance_role] == "db_master"
-  # postgresql9_autoexplain
-  postgresql9_chkpass "postgres_test"
+  # postgresql9_autoexplain "postgres_test"
+  # postgresql9_chkpass "postgres_test"
+  postgresql9_postgis "postgres_test"
 end
-
-# if node[:instance_role] == "db_master"
-#   postgresql9_postgis(
-#     dbname "foo"
-#     hack true
-#   )
-# end
-
-

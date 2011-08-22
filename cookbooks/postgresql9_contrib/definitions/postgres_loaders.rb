@@ -1,0 +1,12 @@
+# define a loader for postgres sql files
+module PostgresFunctionLoaders
+  def load_sql_file(db_name, contrib_path)
+   command "psql -U postgres -d #{db_name} -f #{contrib_path}"
+  end
+  
+  def load_shared_library(db_name, library_name)
+   command "psql -U postgres -d #{db_name} -c \"LOAD \'#{library_name}\'\";"
+  end
+  
+end
+ 
