@@ -30,7 +30,7 @@ execute  "symlink ssmtp" do
 end
 
 remote_file "/etc/logrotate.d/exim" do
-  source "exim"
+  source "exim.logrotate"
   backup 0
   owner "root"
   group "root"
