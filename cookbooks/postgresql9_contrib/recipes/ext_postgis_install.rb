@@ -2,7 +2,7 @@ postgis_version = "1.5.2"
 proj_version = "4.6.1"
 geos_version = "3.2.2"
 
-enable_package "sci-libs/geos-3.2.2" do
+enable_package "sci-libs/geos" do
   version geos_version
 end
 enable_package "sci-libs/proj" do
