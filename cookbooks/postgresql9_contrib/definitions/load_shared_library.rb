@@ -1,4 +1,4 @@
-define :load_shared_library, :library_name => nil, :db_name => nil do
+define :load_shared_library, :db_name => nil, :library_name => nil do
   library_name = params[:library_name]
   db_name = params[:db_name]
   

@@ -1,4 +1,4 @@
-define :load_sql_file, :filename => nil, :db_name => nil do
+define :load_sql_file, :db_name => nil, :filename => nil do
   filename = params[:filename]
   db_name = params[:db_name]
   
