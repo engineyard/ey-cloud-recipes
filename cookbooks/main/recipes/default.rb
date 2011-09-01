@@ -55,8 +55,8 @@
 #require_recipe "mysql_administrative_tools"
 
 #enable contrib modules for a given Postgresql9 database
-if node[:instance_role] == "db_master"
-  # postgresql9_autoexplain "postgres_test"
-  # postgresql9_chkpass "postgres_test"
-  postgresql9_postgis "postgres_test"
-end
+# if ['solo','db_master'].include?(node[:instance_role])
+#   postgresql9_autoexplain "postgres_test"
+#   postgresql9_chkpass "postgres_test"
+#   postgresql9_postgis "postgres_test"
+# end
