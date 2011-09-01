@@ -34,7 +34,7 @@
 #require_recipe "resque"
 
 #uncomment to run the redis recipe
-#require_recipe "redis"
+# require_recipe "redis"
 
 #require_recipe "logrotate"
 #
@@ -53,3 +53,10 @@
 #uncomment to include the mysql_administrative_tools recipe
 # additional configuration of this recipe is required
 #require_recipe "mysql_administrative_tools"
+
+#enable contrib modules for a given Postgresql9 database
+# if ['solo','db_master'].include?(node[:instance_role])
+#   postgresql9_autoexplain "postgres_test"
+#   postgresql9_chkpass "postgres_test"
+#   postgresql9_postgis "postgres_test"
+# end
