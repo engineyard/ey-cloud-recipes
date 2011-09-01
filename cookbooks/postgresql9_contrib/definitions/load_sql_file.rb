@@ -3,6 +3,6 @@ define :load_sql_file, :db_name => nil, :filename => nil do
   filename = params[:filename]
   
   execute "Postgresql loading file #{filename}" do
-    command "psql -U postgres -d #{db_name} -f #{filename}"
+    command "psql -U deploy -d #{db_name} -f #{filename}"
   end
 end

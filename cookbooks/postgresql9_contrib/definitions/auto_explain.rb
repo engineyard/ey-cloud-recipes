@@ -2,13 +2,7 @@ define :postgresql9_autoexplain do
   dbname_to_use = params[:name]
   Chef::Log.info "db: #{dbname_to_use}"
   
-  # Chef::Log.info "cmd: psql -U postgres -d #{dbname_to_use} -c \"LOAD 'auto_explain'\";"
-  # 
-  # execute "enable chpass on db" do
-  #   command "psql -U postgres -d #{dbname_to_use} -c \"LOAD \'auto_explain\'\"; "
-  # end
-  
-  load_shared_library do 
+ load_shared_library do 
     db_name dbname_to_use 
     library_name "auto_explain"
   end
