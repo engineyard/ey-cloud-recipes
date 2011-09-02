@@ -29,6 +29,14 @@ execute  "symlink ssmtp" do
   not_if { FileTest.exists?("/usr/sbin/ssmtp") }
 end
 
+remote_file "/etc/logrotate.d/exim" do
+  source "exim.logrotate"
+  backup 0
+  owner "root"
+  group "root"
+  mode 0644
+end
+
 package "mail-client/mailx" do
   action :install
 end

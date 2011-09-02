@@ -1,0 +1,5 @@
+check process elasticsearch_9080
+with pidfile /var/run/elasticsearch.pid
+  start program = "/usr/lib/elasticsearch/bin/elasticsearch -p /var/run/elasticsearch.pid" with timeout 90 seconds
+  stop program = "/bin/bash -c '/bin/kill `cat /var/run/elasticsearch.pid`'" with timeout 90 seconds
+  group elasticsearch

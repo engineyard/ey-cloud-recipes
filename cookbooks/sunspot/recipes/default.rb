@@ -4,6 +4,7 @@
 #
  
 require 'digest/sha1'
+SOLR_VERSION = '1.4.1'
  
 node[:applications].each do |app,data|
  
@@ -48,20 +49,22 @@ node[:applications].each do |app,data|
     user node[:owner_name]
     group node[:owner_name]
     command("if [ ! -e /data/#{app}/jettyapps/solr ]; then cd /data/#{app}/jettyapps && " +
-            "wget -O apache-solr-1.4.0.tgz http://mirror.cc.columbia.edu/pub/software/apache/lucene/solr/1.4.0/apache-solr-1.4.0.tgz && " +
-            "tar -xzf apache-solr-1.4.0.tgz && " +
-            "mv apache-solr-1.4.0/example solr && " +
-            "rm -rf apache-solr-1.4.0; fi")
+            "wget -O apache-solr-#{SOLR_VERSION}.tgz http://mirror.cc.columbia.edu/pub/software/apache/lucene/solr/#{SOLR_VERSION}/apache-solr-#{SOLR_VERSION}.tgz && " +
+            "tar -xzf apache-solr-#{SOLR_VERSION}.tgz && " +
+            "mv apache-solr-#{SOLR_VERSION}/example solr && " +
+            "rm -rf apache-solr-#{SOLR_VERSION}; fi")
     action :run
   end
  
   gem_package "sunspot_rails" do
     source "http://gemcutter.org"
     action :install
+    ignore_failure true
   end
   
   gem_package "nokogiri" do
     source "http://gemcutter.org"
+    ignore_failure true
     action :install
   end
  
