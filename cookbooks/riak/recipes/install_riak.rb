@@ -1,21 +1,6 @@
 # Installer stuff here
 #
 
-gem_package "i18n" do
-  version "0.5.0"
-  action :install
-end
-
-gem_package "ripple" do
-  version "0.9.3"
-  action :install
-end
-
-gem_package "curb" do
-  version "0.7.15"
-  action :install
-end
-
 remote_file "/mnt/src/riak-#{node[:riak][:version]}.tar.gz" do
   source "http://downloads.basho.com/riak/CURRENT/riak-#{node[:riak][:version]}.tar.gz"
   backup 0

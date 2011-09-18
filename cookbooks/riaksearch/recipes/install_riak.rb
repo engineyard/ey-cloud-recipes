@@ -1,21 +1,6 @@
 # Installer stuff here
 #
 
-gem_package "i18n" do
-  version "0.6.0"
-  action :install
-end
-
-gem_package "ripple" do
-  version "0.9.3"
-  action :install
-end
-
-gem_package "curb" do
-  version "0.7.15"
-  action :install
-end
-
 # Riaksearch dependency here.
 package "dev-java/ant" do
   version '1.7.0'

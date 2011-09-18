@@ -12,12 +12,7 @@ else
     end
 
     riak_instances = []
-
-    node['utility_instances'].each do |riak|
-      if riak['name'].include?("riak_")
-        riak_instances << riak["hostname"]
-      end
-    end
+    riak_instances << node["engineyard"]["environment"]["instances"].map{|x| x["private_hostname"] if x["name"] =~ /^riak_/ }.compact
     
     template "/etc/haproxy_riak.cfg" do
       owner 'root'

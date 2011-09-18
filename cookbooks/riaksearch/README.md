@@ -78,10 +78,9 @@ Currently this Cookbook provides the following methods of using Riak:
 
 * Lastly, Words of Wisdom from Basho themselves.
 
-> you should look at the ring ready command and make it returns 0 before adding the next node
-> if you try and do more than 4 or 5 nodes the gossip is a little heavy for ec2 right now
-> and sometimes it takes a minute or two to converge the ring
-> changing the gossip interval in the conf alleviates this somewhat
+> you should look at the ring ready command and make sure it returns 0 before adding additional nodes.
+
+> If you try and do more than 4 or 5 nodes the gossip is a little heavy for ec2 right now and sometimes it takes a minute or two to converge the ring changing the gossip interval in the conf alleviates this somewhat
 
 Dependencies
 --------
