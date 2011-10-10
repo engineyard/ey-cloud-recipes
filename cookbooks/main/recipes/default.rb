@@ -56,28 +56,28 @@
 
 #enable contrib modules for a given Postgresql9 database
 if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
-  # postgresql9_autoexplain "postgres_test"
-  # postgresql9_chkpass "postgres_test"
-  # postgresql9_citext "postgres_test"
-  # postgresql9_cube "postgres_test"
-  # postgresql9_dblink "postgres_test"
-  # postgresql9_earthdistance "postgres_test"
-  # postgresql9_fuzzystrmatch "postgres_test"
-  # postgresql9_hstore "postgres_test"
-  # postgresql9_intagg "postgres_test"
-  # postgresql9_isn "postgres_test"
-  # postgresql9_lo "postgres_test"
-  # postgresql9_ltree "postgres_test"
-  # postgresql9_pg_buffercache "postgres_test" - Not done
+  # postgresql9_autoexplain "dbname"
+  # postgresql9_chkpass "dbname"
+  # postgresql9_citext "dbname"
+  # postgresql9_cube "dbname"
+  # postgresql9_dblink "dbname"
+  # postgresql9_earthdistance "dbname"
+  # postgresql9_fuzzystrmatch "dbname"
+  # postgresql9_hstore "dbname"
+  # postgresql9_intagg "dbname"
+  # postgresql9_isn "dbname"
+  # postgresql9_lo "dbname"
+  # postgresql9_ltree "dbname"
+  postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres_test" - Not done
   # postgresql9_pg_stat_statements"postgres_test" - Not done
-  # postgresql9_pg_trgm "postgres_test" - Not done
-  # postgresql9_pgcrypto "postgres_test"
-  # postgresql9_pgrowlocks "postgres_test"
-  # postgresql9_postgis "postgres_test" 
-  # postgresql9_seg "postgres_test"
-  # postgresql9_tablefunc "postgres_test"
-  # postgresql9_unaccent "postgres_test"
-  # postgresql9_uuid_ossp "postgres_test"
+  # postgresql9_pg_trgm "postgres_test"  - Not done
+  # postgresql9_pgcrypto "postgres_test" - Not done
+  # postgresql9_pgrowlocks "dbname"
+  # postgresql9_postgis "dbname" 
+  # postgresql9_seg "dbname"
+  # postgresql9_tablefunc "dbname"
+  # postgresql9_unaccent "dbname"
+  # postgresql9_uuid_ossp "dbname"
   
 end
