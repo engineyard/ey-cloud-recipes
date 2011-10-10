@@ -10,7 +10,7 @@ Dependencies
 You need to have a running Postgres 9 instance to apply these recipes.
 
 
-Extensions Available 
+Available Extensions 
 --------------------------
 At the moment the following extensions are available. See http://www.postgresql.org/docs/9.0/static/contrib.html for more information.
 
@@ -41,8 +41,6 @@ At the moment the following extensions are available. See http://www.postgresql.
 	extension applied to.
 	``postgresql9_chkpass "dbname""``
 
-	To disable, simply comment out the postgresql9_chkpass line
-
 
 	PostGIS
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
@@ -55,8 +53,41 @@ At the moment the following extensions are available. See http://www.postgresql.
 	extension applied to.
 	``postgresql9_postgis "dbname""``
 
-	To disable, simply comment out the postgresql9_postgis line
+	
+  # postgresql9_citext "postgres_test"
+  # postgresql9_cube "postgres_test"
+  # postgresql9_dblink "postgres_test"
+  # postgresql9_earthdistance "postgres_test"
+  # postgresql9_fuzzystrmatch "postgres_test"
+  # postgresql9_hstore "postgres_test"
+  # postgresql9_intagg "postgres_test"
+  # postgresql9_isn "postgres_test"
+  # postgresql9_lo "postgres_test"
+  # postgresql9_ltree "postgres_test"
 
+  # postgresql9_pgcrypto "postgres_test"
+  # postgresql9_pgrowlocks "postgres_test"
+  # postgresql9_postgis "postgres_test" 
+  # postgresql9_seg "postgres_test"
+  # postgresql9_tablefunc "postgres_test"
+  # postgresql9_unaccent "postgres_test"
+  # postgresql9_uuid_ossp "postgres_test"
+
+
+admin-level contrib packages 
+---------------------------------------------
+
+	pg_buffercache
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+	The pg_buffercache module provides a means for examining what's happening in the shared buffer cache in real time.
+
+	Enabling this Module: 
+
+	* Edit main/recipes/default.rb and comment out the line shown below. 
+	``postgresql9_pg_buffercache "postgres""``
+
+	Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_buffercache module
+	
 
 
 Uploading this recipe
