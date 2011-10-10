@@ -63,6 +63,7 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_cube "postgres_test"
   # postgresql9_dblink "postgres_test"
   # postgresql9_earthdistance "postgres_test"
-  postgresql9_fuzzystrmatch "postgres_test"
+  # postgresql9_fuzzystrmatch "postgres_test"
+  postgresql9_hstore "postgres_test"
   
 end
