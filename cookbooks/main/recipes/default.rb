@@ -59,7 +59,9 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_autoexplain "postgres_test"
   # postgresql9_chkpass "postgres_test"
   # postgresql9_postgis "postgres_test"
-  postgresql9_citext "postgres_test"
+  # postgresql9_citext "postgres_test"
   # postgresql9_cube "postgres_test"
+  # postgresql9_dblink "postgres_test"
+  postgresql9_earthdistance "postgres_test"
   
 end
