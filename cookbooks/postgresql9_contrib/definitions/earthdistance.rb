@@ -3,7 +3,6 @@ define :postgresql9_earthdistance do
  
   load_sql_file do 
     db_name dbname_to_use
-    username "postgres"
     filename "/usr/share/postgresql-9.0/contrib/earthdistance.sql"
   end
 

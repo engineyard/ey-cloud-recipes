@@ -3,7 +3,6 @@ define :postgresql9_cube do
  
   load_sql_file do 
     db_name dbname_to_use
-    username "postgres"
     filename "/usr/share/postgresql-9.0/contrib/cube.sql"
   end
 
