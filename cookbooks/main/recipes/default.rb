@@ -70,14 +70,14 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_ltree "postgres_test"
   # postgresql9_pg_buffercache "postgres_test" - Not done
   # postgresql9_pg_freespacemap "postgres_test" - Not done
-  postgresql9_pg_stat_statements"postgres_test"
-  # postgresql9_pg_trgm "postgres_test"
-  # postgresql9_pgcrypto "postgres_test"
-  # postgresql9_pgrowlocks "postgres_test"
-  # postgresql9_postgis "postgres_test"
+  # postgresql9_pg_stat_statements"postgres_test" - Not done
+  # postgresql9_pg_trgm "postgres_test" - Not done
+  # postgresql9_pgcrypto "postgres_test" - Not done
+  # postgresql9_pgrowlocks "postgres_test" - Not done
+  # postgresql9_postgis "postgres_test" - Not done
   # postgresql9_seg "postgres_test"
-  # postgresql9_tablefunc "postgres_test"
-  # postgresql9_unaccent "postgres_test"
-  # postgresql9_uuid_ossp "postgres_test"
+  # postgresql9_tablefunc "postgres_test" - Not done
+  # postgresql9_unaccent "postgres_test" - Not done
+  postgresql9_uuid_ossp "postgres_test"
   
 end
