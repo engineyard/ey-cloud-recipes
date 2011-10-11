@@ -14,258 +14,258 @@ Available Extensions
 --------------------------
 At the moment the following extensions are available. See http://www.postgresql.org/docs/9.0/static/contrib.html for more information.
 
-	auto_explain
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This extension provides a means for logging execution plans of slow statements automatically, without having to run EXPLAIN by hand. 
-	This is especially helpful for tracking down un-optimized queries in large applications. 
-	WARNING: Enabling this extension will restart your Postgres service. 
+auto_explain
+--------------------------
+This extension provides a means for logging execution plans of slow statements automatically, without having to run EXPLAIN by hand. 
+This is especially helpful for tracking down un-optimized queries in large applications. 
+WARNING: Enabling this extension will restart your Postgres service. 
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to. 	
-	``postgresql9_autoexplain "dbname""``
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to. 	
+``postgresql9_autoexplain "dbname""``	
 
 
-	chkpass
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This extension implements a data type chkpass that is designed for storing encrypted passwords. Each password is automatically converted 
-	to encrypted form upon entry, and is always stored encrypted.
+chkpass
+--------------------------
+This extension implements a data type chkpass that is designed for storing encrypted passwords. Each password is automatically converted 
+to encrypted form upon entry, and is always stored encrypted.
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_chkpass "dbname""``
-	
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_chkpass "dbname""``
 
-	citext
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The citext module provides a case-insensitive character string type, citext. Essentially, it internally calls lower when comparing values. 
-	Otherwise, it behaves almost exactly like text. (This is great for MySQL compatibility which does text comparisons case-insensitive, by default)
 
-	Enabling this extension: 
+citext
+--------------------------
+The citext module provides a case-insensitive character string type, citext. Essentially, it internally calls lower when comparing values. 
+Otherwise, it behaves almost exactly like text. (This is great for MySQL compatibility which does text comparisons case-insensitive, by default)
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_citext "dbname""``
-	
+Enabling this extension: 
 
-	cube
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module implements a data type cube for representing multidimensional cubes.
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_citext "dbname""``
 
-	Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_cube "dbname""``
-	
+cube
+--------------------------
+This module implements a data type cube for representing multidimensional cubes.
 
-	dblink
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	dblink is a module which supports connections to other PostgreSQL databases from within a database session.
+Enabling this extension: 
 
-	Enabling this extension: 
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_cube "dbname""``
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_dblink "dbname""``
-	
 
-	earthdistance
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The earthdistance module provides two different approaches to calculating great circle distances on the surface of the Earth.
+dblink
+--------------------------
+dblink is a module which supports connections to other PostgreSQL databases from within a database session.
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_earthdistance "dbname""``
-	
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_dblink "dbname""``
 
-	fuzzystrmatch
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The fuzzystrmatch module provides several functions to determine similarities and distance between strings.
 
-	Enabling this extension: 
+earthdistance
+--------------------------
+The earthdistance module provides two different approaches to calculating great circle distances on the surface of the Earth.
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_fuzzystrmatch "dbname""``
-	
+Enabling this extension: 
 
-	hstore
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module implements the hstore data type for storing sets of key/value pairs within a single PostgreSQL value. This can be useful 
-	in various scenarios, such as rows with many attributes that are rarely examined, or semi-structured data. Keys and values are simply 
-	text strings.	
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_earthdistance "dbname""``
 
-	Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_hstore "dbname""``
-	
+fuzzystrmatch
+--------------------------
+The fuzzystrmatch module provides several functions to determine similarities and distance between strings.
 
-	intagg
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The intarray module provides a number of useful functions and operators for manipulating one-dimensional arrays of integers. There is 
-	also support for indexed searches using some of the operators.
+Enabling this extension: 
 
-	Enabling this extension: 
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_fuzzystrmatch "dbname""``
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_intagg "dbname""``
-	
 
-	isn
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The isn module provides data types for the following international product numbering standards: EAN13, UPC, ISBN (books), ISMN (music), 
-	and ISSN (serials). Numbers are validated on input, and correctly hyphenated on output.
+hstore
+--------------------------
+This module implements the hstore data type for storing sets of key/value pairs within a single PostgreSQL value. This can be useful 
+in various scenarios, such as rows with many attributes that are rarely examined, or semi-structured data. Keys and values are simply 
+text strings.	
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_isn "dbname""``
-	
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_hstore "dbname""``
 
-	lo
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The lo module provides support for managing Large Objects (also called LOs or BLOBs). This includes a data type lo and a trigger lo_manage.
 
-	Enabling this extension: 
+intagg
+--------------------------
+The intarray module provides a number of useful functions and operators for manipulating one-dimensional arrays of integers. There is 
+also support for indexed searches using some of the operators.
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_lo "dbname""``
-	
+Enabling this extension: 
 
-	ltree
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module implements a data type ltree for representing labels of data stored in a hierarchical tree-like structure. Extensive facilities 
-	for searching through label trees are provided.
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_intagg "dbname""``
 
-	Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_ltree "dbname""``
-	
+isn
+--------------------------
+The isn module provides data types for the following international product numbering standards: EAN13, UPC, ISBN (books), ISMN (music), 
+and ISSN (serials). Numbers are validated on input, and correctly hyphenated on output.
 
-	pgcrypto
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The pgcrypto module provides cryptographic functions for PostgreSQL.
+Enabling this extension: 
 
-	Enabling this extension: 
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_isn "dbname""``
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_pgcrypto "dbname""``
-	
 
-	pgrowlocks
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The pgrowlocks module provides a function to show row locking information for a specified table.
+lo
+--------------------------
+The lo module provides support for managing Large Objects (also called LOs or BLOBs). This includes a data type lo and a trigger lo_manage.
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_pgrowlocks "dbname""``
-	
-	
-	PostGIS
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-	This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend 
-	spatial database for geographic information systems (GIS).
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_lo "dbname""``
 
-	Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_postgis "dbname""``
-	
+ltree
+--------------------------
+This module implements a data type ltree for representing labels of data stored in a hierarchical tree-like structure. Extensive facilities 
+for searching through label trees are provided.
 
-	seg
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module implements a data type seg for representing line segments, or floating point intervals. seg can represent uncertainty in the 
-	interval endpoints, making it especially useful for representing laboratory measurements.
+Enabling this extension: 
 
-	Enabling this extension: 
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_ltree "dbname""``
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_seg "dbname""``
-	
 
-	tablefunc
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The tablefunc module includes various functions that return tables (that is, multiple rows). These functions are useful both in their own 
-	right and as examples of how to write C functions that return multiple rows.
+pgcrypto
+--------------------------
+The pgcrypto module provides cryptographic functions for PostgreSQL.
 
-	Enabling this extension: 
+Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_tablefunc "dbname""``
-	
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_pgcrypto "dbname""``
 
-	unaccent
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	unaccent is a text search dictionary that removes accents (diacritic signs) from lexemes. It's a filtering dictionary, which means its output 
-	is always passed to the next dictionary (if any), unlike the normal behavior of dictionaries. This allows accent-insensitive processing for 
-	full text search.
 
-	Enabling this extension: 
+pgrowlocks
+--------------------------
+The pgrowlocks module provides a function to show row locking information for a specified table.
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_unaccent "dbname""``
-	
+Enabling this extension: 
 
-	uuid-ossp
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	The uuid-ossp module provides functions to generate universally unique identifiers (UUIDs) using one of several standard algorithms. There are 
-	also functions to produce certain special UUID constants. (This also requires a separate USE flag when building the postgres binaries that pulls 
-	in another package.)
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_pgrowlocks "dbname""``
 
-	Enabling this extension: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to.
-	``postgresql9_uuid_ossp "dbname""``
+PostGIS
+--------------------------
+This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend 
+spatial database for geographic information systems (GIS).
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_postgis "dbname""``
+
+
+seg
+--------------------------
+This module implements a data type seg for representing line segments, or floating point intervals. seg can represent uncertainty in the 
+interval endpoints, making it especially useful for representing laboratory measurements.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_seg "dbname""``
+
+
+tablefunc
+--------------------------
+The tablefunc module includes various functions that return tables (that is, multiple rows). These functions are useful both in their own 
+right and as examples of how to write C functions that return multiple rows.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_tablefunc "dbname""``
+
+
+unaccent
+--------------------------
+unaccent is a text search dictionary that removes accents (diacritic signs) from lexemes. It's a filtering dictionary, which means its output 
+is always passed to the next dictionary (if any), unlike the normal behavior of dictionaries. This allows accent-insensitive processing for 
+full text search.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_unaccent "dbname""``
+
+
+uuid-ossp
+--------------------------
+The uuid-ossp module provides functions to generate universally unique identifiers (UUIDs) using one of several standard algorithms. There are 
+also functions to produce certain special UUID constants. (This also requires a separate USE flag when building the postgres binaries that pulls 
+in another package.)
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+``postgresql9_uuid_ossp "dbname""``
 
 
 Admin-level Contrib packages 
 ---------------------------------------------
 Notes: This module requires a privileged user. Please log in as the postgres user to use the extension
 
-	pg_buffercache
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-	The pg_buffercache module provides a means for examining what's happening in the shared buffer cache in real time. 
+pg_buffercache
+--------------------------
+The pg_buffercache module provides a means for examining what's happening in the shared buffer cache in real time. 
 
-	Enabling this Module: 
+Enabling this Module: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. 
-	``postgresql9_pg_buffercache "postgres""``
+* Edit main/recipes/default.rb and comment out the line shown below. 
+``postgresql9_pg_buffercache "postgres""``
 
 
-	pg_freespacemap
-	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-	The pg_freespacemap module provides a means for examining the free space map (FSM). It provides a function called pg_freespace, 
-	or two overloaded functions, to be precise. The functions show the value recorded in the free space map for a given page, or for all 
-	pages in the relation. 
+pg_freespacemap
+--------------------------
+The pg_freespacemap module provides a means for examining the free space map (FSM). It provides a function called pg_freespace, 
+or two overloaded functions, to be precise. The functions show the value recorded in the free space map for a given page, or for all 
+pages in the relation. 
 
-	Enabling this Module: 
+Enabling this Module: 
 
-	* Edit main/recipes/default.rb and comment out the line shown below. 
-	``postgresql9_pg_freespacemap "postgres""``
+* Edit main/recipes/default.rb and comment out the line shown below. 
+``postgresql9_pg_freespacemap "postgres""``
 
-	Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_freespacemap module
-	
+Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_freespacemap module
+
 
 
 Uploading this recipe

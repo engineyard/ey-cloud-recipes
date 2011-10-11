@@ -68,6 +68,7 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_isn "dbname"
   # postgresql9_lo "dbname"
   # postgresql9_ltree "dbname"
+  # postgresql9_pg_stat_statements"postgres_test" - Not done
   # postgresql9_pg_trgm "postgres_test"  
   # postgresql9_pgcrypto "postgres_test"
   # postgresql9_pgrowlocks "dbname"
