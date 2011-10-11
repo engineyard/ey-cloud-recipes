@@ -24,6 +24,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to. 	
+
 ``postgresql9_autoexplain "dbname""``	
 
 
@@ -36,6 +37,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_chkpass "dbname""``
 
 
@@ -48,6 +50,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_citext "dbname""``
 
 
@@ -59,6 +62,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_cube "dbname""``
 
 
@@ -70,6 +74,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_dblink "dbname""``
 
 
@@ -81,6 +86,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_earthdistance "dbname""``
 
 
@@ -92,6 +98,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_fuzzystrmatch "dbname""``
 
 
@@ -105,6 +112,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_hstore "dbname""``
 
 
@@ -117,6 +125,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_intagg "dbname""``
 
 
@@ -129,6 +138,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_isn "dbname""``
 
 
@@ -140,6 +150,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_lo "dbname""``
 
 
@@ -152,6 +163,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_ltree "dbname""``
 
 
@@ -163,6 +175,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_pgcrypto "dbname""``
 
 
@@ -174,6 +187,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_pgrowlocks "dbname""``
 
 
@@ -186,6 +200,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_postgis "dbname""``
 
 
@@ -198,6 +213,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_seg "dbname""``
 
 
@@ -210,6 +226,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_tablefunc "dbname""``
 
 
@@ -223,6 +240,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_unaccent "dbname""``
 
 
@@ -236,6 +254,7 @@ Enabling this extension:
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
+
 ``postgresql9_uuid_ossp "dbname""``
 
 
@@ -250,6 +269,7 @@ The pg_buffercache module provides a means for examining what's happening in the
 Enabling this Module: 
 
 * Edit main/recipes/default.rb and comment out the line shown below. 
+
 ``postgresql9_pg_buffercache "postgres""``
 
 
@@ -262,6 +282,7 @@ pages in the relation.
 Enabling this Module: 
 
 * Edit main/recipes/default.rb and comment out the line shown below. 
+
 ``postgresql9_pg_freespacemap "postgres""``
 
 Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_freespacemap module
