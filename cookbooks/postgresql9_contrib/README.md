@@ -16,26 +16,23 @@ At the moment the following extensions are available. See http://www.postgresql.
 
 	auto_explain
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module provides a means for logging execution plans of slow statements automatically, without having to run EXPLAIN by hand. 
+	This extension provides a means for logging execution plans of slow statements automatically, without having to run EXPLAIN by hand. 
 	This is especially helpful for tracking down un-optimized queries in large applications. 
 	WARNING: Enabling this extension will restart your Postgres service. 
 
-	Enabling this Module: 
+	Enabling this extension: 
 
 	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-	extension applied to. 
-	
+	extension applied to. 	
 	``postgresql9_autoexplain "dbname""``
-
-	To disable, simply comment out the postgresql9_autoexplain line
 
 
 	chkpass
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	This module implements a data type chkpass that is designed for storing encrypted passwords. Each password is automatically converted 
+	This extension implements a data type chkpass that is designed for storing encrypted passwords. Each password is automatically converted 
 	to encrypted form upon entry, and is always stored encrypted.
 
-	Enabling this Module: 
+	Enabling this extension: 
 
 	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 	extension applied to.
@@ -44,10 +41,10 @@ At the moment the following extensions are available. See http://www.postgresql.
 
 	PostGIS
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-	This module adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend 
+	This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend 
 	spatial database for geographic information systems (GIS).
 
-	Enabling this Module: 
+	Enabling this extension: 
 
 	* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 	extension applied to.
@@ -74,19 +71,30 @@ At the moment the following extensions are available. See http://www.postgresql.
   # postgresql9_uuid_ossp "postgres_test"
 
 
-admin-level contrib packages 
+Admin-level Contrib packages 
 ---------------------------------------------
+Notes: This module requires a priviledged user. Please log in as the postgres user to use the extension
 
 	pg_buffercache
 	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-	The pg_buffercache module provides a means for examining what's happening in the shared buffer cache in real time.
+	The pg_buffercache extension provides a means for examining what's happening in the shared buffer cache in real time.
 
 	Enabling this Module: 
 
 	* Edit main/recipes/default.rb and comment out the line shown below. 
 	``postgresql9_pg_buffercache "postgres""``
 
-	Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_buffercache module
+
+	pg_freespacemap
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+	The pg_freespacemap module provides a means for examining what's happening in the shared buffer cache in real time.
+
+	Enabling this Module: 
+
+	* Edit main/recipes/default.rb and comment out the line shown below. 
+	``postgresql9_pg_freespacemap "postgres""``
+
+	Note: This module requires a priviledged user. Please log in as the postgres user to use the pg_freespacemap module
 	
 
 

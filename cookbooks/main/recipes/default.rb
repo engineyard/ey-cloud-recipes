@@ -68,16 +68,18 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_isn "dbname"
   # postgresql9_lo "dbname"
   # postgresql9_ltree "dbname"
-  # postgresql9_pg_buffercache "postgres"
-  # postgresql9_pg_freespacemap "postgres"
-  postgresql9_pg_stat_statements"postgres_test" - Not done
-  # postgresql9_pg_trgm "postgres_test"  - Not done
-  # postgresql9_pgcrypto "postgres_test" - Not done
+  # postgresql9_pg_stat_statements"postgres_test" - Not done
+  # postgresql9_pg_trgm "postgres_test"  
+  # postgresql9_pgcrypto "postgres_test"
   # postgresql9_pgrowlocks "dbname"
   # postgresql9_postgis "dbname" 
   # postgresql9_seg "dbname"
   # postgresql9_tablefunc "dbname"
   # postgresql9_unaccent "dbname"
   # postgresql9_uuid_ossp "dbname"
+  
+  
+  # postgresql9_pg_buffercache "postgres"
+  # postgresql9_pg_freespacemap "postgres"
   
 end
