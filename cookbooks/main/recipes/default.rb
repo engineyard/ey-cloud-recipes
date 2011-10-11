@@ -55,7 +55,7 @@
 #require_recipe "mysql_administrative_tools"
 
 #enable contrib modules for a given Postgresql9 database
-if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
+#if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_autoexplain "dbname"
   # postgresql9_chkpass "dbname"
   # postgresql9_citext "dbname"
@@ -82,4 +82,4 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
   
-end
+#end
