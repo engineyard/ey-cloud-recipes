@@ -1,0 +1,6 @@
+#!/bin/bash
+<%= @node[:mongo_command] %> --eval "db.runCommand({fsync:1,lock:1})" admin && \
+  touch /db/mongodb/data/mongod.lock.key && \
+  /usr/local/ey_resin/bin/ey-snapshots $@
+rm -f /db/mongodb/data/mongod.lock.key
+<%= @node[:mongo_command] %> --eval "db.\$cmd.sys.unlock.findOne()" admin

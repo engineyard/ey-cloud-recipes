@@ -1,0 +1,1 @@
+alias ey-snapshots="/usr/local/bin/ey-snapshots-with-mongodb"
