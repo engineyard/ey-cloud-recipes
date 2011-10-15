@@ -1,6 +1,7 @@
 user = @node[:users].first
 
 if ['db_master','solo'].include? @node[:instance_role]
+  #for arbiter purposes
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
