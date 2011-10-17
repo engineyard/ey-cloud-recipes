@@ -22,8 +22,7 @@ else
       require_recipe "mongodb::replset"
     end
     if @node[:mongo_backup]
-      Chef::Log.info "Running the backup recipe"
-      # require_recipe "mongodb::backup"
+      require_recipe "mongodb::backup"
     end
   end
 end

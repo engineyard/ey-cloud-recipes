@@ -77,3 +77,30 @@ remote_file "/etc/init.d/mongodb" do
   action :create
 end
 
+# Know how to snapshot itself
+
+Chef::Log.info "Redefine snapshots for Mongo"
+partition    = "data"
+service_name = "mongo"
+dbpath = "/#{partition}/mongodb/#{service_name}/"
+
+execute "remove-mongodb-snapshot-key-lock-file" do
+  command "if [ -f /#{partition}/mongodb/#{service_name}/mongod.lock.key ]; then rm -f /#{partition}/mongodb/#{service_name}/mongod.lock.key /#{partition}/mongodb/#{service_name}/mongod.lock; fi"
+  not_if "pgrep mongod"
+end
+
+template "/usr/local/bin/ey-snapshots-with-mongodb" do
+  source "ey-snapshots-with-mongodb.erb"
+  cookbook 'mongodb'
+  owner 'root'
+  group 'root'
+  mode '0755'
+end
+
+remote_file "/root/.bash_profile" do
+  source "root.bash_profile"
+  cookbook 'mongodb'
+  owner 'root'
+  group 'root'
+  mode '0600'
+end
