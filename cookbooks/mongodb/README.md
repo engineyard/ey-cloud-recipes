@@ -1,7 +1,7 @@
-ey-cloud-recipes/mongodb v1.8.1+
+ey-cloud-recipes/mongodb v2.0.0
 --------
 
-A chef recipe for enabling mongodb v1.8.1+ on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a basic MongoDB instance, or a Replica Set.
+A chef recipe for enabling mongodb v2.0.0 on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a basic MongoDB instance, or a Replica Set.
 
 It makes a few assumptions:
 

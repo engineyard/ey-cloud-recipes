@@ -20,10 +20,11 @@ if @node[:mongo_backup]
     })
   end
   
-  remote_file "/usr/local/bin/mongodb_file_backup" do
-    source "mongodb_file_backup"
+  remote_file "/usr/local/bin/mongodb_backup" do
+    source "mongodb_backup"
     owner "root"
     group "root"
+    cookbook 'mongodb'
     mode 0755
   end
   
@@ -40,7 +41,7 @@ if @node[:mongo_backup]
     day      '*'
     month    '*'
     weekday  '*'
-    command  "/usr/local/bin/mongodb_file_backup #{dbpath}"
+    command  "/usr/local/bin/mongodb_backup #{dbpath}"
     not_if { node[:backup_window].to_s == '0' }
   end
   
