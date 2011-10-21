@@ -1,11 +1,11 @@
 if node[:utility_instances].empty?
   # no-op here as there are no utility instances, do not pass.
-  else
-    user = @node[:users].first
-    
-    if ['app_master','app'].include?(node[:instance_role])
-      mongo_replication_sets = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl/) }.map { |instance| instance[:name].split("_")[1].sub("repl","") }.uniq   
-    end
+else
+  user = @node[:users].first
+
+  if ['app_master','app'].include?(node[:instance_role])
+    mongo_replication_sets = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl/) }.map { |instance| instance[:name].split("_")[1].sub("repl","") }.uniq   
+  end
   mongo_app_names = @node[:applications].keys
   
   

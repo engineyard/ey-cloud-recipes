@@ -9,7 +9,7 @@ if @attribute["utility_instances"].empty? || mongo_utility_instances.empty?
   # We have detected no utility instances, so we are skipping the logic for this portion of the recipe.
 else
   if mongo_utility_instances[0]["name"].match(/repl/)
-    mongo_replset ( mongo_utility_instances[1]["name"].sub("mongodb_","").sub("repl","").split("_")[0] )
+    mongo_replset ( mongo_utility_instances[0]["name"].sub("mongodb_","").sub("repl","").split("_")[0] )
   else
     mongo_replset( false )
   end
