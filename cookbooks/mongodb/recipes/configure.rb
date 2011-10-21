@@ -77,8 +77,25 @@ remote_file "/etc/init.d/mongodb" do
   action :create
 end
 
-# Know how to snapshot itself
+#drop backup yml
+template "/etc/.mongodb.backups.yml" do
+  owner "root"
+  group "root"
+  mode 0600
+  source "mongodb.backups.yml.erb"
+  variables(:config => {
+    :keep           => node[:backup_window] || 14,
+    :aws_secret_id  => node[:aws_secret_id],
+    :aws_secret_key => node[:aws_secret_key],
+    :env            => node[:environment][:name],
+    :databases      => {},
+    :dbuser         => nil, # not implemented
+    :dbpass         => nil, # not implemented
+  })
+end
 
+
+# Know how to snapshot itself
 Chef::Log.info "Redefine snapshots for Mongo"
 partition    = "data"
 service_name = "mongo"

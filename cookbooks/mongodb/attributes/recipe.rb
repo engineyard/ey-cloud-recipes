@@ -17,14 +17,5 @@ else
     mongo_replset( false )
   end
   
-  # detect backup node
-  mongo_utility_instances.each do |mongo_node|   
-    if mongo_node["name"].match(/_bkp/)
-      Chef::Log.info "detected backup node #{mongo_node["name"]}"
-       mongo_backup( true )
-    else
-      mongo_backup( false )
-    end
-  end  
- end
+end
 mongo_journaling ( true )
