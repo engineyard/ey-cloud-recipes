@@ -53,7 +53,7 @@ if utility_name
           :app_name => app_name,
           :address => sphinx_host,
           :user => node[:owner_name],
-          :mem_limit => 32
+          :mem_limit => '32M'
         })
       end
     end
@@ -115,7 +115,7 @@ if utility_name
           :app_name => app_name,
           :address => 'localhost',
           :user => node[:owner_name],
-          :mem_limit => 32
+          :mem_limit => '32M'
         })
       end
 
@@ -217,7 +217,7 @@ else
           :app_name => app_name,
           :address => 'localhost',
           :user => node[:owner_name],
-          :mem_limit => 32
+          :mem_limit => '32'
         })
       end
 
