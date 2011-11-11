@@ -54,6 +54,9 @@
 # additional configuration of this recipe is required
 #require_recipe "mysql_administrative_tools"
 
+#uncomment to include the newrelic_server_monitoring recipe
+#require_recipe "newrelic_server_monitoring"
+
 #enable contrib modules for a given Postgresql9 database
 #if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_autoexplain "dbname"
