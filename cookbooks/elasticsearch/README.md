@@ -39,10 +39,26 @@ Using it
 
   * Produce /data/<appname>/shared/config/elasticsearch.yml on all instances so you can easily parse/configure elasticsearch for your usage.
 
+Plugins
+--------
+
+Rudamentary plugin support is there in a definition.  You will need to update the template for configuration options for said plugin; if you wish to improve this functionality please submit a pull request.  
+
+Examples: 
+
+``es_plugin "cloud-aws" do``
+``action :install``
+``end``
+
+``es_plugin "transport-memcached" do``
+``action :remove``
+``end``
+
+
 Caveats
 --------
 
-No plugins are setup currently.  Enabling cloud and other plugins may be useful, have not invesitgated these yet.
+plugin support is still not complete/automated.  CouchDB and Memcached plugins may be worth investigtating, pull requests to improve this.
 
 Backups
 --------

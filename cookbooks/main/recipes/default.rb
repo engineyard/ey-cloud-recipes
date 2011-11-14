@@ -54,6 +54,18 @@
 # additional configuration of this recipe is required
 #require_recipe "mysql_administrative_tools"
 
+#uncomment to include the Elasticsearch recipe
+#require_recipe "elasticsearch"
+
+# To install specific plugins to Elasticsearch see below as an example
+#es_plugin "cloud-aws" do
+#  action :install
+#end
+
+#es_plugin "transport-memcached" do
+#  action :install
+#end
+
 #uncomment to include the newrelic_server_monitoring recipe
 #require_recipe "newrelic_server_monitoring"
 
