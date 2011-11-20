@@ -1,22 +1,40 @@
 # Redis configuration file example
 
+# Note on units: when memory size is needed, it is possible to specifiy
+# it in the usual form of 1k 5GB 4M and so forth:
+#
+# 1k => 1000 bytes
+# 1kb => 1024 bytes
+# 1m => 1000000 bytes
+# 1mb => 1024*1024 bytes
+# 1g => 1000000000 bytes
+# 1gb => 1024*1024*1024 bytes
+#
+# units are case insensitive so 1GB 1Gb 1gB are all the same.
+
 # By default Redis does not run as a daemon. Use 'yes' if you need it.
 # Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
 daemonize yes
 
-# When run as a daemon, Redis write a pid file in /var/run/redis.pid by default.
-# You can specify a custom pid file location here.
+# When running daemonized, Redis writes a pid file in /var/run/redis.pid by
+# default. You can specify a custom pid file location here.
 pidfile <%= @pidfile %>
 
-# Accept connections on the specified port, default is 6379
+# Accept connections on the specified port, default is 6379.
+# If port 0 is specified Redis will not listen on a TCP socket.
 port <%= @port %>
 
 # If you want you can bind a single interface, if the bind option is not
-# specified all the interfaces will listen for connections.
+# specified all the interfaces will listen for incoming connections.
 #
-# bind 127.0.0.1
+bind 0.0.0.0
 
-unixsocket /tmp/redis.sock
+# Specify the path for the unix socket that will be used to listen for
+# incoming connections. There is no default, so Redis will not listen
+# on a unix socket when not specified.
+#
+unixsocket <%= @unixsocket %>
+unixsocketperm 755
 
 # Close the connection after a client is idle for N seconds (0 to disable)
 timeout <%= @timeout %>
@@ -24,12 +42,13 @@ timeout <%= @timeout %>
 # Set server verbosity to 'debug'
 # it can be one of:
 # debug (a lot of information, useful for development/testing)
+# verbose (many rarely useful info, but not a mess like the debug level)
 # notice (moderately verbose, what you want in production probably)
 # warning (only very important / critical messages are logged)
 loglevel <%= @loglevel %>
 
 # Specify the log file name. Also 'stdout' can be used to force
-# the demon to log on the standard output. Note that if you use standard
+# Redis to log on the standard output. Note that if you use standard
 # output for logging but daemonize, logs will be sent to /dev/null
 logfile <%= @logfile %>
 
@@ -46,7 +65,7 @@ logfile <%= @logfile %>
 # Set the number of databases. The default database is DB 0, you can select
 # a different one on a per-connection basis using SELECT <dbid> where
 # dbid is a number between 0 and 'databases'-1
-databases 16
+databases <%= @databases %>
 
 ################################ SNAPSHOTTING  #################################
 #
@@ -61,21 +80,29 @@ databases 16
 #   after 900 sec (15 min) if at least 1 key changed
 #   after 300 sec (5 min) if at least 10 keys changed
 #   after 60 sec if at least 10000 keys changed
-save 900 1
-save 300 10
-save 60 10000
+#
+#   Note: you can disable saving at all commenting all the "save" lines.
+<% @saveperiod.each do |s| %>
+save <%= s %>
+<% end %>
 
 # Compress string objects using LZF when dump .rdb databases?
 # For default that's set to 'yes' as it's almost always a win.
 # If you want to save some CPU in the saving child set it to 'no' but
 # the dataset will likely be bigger if you have compressible values or keys.
-# FOR 1.2.1
-rdbcompression yes
+rdbcompression <%= @rdbcompression %>
 
 # The filename where to dump the DB
-dbfilename redis_state.rdb
+dbfilename <%= @basename %>
 
-# For default save/load DB in/from the working directory
+# The working directory.
+#
+# The DB will be written inside this directory, with the filename specified
+# above using the 'dbfilename' configuration directive.
+# 
+# Also the Append Only File will be created inside this directory.
+# 
+# Note that you must specify a directory here, not a file name.
 dir <%= @basedir %>
 
 ################################# REPLICATION #################################
@@ -106,23 +133,6 @@ dir <%= @basedir %>
 #    but to INFO and SLAVEOF.
 #
 slave-serve-stale-data yes
-
-
-################################# REPLICATION #################################
-
-# Master-Slave replication. Use slaveof to make a Redis instance a copy of
-# another Redis server. Note that the configuration is local to the slave
-# so for example it is possible to configure the slave to save the DB with a
-# different interval, or to listen to another port, and so on.
-#
-# slaveof <masterip> <masterport>
-
-# If the master is password protected (using the "requirepass" configuration
-# directive below) it is possible to tell the slave to authenticate before
-# starting the replication synchronization process, otherwise the master will
-# refuse the slave request.
-#
-# masterauth <master-password>
 
 ################################## SECURITY ###################################
 
@@ -282,7 +292,54 @@ appendfsync everysec
 # "no" that is the safest pick from the point of view of durability.
 no-appendfsync-on-rewrite no
 
+# Automatic rewrite of the append only file.
+# Redis is able to automatically rewrite the log file implicitly calling
+# BGREWRITEAOF when the AOF log size will growth by the specified percentage.
+# 
+# This is how it works: Redis remembers the size of the AOF file after the
+# latest rewrite (or if no rewrite happened since the restart, the size of
+# the AOF at startup is used).
+#
+# This base size is compared to the current size. If the current size is
+# bigger than the specified percentage, the rewrite is triggered. Also
+# you need to specify a minimal size for the AOF file to be rewritten, this
+# is useful to avoid rewriting the AOF file even if the percentage increase
+# is reached but it is still pretty small.
+#
+# Specify a precentage of zero in order to disable the automatic AOF
+# rewrite feature.
+
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+
+################################## SLOW LOG ###################################
+
+# The Redis Slow Log is a system to log queries that exceeded a specified
+# execution time. The execution time does not include the I/O operations
+# like talking with the client, sending the reply and so forth,
+# but just the time needed to actually execute the command (this is the only
+# stage of command execution where the thread is blocked and can not serve
+# other requests in the meantime).
+# 
+# You can configure the slow log with two parameters: one tells Redis
+# what is the execution time, in microseconds, to exceed in order for the
+# command to get logged, and the other parameter is the length of the
+# slow log. When a new command is logged the oldest one is removed from the
+# queue of logged commands.
+
+# The following time is expressed in microseconds, so 1000000 is equivalent
+# to one second. Note that a negative number disables the slow log, while
+# a value of zero forces the logging of every command.
+slowlog-log-slower-than 10000
+
+# There is no limit to this length. Just be aware that it will consume memory.
+# You can reclaim memory used by the slow log with SLOWLOG RESET.
+slowlog-max-len 1024
+
 ################################ VIRTUAL MEMORY ###############################
+
+### WARNING! Virtual Memory is deprecated in Redis 2.4
+### The use of Virtual Memory is strongly discouraged.
 
 # Virtual Memory allows Redis to work with datasets bigger than the actual
 # amount of RAM needed to hold the whole dataset in memory.
@@ -352,7 +409,6 @@ vm-pages 134217728
 #
 # The special value of 0 turn off threaded I/O and enables the blocking
 # Virtual Memory implementation.
-
 vm-max-threads 4
 
 ############################### ADVANCED CONFIG ###############################
@@ -376,6 +432,12 @@ list-max-ziplist-value 64
 # The following configuration setting sets the limit in the size of the
 # set in order to use this special memory saving encoding.
 set-max-intset-entries 512
+
+# Similarly to hashes and lists, sorted sets are also specially encoded in
+# order to save a lot of space. This encoding is only used when the length and
+# elements of a sorted set are below the following limits:
+zset-max-ziplist-entries 128
+zset-max-ziplist-value 64
 
 # Active rehashing uses 1 millisecond every 100 milliseconds of CPU time in
 # order to help rehashing the main Redis hash table (the one mapping top-level

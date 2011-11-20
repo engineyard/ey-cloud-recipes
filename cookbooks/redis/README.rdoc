@@ -1,7 +1,0 @@
-= SHORT DESCRIPTION:
-
-Redis Cookbook.  
-
-= DESCRIPTION:
-
-Redis Cookbook that installs a redis server on an utility instance.  Then monitor it under monit.  Simple and yet flexible enough to allow multiple redis instances running.
