@@ -1,10 +1,10 @@
 enable_package "app-admin/newrelic-sysmond" do
-  version "1.1.0.111"
+  version "#{node[:newrelic][:version]}"
 end
 
 package "app-admin/newrelic-sysmond" do
   action :install
-  version "1.1.0.111"
+  version "#{node[:newrelic][:version]}"
 end
 
 template "/etc/newrelic/nrsysmond.cfg" do
