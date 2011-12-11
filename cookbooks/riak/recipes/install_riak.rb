@@ -1,8 +1,13 @@
 # Installer stuff here
 #
 
+package "dev-java/ant" do
+  version '1.7.0'
+  action :install
+end
+
 remote_file "/mnt/src/riak-#{node[:riak][:version]}.tar.gz" do
-  source "http://downloads.basho.com/riak/CURRENT/riak-#{node[:riak][:version]}.tar.gz"
+  source "http://downloads.basho.com.s3-website-us-east-1.amazonaws.com/riak/CURRENT/riak-#{node[:riak][:version]}.tar.gz"
   backup 0
   not_if { FileTest.exists?("/mnt/src/riak-#{node[:riak][:version]}.tar.gz") }
 end

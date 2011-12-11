@@ -3,8 +3,8 @@
 if File.exists?("/usr/bin/gfortran")
   # noop
 else
-  s3_forceinstall "sys-devel/gcc" do
-    version "4.1.2"
+  execute "emerge =sys-devel/gcc-4.1.2" do
+    action :run
   end
 end
 

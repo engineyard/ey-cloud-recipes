@@ -1,4 +1,4 @@
-Riak Cookbook for EngineYard AppCloud
+Riak Cookbook for EngineYard EYCloud
 =========
 
 [Riak][1] is a Dynamo-inspired key/value store that scales predictably and easily. Riak also simplifies development by giving developers the ability to quickly prototype, test, and deploy their applications.
@@ -7,29 +7,29 @@ A truly fault-tolerant system, Riak has no single point of failure. No machines 
 
 Don't forget to check out the [Riak Fast Track][9]!!!
 
-Special Note
---------
-
-You should *NOT* enable *BOTH* riak and riaksearch cookbooks at the same time.  Pick one solution or the other.
-
 Overview
 --------
 
-This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on AppCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
+This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on EYCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
 
 Design
 --------
 
 * 3+ utility instances 64-bit (m1.large +)
 
-* Riak 0.14 with Bitcask
-* Erlang R13B04 (installed from a custom binary package)
+* Riak 1.0.2 w/ defaults to leveldb
+* Erlang R140B3 (installed from a custom binary package)
 * haproxy is configured on 8097-8098 (pbc,http) with the http back-end using /ping to ensure the back-end is up.
+
+Protobuffer Notes
+--------
+
+Haproxy is configured in TCP Mode; if you use protobuffers you should either configure your clients directly to the server or configure a sane reconnect method as the connection will be stale after the connection timeout in haproxy.
 
 Notes
 --------
 
-This Cookbook automates the creation (join) action of a Riak 'Ring' on AppCloud.  As your needs may vary it is suggested to fork this recipe and make any customization you do on the fork.  You can omit the main cookbook it is only there for my testing purposes.
+This Cookbook automates the creation (join) action of a Riak 'Ring' on EYCloud.  As your needs may vary it is suggested to fork this recipe and make any customization you do on the fork.  You can omit the main cookbook it is only there for my testing purposes.
 
 Backups
 --------
@@ -46,7 +46,7 @@ This cookbook does not automate not facilitate any backup method currently.  The
 Benchmarks
 --------
 
-I [damm][4] have been benchmarking Riak on AppCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the EBS unit.  
+I [damm][4] have been benchmarking Riak on EYCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the EBS unit.  
 
 * You are free to enable the [basho_bench][7] [recipe][8] and then git clone git://github.com/basho/basho_bench.git to properly determine if your dataset / type would be a good fit for Riak.
 
