@@ -12,10 +12,12 @@ Overview
 
 This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on EYCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
 
+>This cookbook requires the ***NEW*** ***AMI*** which runs a kernel of 2.6.32.  If when adding a utility instance your kernel is too old; please file a [Support Ticket requesting access][10] to the ***newami***.
+
 Design
 --------
 
-* 3+ utility instances 64-bit (m1.large +)
+* 3+ utility instances 64-bit (m1.large +) running 
 
 * Riak 1.0.2 w/ defaults to leveldb
 * Erlang R140B3 (installed from a custom binary package)
@@ -117,3 +119,4 @@ How to get Support
 [7]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#L6
 [8]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#51
 [9]: http://wiki.basho.com/The-Riak-Fast-Track.html
+[10]: https://support.cloud.engineyard.com
