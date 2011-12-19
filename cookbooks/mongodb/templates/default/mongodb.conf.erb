@@ -1,0 +1,12 @@
+# Mongodb essentials
+MONGODB_EXEC="<%=@mongodb_options[:exec]%>"
+MONGODB_DATA="<%=@mongodb_options[:data_path]%>"
+MONGODB_LOG="<%=@mongodb_options[:log_path]%>/mongodb.log"
+MONGODB_USER="<%=@mongodb_options[:user]%>"
+MONGODB_PID_FILE="<%=@mongodb_options[:pid_path]%>/mongodb.pid"
+
+MONGODB_IP="<%=@mongodb_options[:ip]%>"
+MONGODB_PORT="<%=@mongodb_options[:port]%>"
+
+# Set extra options here, such as disabling the admin web server
+MONGODB_OPTIONS="<%=@mongodb_options[:extra_opts].join(" ")%>" # add -vvvvv for verbose logging

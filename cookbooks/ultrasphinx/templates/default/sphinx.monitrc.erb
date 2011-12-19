@@ -1,6 +1,0 @@
-check process sphinx_<%= @app_name %>_3312
-  with pidfile /var/run/sphinx/<%= @app_name %>.pid
-  start program = "/engineyard/bin/ultrasphinx_searchd <%= @app_name %> start" as uid <%= @user %> and gid <%= @user %>
-  stop program = "/engineyard/bin/ultrasphinx_searchd <%= @app_name %> stop" as uid <%= @user %> and gid <%= @user %>
-  group sphinx_<%= @app_name %>
-

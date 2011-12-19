@@ -1,0 +1,5 @@
+check process redis-<%= @profile %>
+with pidfile <%= @pidfile %>
+  start program = "/usr/bin/redis-server <%= @configfile %>"
+  stop program = "/usr/bin/redis-cli -p <%= @port %> shutdown"
+  group redis-util

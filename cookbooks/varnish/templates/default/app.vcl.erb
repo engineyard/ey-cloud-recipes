@@ -1,0 +1,108 @@
+# Here is a simple default VCL file for your app. You will want to customize
+# this for your own needs.
+
+backend default {
+   .host = "127.0.0.1";
+   .port = "81"; 
+} 
+
+sub vcl_recv {
+  set req.grace = 120s; 
+
+##### Exclude specific urls
+#
+# This following section can be used to give Varnish regular expression to
+# compare the requested URL to. If there is a match, the requested item
+# will not be served from cache, nor cached by Varnish. The request will
+# be passed immediately to the backend.
+#
+#####
+#
+# if (req.url ~ "/do_not_cache_me") {
+#   return (pass);
+# }
+#
+### Sometimes you may want to remove incoming cookies, tooxs, as
+### normally unique cookies will prevent caching. Use this with the
+### remove cookies code in vcl_fetch, too.
+#
+#   else {
+#   # Get rid of cookies so that a normal cache lookup can be done.
+#   unset req.http.cookie;
+# }
+#####
+
+##### Normalize Accept-Encoding
+#
+# The Accept-Encoding header can be formatted multiple ways by different
+# browsers, resulting in multiple identical copies of things in the cache.
+# This normalizes it.
+#
+#####
+#
+#  if (req.http.Accept-Encoding) {
+#    if (req.http.Accept-Encoding ~ "gzip") {
+#      set req.http.Accept-Encoding = "gzip";
+#    } elsif (req.http.Accept-Encoding ~ "deflate") {
+#      set req.http.Accept-Encoding = "deflate";
+#    } else {
+#      remove req.http.Accept-Encoding;
+#    }
+#  }
+#####
+
+} 
+  
+sub vcl_fetch {
+##### Grace period
+#
+# If a thread is fetching this object, set the grace period on it to
+# 120 seconds so that stale content can be served from cache for that period,
+# while waiting for the thread to return a new copy of the content. Change or
+# eliminate this value as needed.
+#
+#####
+  set obj.grace = 120s;
+  
+##### Force caching
+#
+# If the normal TTL on the content is less than 120 seconds, set it to 120 seconds.
+# Rails apps often come out of the box being cache-unfriendly. This is an easy
+# workaround that forces them to be cached anyway. Be careful with this, though, as
+# you may end up caching more than you want to. The right answer is to fix the
+# app to use proper cache control headers for things that should be cached, but this
+# is a quick work-around.
+#
+#####
+# if (obj.ttl < 120s) {
+#   set obj.ttl = 120s;
+# }
+
+##### Remove Cookies
+#
+# If there are requests that have to be able to pass cookies on, and/or cache
+# based on cookies (private caches per user), then this and the code in vcl_recv
+# will have to be adjusted. Refer to the Varnish docs for details, as needed.
+#
+#####
+#
+#  if (req.url ~ "^/(application/dyn.js|login|signup|logout|.*/edit/|.*/delete/|.*/new|.*/users|.*/csvs)") {
+#    # No-oping here at the moment. The assumption is that since this stuff here is never to be cached,
+#    # it will be excluded from any other cookie manipulation, too. I'm leaving this block here, though,
+#    # in case someone might want to do something else with these requests.
+#  } else {
+#    # The Cookie Monster eats the cookies.
+#    unset obj.http.set-cookie;
+#  }
+} 
+
+sub vcl_deliver {
+  # This just inserts a diagnostic header to let us know if the content
+  # was served via a cache hit, or whether it was a miss.
+  
+  if (obj.hits > 0) {
+    set resp.http.X-Cache = "HIT";
+  } else {
+    set resp.http.X-Cache = "MISS";
+  }
+}

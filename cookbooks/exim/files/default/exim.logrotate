@@ -1,0 +1,13 @@
+/var/log/exim/exim*.log {
+  size 10000k
+        missingok
+        rotate 28
+        compress
+        delaycompress
+        notifempty
+        create 640 mail mail
+        sharedscripts
+        postrotate
+                /etc/init.d/exim reload > /dev/null
+        endscript
+}

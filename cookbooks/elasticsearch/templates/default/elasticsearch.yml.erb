@@ -1,0 +1,20 @@
+path:
+  work: /var/lib/elasticsearch/work
+  logs: /var/log/elasticsearch
+  data: /data/elasticsearch
+  
+
+cluster:
+  name: <%= @elasticsearch_clustername %>
+
+discovery:
+  zen:
+    minimum_master_nodes: 1
+    ping.timeout: 3s
+    ping.multicast.enabled: false
+    ping.unicast.hosts: ["<%= @elasticsearch_instances %>"]
+
+gateway:
+  recover_after_nodes: 1
+  recover_after_time: 5m
+  expected_nodes: <%= @elasticsearch_expected %>

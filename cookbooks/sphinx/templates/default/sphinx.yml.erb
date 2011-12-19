@@ -1,0 +1,10 @@
+<%= @node[:environment][:framework_env] %>:
+  searchd_log_file: /var/log/engineyard/sphinx/<%= @app_name %>/searchd.log
+  query_log_file: /var/log/engineyard/sphinx/<%= @app_name %>/query.log
+  pid_file: /var/run/sphinx/<%= @app_name %>.pid
+  address: <%= @address %>
+  port: 9312
+  mem_limit: <%= @mem_limit %>
+  config_file: /data/<%= @app_name %>/current/config/sphinx/<%= @node[:environment][:framework_env] %>.sphinx.conf
+  searchd_file_path: /var/log/engineyard/sphinx/<%= @app_name %>/indexes
+

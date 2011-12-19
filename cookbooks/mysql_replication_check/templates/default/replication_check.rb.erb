@@ -1,0 +1,154 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require 'json'
+require 'yaml'
+
+# Usage Notes
+# * after adding a slave you must perform a deploy so the slave is part of the dna.json file
+# * yaml and json gems are required
+# * ssmtp provider required with recipe https://github.com/engineyard/ey-cloud-recipes/tree/master/cookbooks/ssmtp
+
+chef_file = '/etc/chef/dna.json'
+exit if not File.exists?(chef_file)
+
+WARN_LEVEL = <%= @warn_level %>
+CRIT_LEVEL = <%= @crit_level %>
+RECIPIENT = "<%= @mail_recipient %>"
+SENDER = "<%= @mail_sender %>"
+
+send_message_file = File.dirname(__FILE__) + "/send_message.txt"
+
+
+# retrieve password from .mytop file
+def get_password
+  dbpass = %x{cat /root/.mytop |grep pass |awk -F= '{print $2}'}.chomp
+  failure_message() if dbpass.length < 1
+  dbpass
+end
+
+# convert input into yaml
+def yaml_result(data, host_details)
+  begin
+    parse = data.gsub(/^\*.*$/,'').gsub(/^/,' ').gsub(/^\s+/, '  ').gsub(/database:/,'database').gsub(/Query:/,'Query')
+    yml = YAML.load(parse)
+  rescue
+    error=$!.to_s
+    send_message("Alert(FAIL) #{host_details['environment']} Replication Monitoring Check Failed", "The replication check for #{host_details['environment']} failed with the message:<br />--<br />#{error.gsub(/`/,'')}.<br />--<br />If reporting this error please provide these details to the Engine Yard support team.")
+    exit 1
+  end
+end
+
+# manage messages
+def send_message(sbj, msg)
+  recipient=RECIPIENT
+  sender=SENDER
+%x{sendmail #{recipient} << EOT
+To: #{recipient}
+From: #{sender}
+Subject: #{sbj}
+Content-Type: text/html
+<br />
+<font size="-1">#{msg}</font><br />
+The settings for this replication check script can be managed/changed through your custom chef recipes.
+<br /><br />
+Thank you,<br />
+Engine Yard AppCloud<br />
+EOT
+}
+
+end
+
+chef_config = JSON.parse(File.read(chef_file))
+host_results = Array.new
+
+failure_found=0
+message=""
+environment=""
+
+if chef_config["db_slaves"].empty? or chef_config["db_slaves"].nil?
+  puts "No slave found, you may need to run deploy"
+else
+  # record replica details
+  chef_config["db_slaves"].each do |slave|
+    puts "Checking host: '#{slave}'"
+    host_details = Hash.new
+    host_details["host"] = slave
+    host_details["environment"] = chef_config["engineyard"]["environment"]["name"]
+    environment = host_details["environment"]
+    chef_config["engineyard"]["environment"]["instances"].each do |instance|
+      if instance["private_hostname"] == slave
+        host_details["public_hostname"] = instance["public_hostname"]
+        host_details["instance_id"] = instance["id"]
+        host_details["role"] = instance["role"]
+      end
+    end
+
+    replica_header = "Host: #{host_details['host']}<br />
+Public Hostname: #{host_details['public_hostname']}<br />
+Instance Id: #{host_details['instance_id']}<br />
+Instance Role: #{host_details['role']}"
+
+    # confirm replica live
+    result = %x{/usr/bin/mysql -uroot -p#{get_password} -N -h#{slave} -e'select 1'}.chomp
+    if  result.to_i != 1
+      host_details["message"] = "Status: <span style='color:red'>Failure</span><br />
+#{replica_header}<br />
+Alert Type: <span style='color:red'>Replication Failure</span><br />
+Details: Unable to connect to replica database on #{slave} message: #{result}"
+      failure_found = 1
+    else
+      # check replication status
+      result = %x{/usr/bin/mysql -uroot -p#{get_password} -h#{slave} -e'show slave status\\G'}.chomp
+      slave_status = yaml_result(result, host_details)
+      host_details["Seconds_Behind_Master"] = slave_status["Seconds_Behind_Master"]
+      host_details["Slave_IO_Running"] = slave_status["Slave_IO_Running"]
+      host_details["Slave_SQL_Running"] = slave_status["Slave_SQL_Running"]
+      host_details["Last_Error"] = slave_status["Last_Error"] unless slave_status["Last_Error"].nil?
+
+      if (not host_details["Slave_IO_Running"] or not host_details["Slave_SQL_Running"]) and host_details["Last_Error"].nil?
+        failure_found = 1
+        host_details["message"] = "Status: <span style='color:red'>Failure</span><br />
+#{replica_header}<br />
+Alert Type: <span style='color:red'>Replication Failure</span><br />
+Details: One of the replication threads is not running but there is not an error listed by 'show slave status\\G'; replication appears to be intentionally stopped"
+      elsif (not host_details["Slave_IO_Running"] or not host_details["Slave_SQL_Running"]) and not host_details["Last_Error"].empty?
+        failure_found=1
+        host_details["message"] = "Status: <span style='color:red'>Failure</span><br />
+#{replica_header}<br />
+Alert Type: <span style='color:red'>Replication Failure</span><br />
+Details: Replication has failed on #{slave} with the error #{host_details['Last_Error']}"
+      elsif host_details["Seconds_Behind_Master"] > CRIT_LEVEL
+        failure_found=1
+        host_details["message"] = "Status: <span style='color:red'>Failure</span><br />
+#{replica_header}<br />
+Alert Type: <span style='color:red'>Critical Replication Delay</span><br />
+Details: Replication has fallen more than #{CRIT_LEVEL} seconds behind the master, current delay is #{host_details["Seconds_Behind_Master"]} seconds behind the master."
+      elsif host_details["Seconds_Behind_Master"] > WARN_LEVEL
+        failure_found=1
+        host_details["message"] = "Status: <span style='color:red'>WARNING</span><br />
+#{replica_header}<br />
+Alert Type: <span style='color:red'>Warning Replication Delay</span><br />
+Details: Replication has fallen more than #{WARN_LEVEL} seconds behind the master, current delay is #{host_details["Seconds_Behind_Master"]} seconds behind the master."
+      else
+        host_details["message"] = "Status: <span style='color:green'>Success</span><br />
+#{replica_header}<br />
+Alert Type: Replication Status<br />
+Details: Replication check succeeded, replica is healthy and is #{host_details["Seconds_Behind_Master"]} seconds behind the master."
+      end
+
+    end
+    message = message + host_details["message"] + "<br /><br />"
+    host_results << host_details
+  end
+end
+
+if failure_found != 0
+  subject = "Alert(FAIL) #{environment} Replication Failure Found"
+  %x{rm #{send_message_file}} if File.exists?(send_message_file)
+else
+  subject = "Alert(OKAY) #{environment} Replication Check Successful"
+end
+
+send_message(subject, message) unless File.exists?(send_message_file)
+%x{date > #{send_message_file}} unless failure_found == 1
