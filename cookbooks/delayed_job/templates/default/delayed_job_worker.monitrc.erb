@@ -1,0 +1,5 @@
+check process <%= @worker_name %>
+  with pidfile /data/<%= @app_name %>/shared/pids/<%= @worker_name %>.pid
+  start program = "/usr/bin/env RAILS_ENV=<%= @rails_env %> /data/<%= @app_name %>/current/script/delayed_job start --min-priority <%= @min_priority %> --max-priority <%= @max_priority %>" as uid <%= @user %> and gid <%= @user %>
+  stop program = "/usr/bin/env RAILS_ENV=<%= @rails_env %> /data/<%= @app_name %>/current/script/delayed_job stop" as uid <%= @user %> and gid <%= @user %>
+  group <%= @app_name %>_jobs
