@@ -45,11 +45,5 @@ if ['solo', 'util'].include?(node[:instance_role])
       monit reload 
       } 
     end
-
-    execute "restart-resque" do 
-      command %Q{ 
-        echo "sleep 20 && monit -g #{app}_resque restart all" | at now 
-      }
-    end
   end 
 end
