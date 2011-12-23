@@ -41,6 +41,7 @@ if ['solo', 'util'].include?(node[:instance_role])
       end
 
     execute "ensure-resque-is-setup-with-monit" do 
+      epic_fail true
       command %Q{ 
       monit reload 
       } 
