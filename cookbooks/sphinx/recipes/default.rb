@@ -119,6 +119,12 @@ if utility_name
         })
       end
 
+      gem_package "bundler" do 
+        source "http://rubygems.org" 
+        action :install 
+        version "1.0.21" 
+      end
+
       execute "sphinx config" do
         command "bundle exec rake #{flavor}:configure"
         user node[:owner_name]
@@ -220,6 +226,13 @@ else
           :mem_limit => '32'
         })
       end
+
+      gem_package "bundler" do 
+        source "http://rubygems.org" 
+        action :install 
+        version "1.0.21" 
+      end
+
 
       execute "sphinx config" do
         command "bundle exec rake #{flavor}:configure"
