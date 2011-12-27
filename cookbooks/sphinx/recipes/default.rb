@@ -7,7 +7,7 @@
 appname = "myapp"
 
 # Uncomment the flavor of sphinx you want to use
-#flavor = "thinking_sphinx"
+flavor = "thinking_sphinx"
 #flavor = "ultrasphinx"
 
 # If you want to install on a specific utility instance rather than
