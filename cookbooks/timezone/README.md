@@ -5,7 +5,7 @@ This cookbook makes it easy to change the timezone of an instance to one that su
 
 ## Installation
 
-Take a look in '''/usr/share/zoneinfo''' to find the relevant timezone, and set the '''timezone''' variable in this recipes/default.rb file.
+Take a look in `/usr/share/zoneinfo` to find the relevant timezone, and set the `timezone` variable in this recipes/default.rb file.
 
 Add the following to cookbooks/main/recipes/default.rb:
 
