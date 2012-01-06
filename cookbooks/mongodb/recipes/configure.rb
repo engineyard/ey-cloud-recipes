@@ -5,7 +5,7 @@ if ['db_master','solo'].include? @node[:instance_role]
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
-  #add /db
+  #save under /data
   mongo_data = @node[:mongo_base] + "/data"
   mongo_log = @node[:mongo_base] + "/log"
 end
