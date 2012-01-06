@@ -34,6 +34,12 @@ directory '/var/run/mongodb' do
   recursive true
 end
 
+service "mongodb" do
+  service_name "mongodb"
+  supports :restart => true, :reload => true, :status => true
+  action :nothing
+end
+
 remote_file "/etc/logrotate.d/mongodb" do
   owner "root"
   group "root"
@@ -64,13 +70,14 @@ if @node[:oplog_size]
   mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
 end
 
-Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
+# Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
 
 template "/etc/conf.d/mongodb" do
   source "mongodb.conf.erb"
   owner "root"
   group "root"
   mode 0755
+  notifies :restart, resources(:service => "mongodb") 
   variables({
     :mongodb_options => mongodb_options
   })
