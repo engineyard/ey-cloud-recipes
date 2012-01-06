@@ -15,6 +15,7 @@ MONGODB_PID_FILE="${MONGODB_PID_FILE:-/var/run/mongodb/mongodb.pid}"
 
 MONGODB_IP="${MONGODB_IP:-127.0.0.1}"
 MONGODB_PORT="${MONGODB_PORT:-27017}"
+MONGODB_OPTIONS="${MONGODB_OPTIONS}"
 
 start() {
   ebegin "Starting ${SVCNAME}"
@@ -24,7 +25,7 @@ start() {
 
   start-stop-daemon --background --start --chuid ${MONGODB_USER} --pidfile \
     "${MONGODB_PID_FILE}" --make-pidfile --exec ${MONGODB_EXEC} \
-     -- ${args} run
+     -- ${MONGODB_OPTIONS} 
   eend $?
 }
 
@@ -34,3 +35,15 @@ stop() {
   eend $? "Failed to stop ${SVCNAME}"
 }
 
+restart(){
+  ebegin "restarting ${SVCNAME}"
+
+  args="--dbpath $MONGODB_DATA --port $MONGODB_PORT --bind_ip $MONGODB_IP" 
+  args="${MONGODB_OPTIONS} --logpath $MONGODB_LOG --logappend $MONGODB_OPTIONS"
+
+  start-stop-daemon --background --restart --chuid ${MONGODB_USER} --pidfile \
+    "${MONGODB_PID_FILE}" --make-pidfile --exec ${MONGODB_EXEC} \
+     -- ${MONGODB_OPTIONS} 
+
+  eend $? "Failed to stop ${SVCNAME}"
+}
