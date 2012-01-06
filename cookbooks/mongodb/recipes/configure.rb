@@ -9,6 +9,13 @@ else
   mongo_log = @node[:mongo_base] + "/log"
 end
 
+mongo_bin_path = @node[:mongo_path] + "/bin"
+
+execute "expand path to include mongo instalation path" do
+  command "export PATH=\"$PATH\:#{mongo_bin_path}\""
+  not_if "echo $PATH | grep mongo"
+end
+
 directory mongo_data do
   owner user[:username]
   group user[:username]
@@ -50,6 +57,7 @@ mongodb_options = { :exec => "#{@node[:mongo_path]}/bin/mongod",
                     :ip => "0.0.0.0",
                     :port => @node[:mongo_port],
                     :extra_opts => [] }
+                    
 if @node[:mongo_journaling]
   mongodb_options[:extra_opts]  << "--journal"
 end
@@ -77,26 +85,28 @@ remote_file "/etc/init.d/mongodb" do
   action :create
 end
 
-#drop backup yml
+#---- drop backup yml
 template "/etc/.mongodb.backups.yml" do
   owner "root"
   group "root"
   mode 0600
   source "mongodb.backups.yml.erb"
   variables(:config => {
-    :keep           => node[:backup_window] || 14,
-    :aws_secret_id  => node[:aws_secret_id],
-    :aws_secret_key => node[:aws_secret_key],
-    :env            => node[:environment][:name],
-    :databases      => {},
-    :dbuser         => nil, # not implemented
-    :dbpass         => nil, # not implemented
+    :dbuser => nil, # not implemented
+    :dbpass => nil, # not implemented
+    :keep   => node[:backup_window] || 14,
+    :id     => node[:aws_secret_id],
+    :key    => node[:aws_secret_key],
+    :env    => node[:environment][:name],
+    :region => node.engineyard.environment.region,
+    :backup_bucket => node.engineyard.environment.backup_bucket,
+    :databases => {}  #do something here so it backs up the entire thing        
   })
 end
 
 
-# Know how to snapshot itself
-Chef::Log.info "Redefine snapshots for Mongo"
+#------ teach it how to snapshot itself
+# Chef::Log.info "Redefine snapshots for Mongo"
 partition    = "data"
 service_name = "mongo"
 dbpath = "/#{partition}/mongodb/#{service_name}/"

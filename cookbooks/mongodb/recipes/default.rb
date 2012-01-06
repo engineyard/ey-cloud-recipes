@@ -18,6 +18,7 @@ else
     require_recipe "mongodb::install"
     require_recipe "mongodb::configure"
     require_recipe "mongodb::start"
+    require_recipe "mongodb::eybackup"
     if @node[:mongo_replset]
       require_recipe "mongodb::replset"
     end
