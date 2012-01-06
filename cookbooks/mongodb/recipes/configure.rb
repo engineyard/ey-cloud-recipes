@@ -51,17 +51,20 @@ mongodb_options = { :exec => "#{@node[:mongo_path]}/bin/mongod",
                     :ip => "0.0.0.0",
                     :port => @node[:mongo_port],
                     :extra_opts => [] }
+
 if @node[:mongo_journaling]
-  mongodb_options[:extra_opts]  << "--journal"
+  mongodb_options[:extra_opts]  << " --journal"
 end
 
 if @node[:mongo_replset]
-     # Chef::Log.info "conf.rb knows it's a replica too"
-  mongodb_options[:extra_opts]  << "--replSet #{@node[:mongo_replset]}"
+  mongodb_options[:extra_opts]  << " --replSet #{@node[:mongo_replset]}"
 end
 
-#Add Oplog Size calculation
-mongodb_options[:extra_opts]  << "--oplogSize #{@node[:oplog_size]}"
+if @node[:oplog_size]
+  mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
+end
+
+Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
 
 template "/etc/conf.d/mongodb" do
   source "mongodb.conf.erb"
