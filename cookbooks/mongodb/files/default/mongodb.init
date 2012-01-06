@@ -38,10 +38,12 @@ stop() {
 restart(){
   ebegin "restarting ${SVCNAME}"
 
-  args="--dbpath $MONGODB_DATA --port $MONGODB_PORT --bind_ip $MONGODB_IP" 
-  args="${MONGODB_OPTIONS} --logpath $MONGODB_LOG --logappend $MONGODB_OPTIONS"
+  start-stop-daemon --stop --exec ${MONGODB_EXEC} --pidfile ${MONGODB_PID_FILE}
 
-  start-stop-daemon --background --restart --chuid ${MONGODB_USER} --pidfile \
+  args="--dbpath $MONGODB_DATA --port $MONGODB_PORT --bind_ip $MONGODB_IP" 
+  args="--logpath $MONGODB_LOG --logappend $MONGODB_OPTIONS"
+
+  start-stop-daemon --background --start --chuid ${MONGODB_USER} --pidfile \
     "${MONGODB_PID_FILE}" --make-pidfile --exec ${MONGODB_EXEC} \
      -- ${MONGODB_OPTIONS} 
 
