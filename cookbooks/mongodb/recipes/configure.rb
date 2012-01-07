@@ -34,10 +34,13 @@ directory '/var/run/mongodb' do
   recursive true
 end
 
-service "mongodb" do
-  service_name "mongodb"
-  supports :restart => true, :reload => true, :status => true
-  action :nothing
+remote_file "/etc/init.d/mongodb" do
+  source "mongodb.init"
+  owner "root"
+  group "root"
+  mode 0755
+  backup false
+  action :create
 end
 
 remote_file "/etc/logrotate.d/mongodb" do
@@ -77,18 +80,12 @@ template "/etc/conf.d/mongodb" do
   owner "root"
   group "root"
   mode 0755
-  notifies :restart, resources(:service => "mongodb") 
   variables({
     :mongodb_options => mongodb_options
   })
 end
 
-remote_file "/etc/init.d/mongodb" do
-  source "mongodb.init"
-  owner "root"
-  group "root"
-  mode 0755
-  backup false
-  action :create
+execute "/etc/init.d/mongodb restart" do
+  command "/etc/init.d/mongodb restart" 
 end
 
