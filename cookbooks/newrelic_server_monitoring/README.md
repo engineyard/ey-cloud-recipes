@@ -10,11 +10,6 @@ Newrelic Server Monitoring
 * Track server health availability in clouds, physical, or hybrid environments
 
 
-Special Note
---------
-
-Currently does *NOT* work with the EYCloud Newrelic offering; you will need Newrelic account purchased outside of the EYCloud Dashboard at this time.  This limitation will change in the future.
-
 Overview
 --------
 
