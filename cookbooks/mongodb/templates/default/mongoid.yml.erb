@@ -1,30 +1,36 @@
-<% require 'yaml' -%>
-<%=@yaml_file.to_yaml%>
+defaults: &defaults
+<% if @solo_server %>
+  host: localhost
+<% else %>
+   hosts: 
+<% @mongo_nodes.each do |mongo_node| -%>
+   - - <%=mongo_node[:hostname]%>
+       <%=@mongo_port%>
+<% end -%>
+ read_secondary: true
+ 
+ development:
+  <<: *defaults
+    database: winealign_dev
+ 
+ test:
+  <<: *defaults
+    database: winealign_staging
+ 
+  production:
+  <<: *defaults
+   database: winealign_staging
+  
+ username:  deploy
 
-# FORMAT TO FOLLOW
-#----
-# defaults: &defaults
-#   hosts: 
-#   - - ip-10-170-202-34.us-west-1.compute.internal
-#      27017
-#   - - ip-10-170-122-233.us-west-1.compute.internal
-#      27017
-#   - - ip-10-171-62-128.us-west-1.compute.internal
-#      27017
-# read_secondary: true
-# 
+
+<% end %>
+
+# If you use Sinatra (or anything other than rails) you need to do make a mongoid.yml like this:
+#
+# production:
+#   hosts: [[db1.mongoid.org, 27017], [db2.mongoid.org, 27017]]
+#   database: project_production
 # development:
-#  <<: *defaults
-#    database: winealign_dev
-# 
-# test:
-#  <<: *defaults
-#    database: winealign_staging
-# 
-# # set these environment variables on your prod server
-#  production:
-#  <<: *defaults
-#   database: winealign_staging
-#  
-# username:  deploy
-# password:  ht3ZyL706m
+#   hosts: [[db1.mongoid.org, 27017], [db2.mongoid.org, 27017]]
+#   database: project_development

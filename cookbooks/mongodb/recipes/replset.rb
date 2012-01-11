@@ -1,13 +1,5 @@
 user = @node[:users].first
 
-# if @node[:mongo_utility_instances].length < 3 &&  ['db_master','solo'].include? @node[:instance_role]
-#   #change for replset instances, not just utilities - do not install an arbiter on a utility node? 
-#   Chef::Log.info "Mongo Arbiter #{node[:db_host]}"
-#   mongo_arbiter=@node[:db_host]
-# else
-#   mongo_arbiter="na"
-# end
-
 mongo_arbiter="na"
  
 if @node[:mongo_replset]
@@ -17,7 +9,6 @@ if @node[:mongo_replset]
   # Chef::Log.info "Setting up Replica set: #{node[:mongo_replset]} \n mongo_nodes: #{mongo_nodes.inspect} \n executing on node #{@node[:name]}"
   
   if (@node[:name].match(/_1$/) && (mongo_nodes.length == 3 || (mongo_nodes.length ==2 && mongo_arbiter.length > 3)))
-     # Chef::Log.info "Found first member of RS in #{@node[:name]}"
     setup_js = "#{node[:mongo_base]}/setup_replset.js"
     
     template setup_js do
