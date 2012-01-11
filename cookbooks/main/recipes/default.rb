@@ -19,6 +19,9 @@ require_recipe "imagemagick"
 #uncomment to turn on memcached
 # require_recipe "memcached"
 
+#uncomment ot run the riak recipe
+# require_recipe "riak"
+
 #uncomment to run the authorized_keys recipe
 #require_recipe "authorized_keys"
 
@@ -43,7 +46,7 @@ require_recipe "sunspot"
 #require_recipe "resque"
 
 #uncomment to run the redis recipe
-# require_recipe "redis"
+#  require_recipe "redis"
 
 #require_recipe "logrotate"
 #
@@ -63,9 +66,47 @@ require_recipe "sunspot"
 # additional configuration of this recipe is required
 #require_recipe "mysql_administrative_tools"
 
+#uncomment to include the Elasticsearch recipe
+#require_recipe "elasticsearch"
+
+# To install specific plugins to Elasticsearch see below as an example
+#es_plugin "cloud-aws" do
+#  action :install
+#end
+
+#es_plugin "transport-memcached" do
+#  action :install
+#end
+
+#uncomment to include the newrelic_server_monitoring recipe
+#require_recipe "newrelic_server_monitoring"
+
 #enable contrib modules for a given Postgresql9 database
-# if ['solo','db_master'].include?(node[:instance_role])
-#   postgresql9_autoexplain "postgres_test"
-#   postgresql9_chkpass "postgres_test"
-#   postgresql9_postgis "postgres_test"
-# end
+#if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
+  # postgresql9_autoexplain "dbname"
+  # postgresql9_chkpass "dbname"
+  # postgresql9_citext "dbname"
+  # postgresql9_cube "dbname"
+  # postgresql9_dblink "dbname"
+  # postgresql9_earthdistance "dbname"
+  # postgresql9_fuzzystrmatch "dbname"
+  # postgresql9_hstore "dbname"
+  # postgresql9_intagg "dbname"
+  # postgresql9_isn "dbname"
+  # postgresql9_lo "dbname"
+  # postgresql9_ltree "dbname"
+  # postgresql9_pg_stat_statements"postgres_test" - Not done
+  # postgresql9_pg_trgm "postgres_test"  
+  # postgresql9_pgcrypto "postgres_test"
+  # postgresql9_pgrowlocks "dbname"
+  # postgresql9_postgis "dbname" 
+  # postgresql9_seg "dbname"
+  # postgresql9_tablefunc "dbname"
+  # postgresql9_unaccent "dbname"
+  # postgresql9_uuid_ossp "dbname"
+  
+  #Admin-Level Contribs
+  # postgresql9_pg_buffercache "postgres"
+  # postgresql9_pg_freespacemap "postgres"
+  
+#end

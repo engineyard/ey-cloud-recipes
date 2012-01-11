@@ -1,4 +1,4 @@
-Riak Cookbook for EngineYard AppCloud
+Riak Cookbook for EngineYard EYCloud
 =========
 
 [Riak][1] is a Dynamo-inspired key/value store that scales predictably and easily. Riak also simplifies development by giving developers the ability to quickly prototype, test, and deploy their applications.
@@ -7,29 +7,31 @@ A truly fault-tolerant system, Riak has no single point of failure. No machines 
 
 Don't forget to check out the [Riak Fast Track][9]!!!
 
-Special Note
---------
-
-You should *NOT* enable *BOTH* riak and riaksearch cookbooks at the same time.  Pick one solution or the other.
-
 Overview
 --------
 
-This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on AppCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
+This cookbook once complete will attempt to provide one method of "Hosting" a Riak Ring on EYCloud.  It will not run inside your regular environment as this cookbook will attempt to achieve a scalable stable Riak configuration with the least disruption of automation possible.
+
+>This cookbook requires the ***NEW*** ***AMI*** which runs a kernel of 2.6.32.  If when adding a utility instance your kernel is too old; please file a [Support Ticket requesting access][10] to the ***newami***.
 
 Design
 --------
 
-* 3+ utility instances 64-bit (m1.large +)
+* 3+ utility instances 64-bit (m1.large +) running 
 
-* Riak 0.14 with Bitcask
-* Erlang R13B04 (installed from a custom binary package)
+* Riak 1.0.2 w/ defaults to leveldb
+* Erlang R140B3 (installed from a custom binary package)
 * haproxy is configured on 8097-8098 (pbc,http) with the http back-end using /ping to ensure the back-end is up.
+
+Protobuffer Notes
+--------
+
+Haproxy is configured in TCP Mode; if you use protobuffers you should either configure your clients directly to the server or configure a sane reconnect method as the connection will be stale after the connection timeout in haproxy.
 
 Notes
 --------
 
-This Cookbook automates the creation (join) action of a Riak 'Ring' on AppCloud.  As your needs may vary it is suggested to fork this recipe and make any customization you do on the fork.  You can omit the main cookbook it is only there for my testing purposes.
+This Cookbook automates the creation (join) action of a Riak 'Ring' on EYCloud.  As your needs may vary it is suggested to fork this recipe and make any customization you do on the fork.  You can omit the main cookbook it is only there for my testing purposes.
 
 Backups
 --------
@@ -46,7 +48,7 @@ This cookbook does not automate not facilitate any backup method currently.  The
 Benchmarks
 --------
 
-I [damm][4] have been benchmarking Riak on AppCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the EBS unit.  
+I [damm][4] have been benchmarking Riak on EYCloud for some time and have posted some of my tests with [basho_bench][5] for which you can review.  All posted results are using EBS as the diskstore, you can find better latency and speed by using the instance Ephemeral disks (/mnt) which can be [tuned][6] if you so wish.  *Note* you *MUST* use riak-admin to backup your data as it will *NOT* be stored on the EBS unit.  
 
 * You are free to enable the [basho_bench][7] [recipe][8] and then git clone git://github.com/basho/basho_bench.git to properly determine if your dataset / type would be a good fit for Riak.
 
@@ -76,10 +78,9 @@ Currently this Cookbook provides the following methods of using Riak:
 
 * Lastly, Words of Wisdom from Basho themselves.
 
-> you should look at the ring ready command and make it returns 0 before adding the next node
-> if you try and do more than 4 or 5 nodes the gossip is a little heavy for ec2 right now
-> and sometimes it takes a minute or two to converge the ring
-> changing the gossip interval in the conf alleviates this somewhat
+> you should look at the ring ready command and make sure it returns 0 before adding additional nodes.
+
+> If you try and do more than 4 or 5 nodes the gossip is a little heavy for ec2 right now and sometimes it takes a minute or two to converge the ring changing the gossip interval in the conf alleviates this somewhat
 
 Dependencies
 --------
@@ -118,3 +119,4 @@ How to get Support
 [7]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#L6
 [8]: https://github.com/engineyard/ey-cloud-recipes/blob/master/cookbooks/riak/recipes/default.rb#51
 [9]: http://wiki.basho.com/The-Riak-Fast-Track.html
+[10]: https://support.cloud.engineyard.com

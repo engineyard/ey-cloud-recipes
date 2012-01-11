@@ -26,6 +26,7 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
         group "root"
         mode 0644
         variables({
+          :num_workers => worker_count,
           :app_name => app_name,
           :user => node[:owner_name],
           :worker_name => "delayed_job#{count+1}",
@@ -34,9 +35,9 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
       end
     end
     
-    execute "monit-reload-restart" do
-       command "sleep 30 && monit reload && monit restart all -g dj_#{app_name}"
+    execute "monit reload" do
        action :run
+       epic_fail true
     end
       
   end

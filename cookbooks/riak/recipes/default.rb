@@ -14,7 +14,7 @@ if ['solo','app','app_master'].include?(node[:instance_role])
 
 # Install a version of Erlang (R130B4) provided by me.  I built the package, if you would like to see the ebuild sources make an issue.
   s3_install "dev-lang/erlang" do
-    version "13.2.4"
+    version "14.2.3"
   end
 end
 
@@ -30,7 +30,7 @@ if ['util'].include?(node[:instance_role])
 
 # Install a version of Erlang (R130B4) provided by me.  I built the package, if you would like to see the ebuild sources make an issue.
     s3_install "dev-lang/erlang" do
-      version "13.2.4"
+      version "14.2.3"
     end
 
 # Install python_setuptools as the version in portage is too old.

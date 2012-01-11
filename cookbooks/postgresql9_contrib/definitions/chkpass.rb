@@ -3,6 +3,7 @@ define :postgresql9_chkpass do
  
   load_sql_file do 
     db_name dbname_to_use
+    username "postgres"
     filename "/usr/share/postgresql-9.0/contrib/chkpass.sql"
   end
 

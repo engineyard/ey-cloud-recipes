@@ -41,15 +41,10 @@ if ['solo', 'util'].include?(node[:instance_role])
       end
 
     execute "ensure-resque-is-setup-with-monit" do 
+      epic_fail true
       command %Q{ 
       monit reload 
       } 
-    end
-
-    execute "restart-resque" do 
-      command %Q{ 
-        echo "sleep 20 && monit -g #{app}_resque restart all" | at now 
-      }
     end
   end 
 end

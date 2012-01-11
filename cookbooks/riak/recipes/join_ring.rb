@@ -16,8 +16,7 @@ else
 #        sleep 10
 #        riak_stats = JSON.parse(Net::HTTP.get_response(URI.parse('http://localhost:8098/stats')).body)
 #      end
-  riak_utility_instance = node['utility_instances'].find {|riak| riak["name"] =~ /riak_0/ }
-  riak_hostname = riak_utility_instance['private_hostname'] || riak_utility_instance['hostname']
+  riak_hostname = node["engineyard"]["environment"]["instances"].map{|x| x["private_hostname"] if x["name"] =~ /^riak_0/ }.compact
 
 
 # dirty hack below cover your eyes, please pardon.
@@ -26,6 +25,8 @@ else
 
   execute "cd /data/riak;bin/riak-admin join riak@#{riak_hostname}" do
     action :run
+    epic_fail true
+    # FIXME: I need to start checking properly again, todo.
 #    not_if { ring_members.include?("riak@#{riak_hostname}") }
   end
 end
