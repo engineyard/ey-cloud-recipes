@@ -1,9 +1,11 @@
 user = @node[:users].first
 
 if ['db_master','solo'].include? @node[:instance_role]
+  #under /mnt because it's an arbiter. No data saved
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
+  #save under /data
   mongo_data = @node[:mongo_base] + "/data"
   mongo_log = @node[:mongo_base] + "/log"
 end
@@ -32,6 +34,15 @@ directory '/var/run/mongodb' do
   recursive true
 end
 
+remote_file "/etc/init.d/mongodb" do
+  source "mongodb.init"
+  owner "root"
+  group "root"
+  mode 0755
+  backup false
+  action :create
+end
+
 remote_file "/etc/logrotate.d/mongodb" do
   owner "root"
   group "root"
@@ -49,13 +60,20 @@ mongodb_options = { :exec => "#{@node[:mongo_path]}/bin/mongod",
                     :ip => "0.0.0.0",
                     :port => @node[:mongo_port],
                     :extra_opts => [] }
+
 if @node[:mongo_journaling]
-  mongodb_options[:extra_opts]  << "--journal"
+  mongodb_options[:extra_opts]  << " --journal"
 end
 
 if @node[:mongo_replset]
-  mongodb_options[:extra_opts]  << "--replSet #{@node[:mongo_replset]}"
+  mongodb_options[:extra_opts]  << " --replSet #{@node[:mongo_replset]}"
 end
+
+if @node[:oplog_size]
+  mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
+end
+
+# Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
 
 template "/etc/conf.d/mongodb" do
   source "mongodb.conf.erb"
@@ -67,12 +85,7 @@ template "/etc/conf.d/mongodb" do
   })
 end
 
-remote_file "/etc/init.d/mongodb" do
-  source "mongodb.init"
-  owner "root"
-  group "root"
-  mode 0755
-  backup false
-  action :create
+execute "/etc/init.d/mongodb restart" do
+  command "/etc/init.d/mongodb restart" 
 end
 

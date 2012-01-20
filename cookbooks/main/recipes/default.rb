@@ -33,6 +33,10 @@
 #  password "password"
 #end
 
+#uncomment to run the exim::auth recipe
+#require_recipe "exim::auth"
+ require_recipe "mongodb"
+
 #uncomment to run the resque recipe
 #require_recipe "resque"
 
