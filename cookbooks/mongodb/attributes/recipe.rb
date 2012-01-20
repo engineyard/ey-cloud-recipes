@@ -3,7 +3,7 @@ mongo_name("mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo
 mongo_path("/opt/mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
 mongo_base("/data/mongodb")
 mongo_port("27017")
-total_memory_mb(`df -B 1M /data | awk '/dev/ {print $2}'`.to_i)
+total_memory_mb(`df -m /data | awk '/dev/ {print $2}'`.to_i)
 oplog_memory_percentage("0.1")
 oplog_size((total_memory_mb * oplog_memory_percentage.to_f).to_i)
 mongo_utility_instances( @attribute["utility_instances"].select { |ui| ui["name"].match(/mongodb/) } )
