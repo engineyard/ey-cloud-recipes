@@ -3,11 +3,7 @@ mongo_name("mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo
 mongo_path("/opt/mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
 mongo_base("/data/mongodb")
 mongo_port("27017")
-if @attribute[:kernel][:release] >= "2.6.32"
-  total_memory_mb(`df -B 1M /dev/xvdj1 | awk '/dev/ {print $2}'`.to_i)
-else
-  total_memory_mb(`df -B 1M /dev/sdz1 | awk '/dev/ {print $2}'`.to_i)
-end
+total_memory_mb(`df -B 1M /data | awk '/dev/ {print $2}'`.to_i)
 oplog_memory_percentage("0.1")
 oplog_size((total_memory_mb * oplog_memory_percentage.to_f).to_i)
 mongo_utility_instances( @attribute["utility_instances"].select { |ui| ui["name"].match(/mongodb/) } )
