@@ -80,10 +80,12 @@
 #require_recipe "newrelic_server_monitoring"
 
 #enable contrib modules for a given Postgresql database
-if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
+# if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_autoexplain "dbname"
-  # postgresql9_btree_gin "todosinatra"
-  postgresql9_chkpass "todosinatra"
+  # postgresql9_btree_gin "dbname"
+  # postgresql9_btree_gist "dbname"
+  # postgresql9_chkpass "dbname"
+  
   # postgresql9_citext "dbname"
   # postgresql9_cube "dbname"
   # postgresql9_dblink "dbname"
@@ -108,4 +110,4 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
   
-end
+# end

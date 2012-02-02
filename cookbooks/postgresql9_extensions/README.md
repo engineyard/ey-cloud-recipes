@@ -40,20 +40,19 @@ extension applied to.
 
 
 ##btree_gist
-###supported versions: 9.1
-support for indexing common datatypes in GiST
-
+###supported versions: 9.0, 9.1
+This extension provides support for indexing common datatypes in GiST
 
 Enabling this extension: 
 
 * Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
 extension applied to.
 
-``postgresql9_chkpass "dbname""``
+``postgresql9_btree_gist "dbname""``
 
 
 ##chkpass
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This extension implements a data type chkpass that is designed for storing encrypted passwords. Each password is automatically converted 
 to encrypted form upon entry, and is always stored encrypted.
 
