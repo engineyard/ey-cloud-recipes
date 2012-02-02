@@ -1,0 +1,16 @@
+# ------------------------------------
+# PostgreSQL Custom configuration file
+# ------------------------------------
+#
+# This file was created by the postgresql9_extensions custom chef run 
+# the autoexplain extension and consists of lines of the form:
+#
+auto_explain.log_min_duration = <%= @auto_explain_log_min_duration %>
+auto_explain.log_analyze = <%= @auto_explain_log_analyze %>
+auto_explain.log_verbose = <%= @auto_explain_log_verbose %>
+auto_explain.log_buffers = <%= @auto_explain_log_buffers %>
+auto_explain.log_format = <%= @auto_explain_log_format  %>
+auto_explain.log_nested_statements = <%= @auto_explain_log_nested_statements  %>
+shared_preload_libraries = <%= @shared_preload_libraries %>
+custom_variable_classes = <%= @custom_variable_classes %>
+

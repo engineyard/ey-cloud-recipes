@@ -38,10 +38,10 @@
 #require_recipe "mongodb"
 
 #uncomment to run the resque recipe
-require_recipe "resque"
+# require_recipe "resque"
 
 #uncomment to run the resque-scheduler recipe
-require_recipe "resque-scheduler"
+# require_recipe "resque-scheduler"
 
 #uncomment to run the redis recipe
 #require_recipe "redis"
@@ -79,10 +79,11 @@ require_recipe "resque-scheduler"
 #uncomment to include the newrelic_server_monitoring recipe
 #require_recipe "newrelic_server_monitoring"
 
-#enable contrib modules for a given Postgresql9 database
-#if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
+#enable contrib modules for a given Postgresql database
+if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_autoexplain "dbname"
-  # postgresql9_chkpass "dbname"
+  # postgresql9_btree_gin "todosinatra"
+  postgresql9_chkpass "todosinatra"
   # postgresql9_citext "dbname"
   # postgresql9_cube "dbname"
   # postgresql9_dblink "dbname"
@@ -107,4 +108,4 @@ require_recipe "resque-scheduler"
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
   
-#end
+end
