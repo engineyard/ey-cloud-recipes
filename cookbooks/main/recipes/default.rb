@@ -85,7 +85,6 @@
   # postgresql9_btree_gin "dbname"
   # postgresql9_btree_gist "dbname"
   # postgresql9_chkpass "dbname"
-  
   # postgresql9_citext "dbname"
   # postgresql9_cube "dbname"
   # postgresql9_dblink "dbname"

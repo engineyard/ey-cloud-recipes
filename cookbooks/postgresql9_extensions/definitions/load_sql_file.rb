@@ -12,7 +12,7 @@ define :load_sql_file, :db_name => nil, :extname => nil, :supported_versions => 
   elsif @node[:postgres_version] == "9.1" && supported_versions.include?("9.1")
       execute "Postgresql loading extension #{extname}" do
         command "psql -U postgres -d #{db_name} -c \"CREATE EXTENSION #{extname}\";"
-        not_if "psql -U postgres -d #{db_name} -t -c \"select name from pg_available_extensions where installed_version is not null;\" | grep #{extname}"
+       not_if "psql -U postgres -d #{db_name} -t -c \"select name from pg_available_extensions where installed_version is not null;\" | grep #{extname}" 
       end
   end
   

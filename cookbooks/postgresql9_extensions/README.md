@@ -65,7 +65,7 @@ extension applied to.
 
 
 ##citext
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The citext module provides a case-insensitive character string type, citext. Essentially, it internally calls lower when comparing values. 
 Otherwise, it behaves almost exactly like text. (This is great for MySQL compatibility which does text comparisons case-insensitive, by default)
 
@@ -78,7 +78,7 @@ extension applied to.
 
 
 ##cube
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This module implements a data type cube for representing multidimensional cubes.
 
 Enabling this extension: 
