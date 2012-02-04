@@ -4,7 +4,7 @@ define :postgresql9_pgcrypto do
   load_sql_file do 
     db_name dbname_to_use
     extname "pgcrypto"
-    supported_versions %w[9.0]
+    supported_versions %w[9.0 9.1]
   end
 
 end

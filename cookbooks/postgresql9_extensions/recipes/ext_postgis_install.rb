@@ -1,6 +1,12 @@
-postgis_version = "1.5.2"
-proj_version = "4.6.1"
-geos_version = "3.2.2"
+if @node[:postgres_version] == "9.0"
+  postgis_version = "1.5.2"
+  proj_version = "4.6.1"
+  geos_version = "3.2.2"
+elsif @node[:postgres_version] == "9.1"
+  postgis_version = "1.5.3-r1"
+  proj_version = "4.6.1"
+  geos_version = "3.2.2"
+end
 
 package_use "sci-libs/geos" do
   flags "-ruby"

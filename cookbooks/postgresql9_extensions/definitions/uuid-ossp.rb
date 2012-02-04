@@ -4,7 +4,7 @@ define :postgresql9_uuid_ossp do
   load_sql_file do 
     db_name dbname_to_use
     extname "uuid-ossp"
-    supported_versions %w[9.0]
+    supported_versions %w[9.0 9.1]
   end
 
 end

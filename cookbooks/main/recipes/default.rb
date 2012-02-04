@@ -79,8 +79,12 @@
 #uncomment to include the newrelic_server_monitoring recipe
 #require_recipe "newrelic_server_monitoring"
 
-#enable contrib modules for a given Postgresql database
+#enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
+  # Extensions supported by 9.0
+  # postgresql9_postgis "dbname"
+  
+  # Extensions that support both Postgres 9.0 and 9.1
   # postgresql9_autoexplain "dbname"
   # postgresql9_btree_gin "dbname"
   # postgresql9_btree_gist "dbname"
@@ -91,22 +95,23 @@
   # postgresql9_earthdistance "dbname"
   # postgresql9_fuzzystrmatch "dbname"
   # postgresql9_hstore "dbname"
-  # postgresql9_intagg "dbname"
   # postgresql9_isn "dbname"
   # postgresql9_lo "dbname"
   # postgresql9_ltree "dbname"
-  # postgresql9_pg_stat_statements"postgres_test" - Not done
-  # postgresql9_pg_trgm "postgres_test"  
-  # postgresql9_pgcrypto "postgres_test"
+  # postgresql9_pg_trgm "dbname"  
+  # postgresql9_pgcrypto "dbname"
   # postgresql9_pgrowlocks "dbname"
-  # postgresql9_postgis "dbname" 
   # postgresql9_seg "dbname"
   # postgresql9_tablefunc "dbname"
   # postgresql9_unaccent "dbname"
   # postgresql9_uuid_ossp "dbname"
   
+  # 9.1 Extensions
+  # postgresql9_file_fdw "dbname" 
+  
   #Admin-Level Contribs
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
+  # postgresql9_pg_stat_statements "todo" - Not done
   
 # end

@@ -4,7 +4,7 @@ define :postgresql9_ltree do
   load_sql_file do 
     db_name dbname_to_use
     extname "ltree"
-    supported_versions %w[9.0]
+    supported_versions %w[9.0 9.1]
   end
 
 end

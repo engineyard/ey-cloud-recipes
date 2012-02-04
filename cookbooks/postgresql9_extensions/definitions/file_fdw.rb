@@ -1,10 +1,10 @@
-define :postgresql9_intagg do
+define :postgresql9_file_fdw do
  dbname_to_use = params[:name]  
  
   load_sql_file do 
     db_name dbname_to_use
-    extname "int_aggregate"
-    supported_versions %w[9.0]
+    extname "file_fdw"
+    supported_versions %w[9.1]
   end
 
 end

@@ -90,7 +90,7 @@ extension applied to.
 
 
 ##dblink
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 dblink is a module which supports connections to other PostgreSQL databases from within a database session.
 
 Enabling this extension: 
@@ -102,7 +102,7 @@ extension applied to.
 
 
 ##earthdistance
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The earthdistance module provides two different approaches to calculating great circle distances on the surface of the Earth.
 
 Enabling this extension: 
@@ -113,8 +113,20 @@ extension applied to.
 ``postgresql9_earthdistance "dbname""``
 
 
+##file_fdw
+###supported versions: 9.1
+The file fdw module provides the foreign-data wrapper, which can be used to access data files in the server's file system. Data files must be in a format that can be read by COPY FROM; 
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_file_fdw "dbname""``
+
+
 ##fuzzystrmatch
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The fuzzystrmatch module provides several functions to determine similarities and distance between strings.
 
 Enabling this extension: 
@@ -126,7 +138,7 @@ extension applied to.
 
 
 ##hstore
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This module implements the hstore data type for storing sets of key/value pairs within a single PostgreSQL value. This can be useful 
 in various scenarios, such as rows with many attributes that are rarely examined, or semi-structured data. Keys and values are simply 
 text strings.	
@@ -138,22 +150,8 @@ extension applied to.
 
 ``postgresql9_hstore "dbname""``
 
-
-##intagg
-###supported versions: 9.0
-The intarray module provides a number of useful functions and operators for manipulating one-dimensional arrays of integers. There is 
-also support for indexed searches using some of the operators.
-
-Enabling this extension: 
-
-* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
-extension applied to.
-
-``postgresql9_intagg "dbname""``
-
-
 ##isn
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The isn module provides data types for the following international product numbering standards: EAN13, UPC, ISBN (books), ISMN (music), 
 and ISSN (serials). Numbers are validated on input, and correctly hyphenated on output.
 
@@ -166,7 +164,7 @@ extension applied to.
 
 
 ##lo
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The lo module provides support for managing Large Objects (also called LOs or BLOBs). This includes a data type lo and a trigger lo_manage.
 
 Enabling this extension: 
@@ -178,7 +176,7 @@ extension applied to.
 
 
 ##ltree
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This module implements a data type ltree for representing labels of data stored in a hierarchical tree-like structure. Extensive facilities 
 for searching through label trees are provided.
 
@@ -189,9 +187,19 @@ extension applied to.
 
 ``postgresql9_ltree "dbname""``
 
+##pg_trgm
+###supported versions: 9.0, 9.1
+The pg_trgm module provides GiST and GIN index operator classes that allow you to create an index over a text column for the purpose of very fast similarity searches. These index types support the above-described similarity operators, and additionally support trigram-based index searches for LIKE and ILIKE queries. (These indexes do not support equality nor simple comparison operators, so you may need a regular B-tree index too.). 
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_pg_trgm "dbname""``
 
 ##pgcrypto
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The pgcrypto module provides cryptographic functions for PostgreSQL.
 
 Enabling this extension: 
@@ -203,7 +211,7 @@ extension applied to.
 
 
 ##pgrowlocks
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The pgrowlocks module provides a function to show row locking information for a specified table.
 
 Enabling this extension: 
@@ -228,7 +236,7 @@ extension applied to.
 
 
 ##seg
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This module implements a data type seg for representing line segments, or floating point intervals. seg can represent uncertainty in the 
 interval endpoints, making it especially useful for representing laboratory measurements.
 
@@ -241,7 +249,7 @@ extension applied to.
 
 
 ##tablefunc
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The tablefunc module includes various functions that return tables (that is, multiple rows). These functions are useful both in their own 
 right and as examples of how to write C functions that return multiple rows.
 
@@ -254,7 +262,7 @@ extension applied to.
 
 
 ##unaccent
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 unaccent is a text search dictionary that removes accents (diacritic signs) from lexemes. It's a filtering dictionary, which means its output 
 is always passed to the next dictionary (if any), unlike the normal behavior of dictionaries. This allows accent-insensitive processing for 
 full text search.
@@ -268,7 +276,7 @@ extension applied to.
 
 
 ##uuid-ossp
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 The uuid-ossp module provides functions to generate universally unique identifiers (UUIDs) using one of several standard algorithms. There are 
 also functions to produce certain special UUID constants. (This also requires a separate USE flag when building the postgres binaries that pulls 
 in another package.)
