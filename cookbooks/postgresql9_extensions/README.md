@@ -100,6 +100,28 @@ extension applied to.
 
 ``postgresql9_dblink "dbname""``
 
+##dict_int
+###supported versions: 9.0, 9.1
+dict_int is an example of an add-on dictionary template for full-text search. The motivation for this example dictionary is to control the indexing of integers (signed and unsigned), allowing such numbers to be indexed while preventing excessive growth in the number of unique words, which greatly affects the performance of searching.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_dict_int "dbname""``
+
+##dict_xsyn
+###supported versions: 9.0, 9.1
+dict_xsyn (Extended Synonym Dictionary) is an example of an add-on dictionary template for full-text search. This dictionary type replaces words with groups of their synonyms, and so makes it possible to search for a word using any of its synonyms.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_dict_xsyn "dbname""``
+
 
 ##earthdistance
 ###supported versions: 9.0, 9.1
@@ -149,6 +171,18 @@ Enabling this extension:
 extension applied to.
 
 ``postgresql9_hstore "dbname""``
+
+##intarray
+###supported versions: 9.0, 9.1
+The intarray module provides a number of useful functions and operators for manipulating null-free arrays of integers. There is also support for indexed searches using some of the operators.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_intarray "dbname""``
+
 
 ##isn
 ###supported versions: 9.0, 9.1
@@ -248,6 +282,17 @@ extension applied to.
 ``postgresql9_seg "dbname""``
 
 
+##sslinfo
+###supported versions: 9.0, 9.1
+The sslinfo module provides information about the SSL certificate that the current client provided when connecting to PostgreSQL. The module is useless (most functions will return NULL) if the current connection does not use SSL.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_sslinfo "dbname""``
+
 ##tablefunc
 ###supported versions: 9.0, 9.1
 The tablefunc module includes various functions that return tables (that is, multiple rows). These functions are useful both in their own 
@@ -259,6 +304,18 @@ Enabling this extension:
 extension applied to.
 
 ``postgresql9_tablefunc "dbname""``
+
+
+##test_parser
+###supported versions: 9.0, 9.1
+test_parser is an example of a custom parser for full-text search. It doesn't do anything especially useful, but can serve as a starting point for developing your own parser.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_test_parser "dbname""``
 
 
 ##unaccent
@@ -287,6 +344,19 @@ Enabling this extension:
 extension applied to.
 
 ``postgresql9_uuid_ossp "dbname""``
+
+##xml2
+###supported versions: 9.1
+The uuid-ossp module provides functions to generate universally unique identifiers (UUIDs) using one of several standard algorithms. There are 
+also functions to produce certain special UUID constants. (This also requires a separate USE flag when building the postgres binaries that pulls 
+in another package.)
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_xml2 "dbname""``
 
 
 Admin-level Contrib packages 
