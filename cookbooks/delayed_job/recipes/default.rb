@@ -21,7 +21,7 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
         worker_count = 2
       end
     end
-    Chef:Log.info "Worker count set to #{worker_count}"
+    Chef::Log.info "Delayed Job worker count set to '#{worker_count}'"
 
     worker_count.times do |count|
       template "/etc/monit.d/delayed_job#{count+1}.#{app_name}.monitrc" do
