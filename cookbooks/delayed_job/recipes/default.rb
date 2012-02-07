@@ -9,7 +9,7 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
     # determine the number of workers to run based on instance size
     if node[:instance_role] == 'solo'
       Chef::Log.info "Delayed Job being configured for a solo instance"
-      worker_count = 1
+      worker_count = 2
     else
       case node[:ec2][:instance_type]
       when 'm1.small'
@@ -28,20 +28,18 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
     end
     Chef::Log.info "Delayed Job worker count has been set to '#{worker_count}'"
 
-    worker_count.times do |count|
-      template "/etc/monit.d/delayed_job#{count+1}.#{app_name}.monitrc" do
-        source "dj.monitrc.erb"
-        owner "root"
-        group "root"
-        mode 0644
-        variables({
-          :num_workers => worker_count,
-          :app_name => app_name,
-          :user => node[:owner_name],
-          :worker_name => "delayed_job#{count+1}",
-          :framework_env => node[:environment][:framework_env]
-        })
-      end
+    template "/etc/monit.d/delayed_job.#{app_name}.monitrc" do
+      source "dj.monitrc.erb"
+      owner "root"
+      group "root"
+      mode 0644
+      variables({
+        :num_workers => worker_count,
+        :app_name => app_name,
+        :user => node[:owner_name],
+        :worker_name => "delayed_job",
+        :framework_env => node[:environment][:framework_env]
+      })
     end
 
     execute "monit reload" do
