@@ -8,25 +8,25 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
 
     # determine the number of workers to run based on instance size
     if node[:instance_role] == 'solo'
-      Chef::Log.info "Delayed Jobs are on a solo instance"
+      Chef::Log.info "Delayed Job being configured for a solo instance"
       worker_count = 1
     else
       case node[:ec2][:instance_type]
       when 'm1.small'
-        Chef::Log.info "Delayed Jobs are on an EC2 m1.small"
+        Chef::Log.info "Delayed Job being configured for an EC2 m1.small"
         worker_count = 2
       when 'c1.medium'
-        Chef::Log.info "Delayed Jobs are on an EC2 c1.medium"
+        Chef::Log.info "Delayed Job being configured for an EC2 c1.medium"
         worker_count = 4
       when 'c1.xlarge'
-        Chef::Log.info "Delayed Jobs are on an EC2 c1.xlarge"
+        Chef::Log.info "Delayed Job being configured for an EC2 c1.xlarge"
         worker_count = 8
       else 
-        Chef::Log.info "Delayed Jobs are on an EC2 instance of unknown size" 
+        Chef::Log.info "Delayed Job being configured for an EC2 instance of unknown size" 
         worker_count = 2
       end
     end
-    Chef::Log.info "Delayed Job worker count set to '#{worker_count}'"
+    Chef::Log.info "Delayed Job worker count has been set to '#{worker_count}'"
 
     worker_count.times do |count|
       template "/etc/monit.d/delayed_job#{count+1}.#{app_name}.monitrc" do
