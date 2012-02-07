@@ -1,6 +1,6 @@
 <% (@num_workers || 1).times do |num| %>
 check process <%= @worker_name %>_<%= num + 1 %>
-  with pidfile /var/run/engineyard/dj/<%= @app_name %>/<%= @worker_name %>.<% num + 1 %>.pid
+  with pidfile /var/run/engineyard/dj/<%= @app_name %>/<%= @worker_name %>.<%= num + 1 %>.pid
   start program = "/data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> start" with timeout 60 seconds
   stop program =  "/data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> stop" with timeout 60 seconds
   if totalmem is greater than 300 MB then restart # eating up memory?
