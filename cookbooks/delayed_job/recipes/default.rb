@@ -28,7 +28,7 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:na
     end
     Chef::Log.info "Delayed Job worker count has been set to '#{worker_count}'"
 
-    template "/etc/monit.d/delayed_job.#{app_name}.monitrc" do
+    template "/etc/monit.d/#{app_name}_delayed_jobs.monitrc" do
       source "dj.monitrc.erb"
       owner "root"
       group "root"
