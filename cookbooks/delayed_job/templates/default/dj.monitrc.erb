@@ -4,5 +4,5 @@ check process <%= @worker_name %>_<%= num + 1 %>
   start program = "/data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> start" with timeout 60 seconds
   stop program =  "/data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> stop" with timeout 60 seconds
   if totalmem is greater than 300 MB then restart # eating up memory?
-  group dj_<%= @app_name %>
+  group delayed_job_<%= @app_name %>
 <% end %>	
