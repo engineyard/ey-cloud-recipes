@@ -1,7 +1,7 @@
 <% (@num_workers || 1).times do |num| %>
-check process <%= @worker_name %>_<%= num + 1 %> with pidfile /var/run/engineyard/dj/<%= @app_name %>/<%= @worker_name %>.<%= num + 1 %>.pid
-  start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> start" as uid root with timeout 60 seconds
-  stop program =  "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run/engineyard/dj/<%= @app_name %> stop" as uid root with timeout 60 seconds
+check process <%= @worker_name %>_<%= num + 1 %> with pidfile /var/run/<%= @worker_name %>.<%= num + 1 %>.pid
+  start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run start" as uid root with timeout 60 seconds
+  stop program =  "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run stop" as uid root with timeout 60 seconds
   if totalmem is greater than 300 MB then restart # eating up memory?
   group <%= @app_name %>_delayed_jobs
 <% end %>	
