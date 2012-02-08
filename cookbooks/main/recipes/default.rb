@@ -80,10 +80,7 @@
 #require_recipe "newrelic_server_monitoring"
 
 #enable Extension modules for a given Postgresql database
-if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
-  # Extensions supported by 9.0
-  # postgresql9_postgis "dbname"
-  
+# if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # Extensions that support both Postgres 9.0 and 9.1
   # postgresql9_autoexplain "dbname"
   # postgresql9_btree_gin "dbname"
@@ -104,6 +101,7 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_pg_trgm "dbname"  
   # postgresql9_pgcrypto "dbname"
   # postgresql9_pgrowlocks "dbname"
+  # postgresql9_postgis "dbname"
   # postgresql9_seg "dbname"
   # postgresql9_sslinfo "dbname"
   # postgresql9_tablefunc "dbname"
@@ -121,4 +119,4 @@ if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # postgresql9_pg_freespacemap "postgres"
   # postgresql9_pg_stat_statements "todo" - Not done
   
-end
+# end

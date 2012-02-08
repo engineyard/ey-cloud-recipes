@@ -38,6 +38,17 @@ extension applied to.
 
 ``postgresql9_btree_gin "dbname""``
 
+##intarray
+###supported versions: 9.0, 9.1
+The intarray module provides a number of useful functions and operators for manipulating null-free arrays of integers. There is also support for indexed searches using some of the operators.
+
+Enabling this extension: 
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this 
+extension applied to.
+
+``postgresql9_intarray "dbname""``
+
 
 ##btree_gist
 ###supported versions: 9.0, 9.1
@@ -257,7 +268,7 @@ extension applied to.
 
 
 ##PostGIS
-###supported versions: 9.0
+###supported versions: 9.0, 9.1
 This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend 
 spatial database for geographic information systems (GIS).
 
