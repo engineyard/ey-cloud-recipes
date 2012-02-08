@@ -42,4 +42,13 @@ define :postgresql9_postgis do
     end
      
   end
+  
+  
+  execute "Grant permissions to the deploy user on the geometry_columns schema" do
+    command "psql -U postgres -d #{dbname_to_use} -c \"GRANT all on geometry_columns to deploy\""
+  end
+  
+  execute "Grant permissions to the deploy user on the spatial_ref_sys schema" do
+    command "psql -U postgres -d #{dbname_to_use} -c \"GRANT all on spatial_ref_sys to deploy\""
+  end
 end
