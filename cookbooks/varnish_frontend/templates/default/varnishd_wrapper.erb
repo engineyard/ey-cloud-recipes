@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/sbin/varnishd -a 0.0.0.0:<%= @varnish_port %> -T 127.0.0.1:6082 -s <%= @cache %> -f /etc/varnish/app.vcl -P /var/run/varnish.882.pid -u nobody -g nobody -p obj_workspace=4096 -p sess_workspace=262144 -p listen_depth=2048 -p overflow_max=<%= @overflow_max %> -p ping_interval=2 -p log_hashstring=off -h classic,5000009 -p thread_pool_max=<%= @thread_pool_max %> -p lru_interval=60 -p esi_syntax=0x00000003 -p sess_timeout=10 -p thread_pools=<%= @thread_pools %> -p thread_pool_min=100 -p shm_workspace=32768 -p thread_pool_add_delay=1

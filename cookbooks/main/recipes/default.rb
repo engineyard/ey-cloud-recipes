@@ -46,7 +46,7 @@
 
 #uncomment to include the emacs recipe
 #require_recipe "emacs"
-
+require_recipe "varnish_frontend"
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
 

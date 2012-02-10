@@ -1,0 +1,12 @@
+################
+     NOTICE
+###############
+This environment has been configured with varnish.
+
+Varnish listens IN FRONT of haproxy, although both applications listen on port 80.
+
+Currently iptables is being used to take incomming traffic from <%= @interface %>:80
+and redirecting it to port 882.  Varnish is then connecting to HAProxy via 127.0.0.1:80.
+
+If you can curl localhost:80 but cannot connect to port 80 remotely there is an issue
+with varnish.  Varnish is currently monitored by monit.
