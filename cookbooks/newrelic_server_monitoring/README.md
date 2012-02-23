@@ -33,13 +33,13 @@ This cookbook depends on the emerge cookbook, if you do not have it you can add 
 Installation
 --------
 
-# Ensure you have the emerge cookbook dependency installed in your local cookbook repository
-# Add the following to main/recipes/default.rb
+1. Ensure you have the emerge cookbook dependency installed in your local cookbook repository
+1. Add the following to main/recipes/default.rb
 
 ``require_recipe "newrelic_server_monitoring"``
 
-# Configure the [Newrelic License Key][2] in attributes/newrelic.rb
-# Upload your recipes and apply.
+1. Configure the [Newrelic License Key][2] in attributes/newrelic.rb
+1. Upload your recipes and apply.
 
 
 How to get Support
