@@ -22,13 +22,8 @@ define :postgresql9_postgis do
         extname"postgis-1.5/postgis_comments" 
       end
   elsif @node[:postgres_version] == "9.1" 
-    
-    execute "setting emerge options" do
-      command "emerge --ignore-default-opts dev-db/postgis"
-    end
-    
     include_recipe "postgresql9_extensions::ext_postgis_install"
-    
+
      execute "Postgresql loading postgis on database #{dbname_to_use} for version 9.1 as a contrib" do
        command "psql -U postgres -d #{dbname_to_use} -f /usr/share/postgresql-9.1/contrib/postgis-1.5/postgis.sql"
      end
@@ -42,7 +37,6 @@ define :postgresql9_postgis do
     end
      
   end
-  
   
   execute "Grant permissions to the deploy user on the geometry_columns schema" do
     command "psql -U postgres -d #{dbname_to_use} -c \"GRANT all on geometry_columns to deploy\""
