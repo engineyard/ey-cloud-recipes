@@ -20,16 +20,6 @@ Overview
 
 This cookbook should install and configure Newrelic Server Monitoring.  This should compliment the Newrelic Application monitoring very well.
 
-
-Dependencies
---------
-
-This cookbook depends on the emerge cookbook, if you do not have it you can add it like as a submodule as the example below shows,
-
-``git submodule update --init``  
-``git submodule add git://github.com/damm/ey-dnapi.git cookbooks/dnapi`` 
-``git submodule add git://github.com/damm/ey-emerge.git cookbooks/emerge``  
-
 Installation
 --------
 
