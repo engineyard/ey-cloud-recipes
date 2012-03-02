@@ -52,7 +52,7 @@ if you set new indexes on fields that are in migrations that have to be run.
 
 Warranty
 ========
-This recipe is provided as is, if you have any problems with it please open an issue or make a send a pull request with your fix.
+This recipe is provided as is, if you have any problems with it please open an issue or send a pull request with your fix.
 
 Additional Resources
 ========
