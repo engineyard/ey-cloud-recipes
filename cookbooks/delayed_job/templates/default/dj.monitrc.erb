@@ -1,8 +1,6 @@
-<% (@num_workers || 1).times do |num| %>
-	check process <%= @worker_name %>_<%= num %>
-	  with pidfile /var/run/engineyard/dj/<%= @app_name %>/dj_<%= @worker_name %>.pid
-	  start program = "/engineyard/bin/dj <%= @app_name %> start <%= @framework_env %> <%= @worker_name %>" with timeout 60 seconds
-	  stop program = "/engineyard/bin/dj <%= @app_name %> stop <%= @framework_env %> <%= @worker_name %>" with timeout 60 seconds
-	  if totalmem is greater than 300 MB then restart # eating up memory?
-	  group dj_<%= @app_name %>
-<% end %>	
+check process <%= @worker_name %>
+  with pidfile /var/run/engineyard/dj/<%= @app_name %>/dj_<%= @worker_name %>.pid
+  start program = "/engineyard/bin/dj <%= @app_name %> start <%= @framework_env %> <%= @worker_name %>" with timeout 60 seconds
+  stop program = "/engineyard/bin/dj <%= @app_name %> stop <%= @framework_env %> <%= @worker_name %>" with timeout 60 seconds
+  if totalmem is greater than 300 MB then restart # eating up memory?
+  group dj_<%= @app_name %>
