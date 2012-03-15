@@ -113,7 +113,7 @@ if utility_name
         source "sphinx.yml.erb"
         variables({
           :app_name => app_name,
-          :address => 'localhost',
+          :address => sphinx_host,
           :user => node[:owner_name],
           :mem_limit => '32M'
         })
