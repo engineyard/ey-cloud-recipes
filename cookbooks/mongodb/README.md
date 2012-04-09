@@ -1,22 +1,17 @@
 ey-cloud-recipes/mongodb v2.0.2
 --------
 
-A chef recipe for enabling mongodb v2.0.2 on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a basic MongoDB instance, or a Replica Set.
+A chef recipe for enabling mongodb v2.0.2 on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a 3 node MongoDB Replica Set.
 
 It makes a few assumptions:
 
   * You will be running MongoDB on a utility instance(s).
-  * You will want [journaling][3] enabled.
-  * If you want to use replication you will it will be using Replica
-    sets.
+  * You will be using Replica sets.
 
-The only thing (currently) lacking from this recipe is the ability to setup
-scheduled backups of your MongoDB database.
-
-Dependencies
+MMS support 
 --------
-
-None so far.
+The recipe will also install Mongo Monitoring Service (MMS) on a solo or db_master. You will need to provide your api & secret keys. 
+See https://mms.10gen.com/help/ for more information.
 
 
 Using it
@@ -31,23 +26,20 @@ Using it
 ``ey recipes upload -e <environment>``  
 
   * Add an utility instance with the following naming scheme(s)
-    * For a stand alone instance,
-      * mongodb_#{app.name}
     * For an replica set,
       * mongodb_repl#{setname}_1
       * mongodb_repl#{setname}_2
       * mongodb_repl#{setname}_3
       * ...
-    * Sharding? TODO
 
   * Drops /data/#{app.name}/shared/config/mongo.yml with all the
     information needed to connect to MongoDB.
 
-
 Caveats
 --------
 
-Replica sets should normally be in a size of 3 or greater.  However, if you prefer to only have 2 nodes, this recipe will configure the solo|db_master instance as an Arbiter to ensure that if there is a failover that the vote can pass.  This recipe does not and will not support 32-bit instances.  Please ensure you use 64-bit instances (Any type of Large, not Small or Medium) when you create the Utility slices.
+Replica sets should normally be in a size of 3 or greater. This recipe does not and will not support 32-bit instances.  
+Please ensure you use 64-bit instances when you create the Utility slices.
 
 
 Legend
@@ -57,32 +49,28 @@ Legend
 
 TODO
 --------
+Things (currently) lacking from this recipe:
 
-Get backups running. 
-
-Sharding?
-
-Use MongoS on each app instance instead of dropping mongo.yml?
+  * Ability to set up scheduled backups of your MongoDB database
+  * Ability to set up a sharded installation
+  * Auto-generation of mongoid.yml files (coming soon)
+  * Arbiter support
 
 Known Bugs
 --------
 
-This recipe is likely broken on 32-bit.  You should not be running
-mongodb this way normally so we will not be addressing this.
+Previous versions of this recipe used the legacy-static binary. This is no longer needed. Please fetch latest changes as this recipe is being frequently maintained. 
 
 Warranty
 --------
 
-This cookbook is provided as is, there is no offer of support for this
-recipe by Engine Yard in any capacity.  If you find bugs, please open an
-issue and submit a pull request.
+If you find bugs, please open a Zendesk ticket or submit a pull request.
 
 Credits
 --------
 
 Thanks to [Edward Muller][4] and [Dan Peterson][5] for the original awesome
-recipe to begin with.  I just updated it so it worked with 1.8 and will
-continue to attempt to add more to it and accept patches/pulls.
+recipe to begin with.  
 
 [1]: https://cloud.engineyard.com/apps
 [2]: https://cloud.engineyard.com
