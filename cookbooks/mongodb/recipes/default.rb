@@ -35,3 +35,9 @@ else
     require_recipe "mongodb::start"
   end
 end
+
+#install mms on db_master or solo. This will need to change for db-less environments
+if ['db_master', 'solo'].include? @node[:instance_role]
+  Chef::Log.info "Installing MMS on #{@node[:instance_role]}"
+  require_recipe "mongodb::install_mms"
+end
