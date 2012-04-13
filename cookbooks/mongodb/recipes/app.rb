@@ -32,5 +32,23 @@ if node[:utility_instances].empty?
       end
       
     end
+
+    template "/data/#{mongo_app_name}/shared/config/mongoid.yml" do
+      source "mongoid.yml.erb"
+      owner user[:username]
+      group user[:username]
+      mode 0755
+      
+      hosts = @node[:mongo_utility_instances].select { |instance| instance[:name].match(/#{mongo_app_name}/) }.map { |instance| [ instance[:hostname], @node[:mongo_port].to_i ] }
+      replica_set = @node[:mongo_utility_instances].any? { |instance| instance[:name].match(/^mongodb_repl/) }
+      if replica_set
+        hosts += @node[:mongo_utility_instances].select { |instance| instance[:name].match(/^mongodb_repl/) }.map { |instance| [ instance[:hostname], @node[:mongo_port].to_i ] }
+      end
+      variables(:environment => node[:environment][:framework_env], 
+                :hosts => hosts,
+                :replica_set => replica_set,
+                :mongo_replsetname => node[:environment][:name] )
+    end
+
   end
 end

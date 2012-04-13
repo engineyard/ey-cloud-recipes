@@ -53,7 +53,6 @@ Things (currently) lacking from this recipe:
 
   * Ability to set up scheduled backups of your MongoDB database
   * Ability to set up a sharded installation
-  * Auto-generation of mongoid.yml files (coming soon)
   * Arbiter support
 
 Known Bugs
