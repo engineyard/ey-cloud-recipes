@@ -9,6 +9,10 @@ backend default {
 sub vcl_recv {
   set req.grace = 120s; 
 
+##### Configure X-Forwarded-For headers:
+  remove req.http.X-Forwarded-For;
+  set req.http.X-Forwarded-For = client.ip; 
+
 ##### Exclude specific urls
 #
 # This following section can be used to give Varnish regular expression to
