@@ -72,6 +72,8 @@
 #  action :install
 #end
 
+require_recipe "neo4j"
+
 #es_plugin "transport-memcached" do
 #  action :install
 #end
