@@ -1,5 +1,6 @@
-neo4j :database_location => '/data/neo4j/graphdb',
-      :version => 'community-1.7',
-      :webserver_port => '7474',
-      :enable_ha => false,
-      :ha_port => '6001'
+neo4j_version("community-1.7")
+neo4j_webserver_port("7474")
+neo4j_enable_ha(false)
+neo4j_ha_port(6001)
+neo4j_base("/data/neo4j/graphdb")
+neo4j_path("/opt/neo4j-#{@attribute["neo4j_version"]}-unix.tar.gz")

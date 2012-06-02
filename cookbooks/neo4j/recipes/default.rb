@@ -19,87 +19,95 @@
 #
 
 # require_recipe "java"
- if (@node[:instance_role] == 'util' && @node[:name].match(/neo4j/))
-  neo4j_version = node[:neo4j][:version]
-  tarball = "neo4j-#{neo4j_version}-unix.tar.gz"
-  downloaded_tarball = "/tmp/#{tarball}"
-  installation_dir = "/opt"
-  exploded_tarball = "#{installation_dir}/neo4j-#{neo4j_version}"
-  installed_app_dir = "#{installation_dir}/neo4j"
-  ha_address = node[:neo4j][:ha_address] || node[:ipaddress]
+Chef::Log.info "--- executing neo recipe"
 
-unless FileTest.directory?(installed_app_dir)
-  # download remote file
-  remote_file "#{downloaded_tarball}" do
-    source "http://dist.neo4j.org/#{tarball}"
-    mode "0644"
-    end
+if (@node[:instance_role] == 'util' && @node[:name].match(/neo4j/))
+  neo4jversion = node[:neo4j_version]
+  downloaded_tarball = node[:neo4j_path]
 
-    # unpack the downloaded file
-    execute "tar" do
-     user "root"
-     group "root"
+  Chef::Log.info "--- neo4jversion: #{neo4jversion}"
+  Chef::Log.info "--- downloaded_tarball: #{downloaded_tarball}"
 
-     cwd installation_dir
-     command "tar zxf #{downloaded_tarball}"
-     creates exploded_tarball
-     action :run
-    end
 
-    # rename the directory to plain ol' neo4j
-    execute "mv #{exploded_tarball} #{installed_app_dir}" do
-      user "root"
-      group "root"
 
-      creates installed_app_dir
-    end
 
-    # create the data directory 
-    directory "#{node[:neo4j][:database_location]}" do
-      owner "deploy"
-      group "deploy"
-      mode "0755"
-      action :create
-      recursive true
-    end
-  end
+#   installation_dir = "/opt"
+#   exploded_tarball = "#{installation_dir}/neo4j-#{neo4j_version}"
+#   installed_app_dir = "#{installation_dir}/neo4j"
+#   ha_address = node[:neo4j][:ha_address] || node[:ipaddress]
 
-  template "#{installed_app_dir}/conf/neo4j-server.properties" do
-    source "neo4j-server.erb"
-    mode 0444
-    owner "root"
-    group "root"
-    variables(
-      :enable_ha => node[:neo4j][:enable_ha],
-      :database_location => node[:neo4j][:database_location],
-      :webserver_port => node[:neo4j][:webserver_port]
-    )
-  end
+# unless FileTest.directory?(installed_app_dir)
+#   # download remote file
+#   remote_file "#{downloaded_tarball}" do
+#     source "http://dist.neo4j.org/#{tarball}"
+#     mode "0644"
+#     end
 
-  template "#{installed_app_dir}/conf/neo4j.properties" do
-    source "neo4j.erb"
-    mode 0444
-    owner "root"
-    group "root"
-    variables(
-      :enable_ha => node[:neo4j][:enable_ha],
-      :ha_server => "#{ha_address}:#{node[:neo4j][:ha_port]}",
-      :ha_machine_id => node[:neo4j][:ha_machine_id],
-      :zookeeper_port => node[:neo4j][:zookeeper_port],
-      :zookeeper_addresses => node[:neo4j][:zookeeper_addresses]
-    )
-  end
+#     # unpack the downloaded file
+#     execute "tar" do
+#      user "root"
+#      group "root"
 
-  # NOTE: do this manually for now...set the user as 'deploy'
-  # ask Neo4j to install start/stop scripts for itself
-  # => sudo /opt/neo4j/bin/neo4j install
-  # => logs are currently at /opt/neo4j/data/log
+#      cwd installation_dir
+#      command "tar zxf #{downloaded_tarball}"
+#      creates exploded_tarball
+#      action :run
+#     end
 
-  # register the service
-  # => sudo rc-update del neo4j-service
-  # => sudo /etc/init.d/neo4j-service start
-  execute "enable-neo4j" do
-    command "rc-update add neo4j-service default"
-    action :run
-  end
+#     # rename the directory to plain ol' neo4j
+#     execute "mv #{exploded_tarball} #{installed_app_dir}" do
+#       user "root"
+#       group "root"
+
+#       creates installed_app_dir
+#     end
+
+#     # create the data directory 
+#     directory "#{node[:neo4j][:database_location]}" do
+#       owner "deploy"
+#       group "deploy"
+#       mode "0755"
+#       action :create
+#       recursive true
+#     end
+#   end
+
+#   template "#{installed_app_dir}/conf/neo4j-server.properties" do
+#     source "neo4j-server.erb"
+#     mode 0444
+#     owner "root"
+#     group "root"
+#     variables(
+#       :enable_ha => node[:neo4j][:enable_ha],
+#       :database_location => node[:neo4j][:database_location],
+#       :webserver_port => node[:neo4j][:webserver_port]
+#     )
+#   end
+
+#   template "#{installed_app_dir}/conf/neo4j.properties" do
+#     source "neo4j.erb"
+#     mode 0444
+#     owner "root"
+#     group "root"
+#     variables(
+#       :enable_ha => node[:neo4j][:enable_ha],
+#       :ha_server => "#{ha_address}:#{node[:neo4j][:ha_port]}",
+#       :ha_machine_id => node[:neo4j][:ha_machine_id],
+#       :zookeeper_port => node[:neo4j][:zookeeper_port],
+#       :zookeeper_addresses => node[:neo4j][:zookeeper_addresses]
+#     )
+#   end
+
+#   # NOTE: do this manually for now...set the user as 'deploy'
+#   # ask Neo4j to install start/stop scripts for itself
+#   # => sudo /opt/neo4j/bin/neo4j install
+#   # => logs are currently at /opt/neo4j/data/log
+
+#   # register the service
+#   # => sudo rc-update del neo4j-service
+#   # => sudo /etc/init.d/neo4j-service start
+#   execute "enable-neo4j" do
+#     command "rc-update add neo4j-service default"
+#     action :run
+#   end
  end
