@@ -110,4 +110,4 @@ if (@node[:instance_role] == 'util' && @node[:name].match(/neo4j/))
 #     command "rc-update add neo4j-service default"
 #     action :run
 #   end
- end
+end
