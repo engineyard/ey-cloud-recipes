@@ -73,6 +73,8 @@ if @node[:oplog_size]
   mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
 end
 
+mongodb_options[:extra_opts]  << " --directoryperdb"
+
 # Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
 
 template "/etc/conf.d/mongodb" do
