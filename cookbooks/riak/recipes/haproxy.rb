@@ -11,9 +11,8 @@ else
       action :upgrade
     end
 
-    riak_instances = []
-    riak_instances << node["engineyard"]["environment"]["instances"].map{|x| x["private_hostname"] if x["name"] =~ /^riak_/ }.compact
-    
+    riak_instances = node["engineyard"]["environment"]["instances"].map{|x| x["private_hostname"] if x["name"] =~ /^riak_/ }.compact
+
     template "/etc/haproxy_riak.cfg" do
       owner 'root'
       group 'root'
@@ -25,7 +24,6 @@ else
         :haproxy_pass => node[:haproxy][:password]
       })
     end
-    
     template "/etc/monit.d/haproxy_riak.monitrc" do
       source "haproxy_monitrc.erb"
       backup 0

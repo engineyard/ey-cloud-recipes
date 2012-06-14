@@ -19,7 +19,7 @@ Design
 
 * 3+ utility instances 64-bit (m1.large +) running 
 
-* Riak 1.0.2 w/ defaults to leveldb
+* Riak 1.1.2 w/ defaults to leveldb
 * Erlang R140B3 (installed from a custom binary package)
 * haproxy is configured on 8097-8098 (pbc,http) with the http back-end using /ping to ensure the back-end is up.
 
