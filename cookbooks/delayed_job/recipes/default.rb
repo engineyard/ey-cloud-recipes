@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-if node[:instance_role] == "solo" || (node[:instance_role] == "app" && node[:name] !~ /^(mongodb|redis|memcache)/)
+if ( ['solo', 'app_master', 'app'].include?(node[:instance_role]) || (node[:instance_role] == 'util' && node[:name] !~ /^(mongodb|redis|memcache)/) )
 
   node[:applications].each do |app_name,data|
 
@@ -14,14 +14,14 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "app" && node[:nam
       case node[:ec2][:instance_type]
         when 'm1.small'
           Chef::Log.info "Delayed Job being configured for an EC2 m1.small"
-          worker_count = 2
+          worker_count = 1
         when 'c1.medium'
           Chef::Log.info "Delayed Job being configured for an EC2 c1.medium"
-          worker_count = 4
+          worker_count = 2
         when 'c1.xlarge'
           Chef::Log.info "Delayed Job being configured for an EC2 c1.xlarge"
-          worker_count = 8
-        else 
+          worker_count = 4
+        else
           Chef::Log.info "Delayed Job being configured for an EC2 instance of unknown size" 
           worker_count = 2
       end
@@ -37,7 +37,8 @@ if node[:instance_role] == "solo" || (node[:instance_role] == "app" && node[:nam
         :num_workers => worker_count,
         :app_name => app_name,
         :user => node[:owner_name],
-        :worker_name => "delayed_job",
+        :timeout => 120, # seconds
+        :worker_name => 'delayed_job',
         :framework_env => node[:environment][:framework_env]
       })
     end
