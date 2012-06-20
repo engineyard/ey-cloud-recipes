@@ -1,8 +1,8 @@
 <% (@num_workers || 1).times do |num| %>
 
 check process <%= @worker_name %>_<%= num + 1 %> with pidfile /var/run/<%= @worker_name %>.<%= num + 1 %>.pid
-  start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run start" as uid <%= @user %> with timeout <%= @timeout %> seconds
-  stop program =  "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run stop" as uid <%= @user %> with timeout <%= @timeout %> seconds
+start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run start" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
+stop program =  "/usr/bin/env RAILS_ENV=<%= @framework_env %> /data/<%= @app_name %>/current/script/delayed_job --identifier <%= num + 1 %> --pid-dir=/var/run stop" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
   group <%= @app_name %>_delayed_jobs
 
 <% end %>
