@@ -36,8 +36,10 @@ if ( ['solo', 'app_master', 'app'].include?(node[:instance_role]) || (node[:inst
       variables({
         :num_workers => worker_count,
         :app_name => app_name,
+        :app_dir => "/data/#{app_name}/current",
+        :pid_dir => "/data/#{app_name}/current/tmp/run",
         :user => node[:owner_name],
-        :timeout => 120, # seconds
+        :timeout => 240, # seconds
         :worker_name => 'delayed_job',
         :framework_env => node[:environment][:framework_env]
       })
