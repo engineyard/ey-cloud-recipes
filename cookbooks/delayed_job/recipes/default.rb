@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-if ( ['solo', 'app_master', 'app'].include?(node[:instance_role]) || (node[:instance_role] == 'util' && node[:name] !~ /^(mongodb|redis|memcache)/) )
+if ( %w(solo app_master app).include?(node[:instance_role]) || (node[:instance_role] == 'util' && node[:name] !~ /^(mongodb|redis|memcache)/) )
 
   node[:applications].each do |app_name,data|
 
@@ -13,20 +13,16 @@ if ( ['solo', 'app_master', 'app'].include?(node[:instance_role]) || (node[:inst
     else
       case node[:ec2][:instance_type]
         when 'm1.small'
-          Chef::Log.info "Delayed Job being configured for an EC2 m1.small"
           worker_count = 1
         when 'c1.medium'
-          Chef::Log.info "Delayed Job being configured for an EC2 c1.medium"
           worker_count = 2
         when 'c1.xlarge'
-          Chef::Log.info "Delayed Job being configured for an EC2 c1.xlarge"
           worker_count = 4
         else
-          Chef::Log.info "Delayed Job being configured for an EC2 instance of unknown size" 
           worker_count = 2
       end
     end
-    Chef::Log.info "Delayed Job worker count has been set to '#{worker_count}'"
+    Chef::Log.info "Delayed Job worker count has been set to '#{worker_count}' as this is an EC2 instance of size #{node[:ec2][:instance_type]}"
 
     template "/etc/monit.d/#{app_name}_delayed_jobs.monitrc" do
       source "dj.monitrc.erb"
@@ -37,7 +33,7 @@ if ( ['solo', 'app_master', 'app'].include?(node[:instance_role]) || (node[:inst
         :num_workers => worker_count,
         :app_name => app_name,
         :app_dir => "/data/#{app_name}/current",
-        :pid_dir => "/data/#{app_name}/current/tmp/run",
+        :pid_dir => "/data/#{app_name}/current/tmp/pids",
         :user => node[:owner_name],
         :timeout => 240, # seconds
         :worker_name => 'delayed_job',
