@@ -11,11 +11,11 @@ if ['util'].include?(node[:instance_role])
     end
 
     enable_package "dev-db/redis" do
-      version "2.4.2"
+      version "2.4.6"
     end
 
     package "dev-db/redis" do
-      version "2.4.2"
+      version "2.4.6"
       action :upgrade
     end
 
