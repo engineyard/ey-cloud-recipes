@@ -28,7 +28,7 @@ if @node[:mongo_replset]
       execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
         command "until echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet; do sleep 10s; done"
       end
-    end    
+    end
     # ----- configure the set
     execute "setup replset #{@node[:mongo_replset]}" do
       command "#{@node[:mongo_path]}/bin/mongo local #{setup_js}"

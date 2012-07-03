@@ -87,6 +87,11 @@ template "/etc/conf.d/mongodb" do
   })
 end
 
+execute "enable-mongodb" do
+  command "rc-update add mongodb default"
+  action :run
+end
+
 execute "/etc/init.d/mongodb restart" do
   command "/etc/init.d/mongodb restart" 
 end

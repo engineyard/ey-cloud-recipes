@@ -14,19 +14,20 @@ when "i686"
   # Chef::Log.info "MongoDB cannot be hold data in 32bit systems"
 
 else
-  
   if (@node[:instance_role] == 'util' && @node[:name].match(/mongodb/)) || (@node[:instance_role] == "solo" &&  @node[:mongo_utility_instances].length == 0)
-    # Chef::Log.info "installing in util with mongo"
-    
+    ey_cloud_report "mongodb" do
+      message "configuring mongodb"
+    end
+
     require_recipe "mongodb::install"
     require_recipe "mongodb::configure"
     require_recipe "mongodb::start"
-    
+
     if @node[:mongo_replset]
       require_recipe "mongodb::replset"
     end
   end
-  
+
   # Setup an arbiter on the db_master|solo as replica sets need another vote to properly failover.  If you have a Replica set > 3 nodes we don't set this up, you can tune this obviously.
   if (['db_master','solo'].include?(@node[:instance_role]) &&  @node[:mongo_utility_instances].length == 2)
     Chef::Log.info "Setting up Mongo in db_master or solo"
