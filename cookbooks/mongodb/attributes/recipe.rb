@@ -12,14 +12,12 @@ if @attribute["utility_instances"].empty?
   # We have detected no utility instances, so we are skipping the logic for this portion of the recipe.
 else
     if (@attribute[:instance_role] == 'util' && @attribute[:name].match(/^mongodb_repl/)) 
-              
         mongo_replset ( @attribute["name"].sub("mongodb_repl","").split("_")[0] )
         # Chef::Log.info "Node is a member of a replica set #{@node[:mongo_replset]}"
-    else  
+    else
         mongo_replset( false )
         # Chef::Log.info "Node is not a member of a replica set role: #{@attribute[:instance_role]}"
     end
-    
 end
 
 mongo_journaling ( true )
