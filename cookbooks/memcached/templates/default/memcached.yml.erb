@@ -21,7 +21,9 @@ defaults:
   benchmarking: false
   sessions: false
   fragments: true
-  <% unless @server_names.nil? %>
+  <% if !@server_names.nil? && !@server_names.empty? %>
   servers:
-  - <%= @server_names.join(":11211\n  - ") %>:11211
+  <% @server_names.each do |server_name| %>
+  - <%= server_name %>:11211
+  <% end %>
   <% end %>
