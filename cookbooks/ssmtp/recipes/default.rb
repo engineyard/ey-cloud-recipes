@@ -4,7 +4,7 @@ require 'pp'
 # Recipe:: default
 #
 
-if ['solo', 'app', 'app_master'].include?(node[:instance_role])
+if ['solo', 'app', 'util', 'app_master'].include?(node[:instance_role])
 
   directory "/etc/ssmtp" do
     recursive true
