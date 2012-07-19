@@ -1,4 +1,4 @@
-riak :version => "1.1.2",
+riak :version => "1.1.4",
      :data_root => "/data/riak/data",
      :map_js_vm_count => "8",
      :reduce_js_vm_count => "6",
