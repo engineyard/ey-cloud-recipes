@@ -38,6 +38,7 @@ end
 # Make sure you have the EngineYard "enable_package" recipe
 enable_package 'app-admin/syslog-ng' do
   version PAPERTRAIL_CONFIG[:syslog_ng_version]
+  override_hardmask true
 end
 
 package 'app-admin/syslog-ng' do
