@@ -17,11 +17,11 @@ class GenericWorkerStrategy
     log strategy, node
     return strategy
   end
-  
+
   def self.for_solo
     [ WorkerRole.new(1, nil) ]
   end
-  
+
   def self.for_cluster(role, instance_type)
     case instance_type
       when 'm1.small'
@@ -33,10 +33,10 @@ class GenericWorkerStrategy
       else
         worker_count = 2
     end
-    
+
     [ WorkerRole.new(worker_count, nil) ]
   end
-  
+
   def self.log(strategy, node)
     strategy.each do | role |
       if role.queue.nil?
@@ -50,15 +50,15 @@ class GenericWorkerStrategy
 end
 
 class NamedWorkerStrategy < GenericWorkerStrategy
-  
+
   def self.for_solo
-    [ 
+    [
       WorkerRole.new(1, 'reporting'),
       WorkerRole.new(1, 'util'),
       WorkerRole.new(1, 'mail')
     ]
   end
-  
+
   def self.for_cluster(role, instance_type)
     case instance_type
       when 'm1.small'
@@ -78,14 +78,14 @@ class NamedWorkerStrategy < GenericWorkerStrategy
         util_count = 1 if role == 'app'
         mail_count = 2
     end
-    
-    [ 
+
+    [
       WorkerRole.new(reporting_count, 'reporting'),
       WorkerRole.new(util_count, 'util'),
       WorkerRole.new(mail_count, 'mail')
     ]
   end
-  
+
 end
 
 if ( %w(solo app_master app).include?(node[:instance_role]) || (node[:instance_role] == 'util' && node[:name] !~ /^(mongodb|redis|memcache)/) )
