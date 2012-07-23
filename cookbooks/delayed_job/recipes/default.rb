@@ -60,6 +60,10 @@ class NamedWorkerStrategy < GenericWorkerStrategy
   end
 
   def self.for_cluster(role, instance_type)
+    reporting_count = 0
+    util_count = 0
+    mail_count = 0
+    
     case instance_type
       when 'm1.small'
         reporting_count = 1 if role == 'app_master'
@@ -78,7 +82,7 @@ class NamedWorkerStrategy < GenericWorkerStrategy
         util_count = 1 if role == 'app'
         mail_count = 2
     end
-
+    
     [
       WorkerRole.new(reporting_count, 'reporting'),
       WorkerRole.new(util_count, 'util'),
