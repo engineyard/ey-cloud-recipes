@@ -1,6 +1,6 @@
 mongo_version("2.0.2")
 mongo_name("mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
-mongo_path("/opt/mongodb-linux-#{@attribute["kernel"]["machine"]}-#{@attribute["mongo_version"]}")
+mongo_path("/usr/")
 mongo_base("/data/mongodb")
 mongo_port("27017")
 total_memory_mb(`df -m /data | awk '/dev/ {print $2}'`.to_i)
