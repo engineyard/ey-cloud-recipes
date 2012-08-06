@@ -1,4 +1,5 @@
 user = @node[:users].first
+mongodb_bin = "#{@node[:mongo_path]}/bin"
 
 if ['db_master','solo'].include? @node[:instance_role]
   #under /mnt because it's an arbiter. No data saved
@@ -52,7 +53,7 @@ remote_file "/etc/logrotate.d/mongodb" do
   action :create
 end
 
-mongodb_options = { :exec => "#{@node[:mongo_path]}/bin/mongod",
+mongodb_options = { :exec => "#{@node[:mongo_path]}/mongod",
                     :data_path => mongo_data,
                     :log_path => mongo_log,
                     :user => user[:username],
