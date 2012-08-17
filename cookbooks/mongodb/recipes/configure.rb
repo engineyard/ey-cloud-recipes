@@ -94,6 +94,7 @@ execute "enable-mongodb" do
 end
 
 execute "/etc/init.d/mongodb restart" do
-  command "/etc/init.d/mongodb restart" 
+  command "/etc/init.d/mongodb restart"
+  action :run
 end
 
