@@ -40,6 +40,9 @@
 #uncomment to run the resque recipe
 # require_recipe "resque"
 
+#uncomment to run redis.yml recipe
+# require_recipe "redis-yml"
+
 #uncomment to run the resque-scheduler recipe
 # require_recipe "resque-scheduler"
 
