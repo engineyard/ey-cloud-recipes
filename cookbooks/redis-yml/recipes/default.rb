@@ -1,8 +1,11 @@
 if ['app_master', 'app'].include?(node[:instance_role])
-  # WHEN GIVING INSTRUCTIONS IN DOC
-  # AND IN README, LET THE CUSTOMER KNOW TO MODIFY THIS LINE
-  # SO THAT IT FINDS THEIR REDIS INSTANCE
-  redis_instance = node['utility_instances'].first #find { |instance| instance['name'] == 'redis' }
+
+  #If you have only one utility instance uncomment the line below containing ".first"
+  #If you have multiple utility instances you can specify it by uncommenting the line below containing ".find"  
+    #You can change the name of the instance based on whatever name you have chosen for your instance.
+
+  #redis_instance = node['utility_instances'].first
+  #redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
   
   if redis_instance
     node[:applications].each do |app, data|
