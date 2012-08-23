@@ -62,6 +62,12 @@ node[:applications].each do |app,data|
     ignore_failure true
   end
   
+  gem_package "sunspot_solr" do
+    source "http://gemcutter.org"
+    action :install
+    ignore_failure true
+  end
+  
   gem_package "nokogiri" do
     source "http://gemcutter.org"
     ignore_failure true
