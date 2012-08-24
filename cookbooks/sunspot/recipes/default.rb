@@ -4,7 +4,7 @@
 #
  
 require 'digest/sha1'
-SOLR_VERSION = '1.4.1'
+SOLR_VERSION = '3.6.1'
  
 node[:applications].each do |app,data|
  
@@ -56,7 +56,7 @@ node[:applications].each do |app,data|
     action :run
   end
  
-  gem_package "sunspot_rails" do
+  gem_package "sunspot_solr" do
     source "http://gemcutter.org"
     action :install
     ignore_failure true
