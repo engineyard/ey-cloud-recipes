@@ -8,18 +8,21 @@ define :enable_package, :version => nil, :override_hardmask => false do
   end
 
   # won't override a hard-mask
-  update_file "add #{full_name} to package.keywords" do
+  p = "/etc/portage/package.keywords/local"
+  update_file "add #{full_name} to #{p}" do
     action :append
-    path "/etc/portage/package.keywords/local"
+    path p
     body "=#{full_name}"
-    not_if "grep '=#{full_name}' /etc/portage/package.keywords/local"
+    not_if "grep '=#{full_name}' #{p}"
   end
 
   if params[:override_hardmask]
-    update_file "add #{full_name} to package.unmask" do
-      action :rewrite
-      path "/etc/portage/package.unmask/#{full_name.gsub(/\W/, '_')}"
+    p = "/etc/portage/package.unmask/engineyard_overrides"
+    update_file "add #{full_name} to #{p}" do
+      action :append
+      path p
       body "=#{full_name}"
+      not_if "grep '=#{full_name}' #{p}"
     end
   end
 end
