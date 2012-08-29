@@ -23,7 +23,7 @@ check_vars = {
 }
 
 if node[:instance_role].include?('db_master')
-  
+
   directory "#{install_path}" do
     owner 'root'
     group 'root'
@@ -31,7 +31,7 @@ if node[:instance_role].include?('db_master')
     action :create
     recursive true
   end
-  
+
   template "#{install_path}/replication_check.rb" do
     source "replication_check.rb.erb"
     owner 'root'
@@ -39,7 +39,7 @@ if node[:instance_role].include?('db_master')
     mode 0755
     variables(check_vars)
   end
-  
+
   cron "replica_check" do
     minute   '10'
     hour     '*'
@@ -48,7 +48,7 @@ if node[:instance_role].include?('db_master')
     weekday  '*'
     command  "#{install_path}/replication_check.rb"
   end
-  
+
   cron "allow_success_message" do
     minute  '30'
     hour    '8'
@@ -57,5 +57,5 @@ if node[:instance_role].include?('db_master')
     weekday '*'
     command "rm #{install_path}/send_message.txt"
   end
-  
+
 end
