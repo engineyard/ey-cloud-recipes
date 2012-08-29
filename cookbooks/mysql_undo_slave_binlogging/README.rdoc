@@ -1,0 +1,9 @@
+= DESCRIPTION:
+
+Use this cookbook to undo binary logging on MySQL slaves.
+
+= USAGE:
+
+Step 1) Uncomment the line that includes #require_recipe "mysql_undo_slave_binlogging" in main/recipes/default.rb
+Step 2) Commit and upload: `ey recipes upload -e <ENV>` and then apply: `ey recipes apply -e <ENV>`
+
