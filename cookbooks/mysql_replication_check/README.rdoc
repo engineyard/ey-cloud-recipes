@@ -10,19 +10,20 @@ Gems for json and yaml must be included.
 
 = USAGE:
 
-Step 1) In the ./recipes/default.rb add your sender and recipient email addresses for alerts in the 'check_vars' section.  Adjustments to the monitoring and alerting thresholds can also be made here.
-check_vars = {
-  # the number of seconds delay at which a warning alert is issued; default 30 minutes (1800 seconds)
-  :warn_level => 1800,
-  # the number of seconds delay at which a critical alert is issued; default 2 hours (7200 seconds)
-  :crit_level => 7200,
-  # valid email address to receive alerts
-  :mail_recipient => '42@douglasadams.com',
-  # valid email address for sending email alerts
-  :mail_sender => '42@douglasadams.com'
-}
+1. In the ./recipes/default.rb add your sender and recipient email addresses for alerts in the 'check_vars' section.  Adjustments to the monitoring and alerting thresholds can also be made here.
 
-Step 2) Commit and upload: `ey recipes upload -e <ENV>` and then apply: `ey recipes apply -e <ENV>`
+  check_vars = {
+    # the number of seconds delay at which a warning alert is issued; default 30 minutes (1800 seconds)
+    :warn_level => 1800,
+    # the number of seconds delay at which a critical alert is issued; default 2 hours (7200 seconds)
+    :crit_level => 7200,
+    # valid email address to receive alerts
+    :mail_recipient => '42@douglasadams.com',
+    # valid email address for sending email alerts
+    :mail_sender => '42@douglasadams.com'
+  }
+
+2. Commit and upload: <tt>ey recipes upload -e <ENV></tt> and then apply: <tt>ey recipes apply -e <ENV></tt>
 
 = NOTES:
 

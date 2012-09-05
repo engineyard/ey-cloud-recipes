@@ -60,6 +60,10 @@
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
 
+#enable features of mysql_administration cookbook
+#  mysql_administration_skip_slave_binlog
+
+
 #uncomment to include the mysql_replication_check recipe
 #require_recipe "mysql_replication_check"
 
