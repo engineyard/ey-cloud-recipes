@@ -2,10 +2,6 @@
 # Cookbook Name:: mysql_replication_check
 # Recipe:: default
 #
-#
-# Cookbook Name:: mysql_replication_check
-# Recipe:: default
-#
 
 # installation path for monitoring tool
 install_path = '/data/monitoring'

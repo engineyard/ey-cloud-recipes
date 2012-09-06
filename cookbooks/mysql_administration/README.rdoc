@@ -1,13 +1,13 @@
 = DESCRIPTION:
 
-A chef recipe for administering various MySQL settings on Engine Yard AppCloud.  This recipe defines multiple methods that 
-can be called from main/recipes/default.rb to enable/disable different features.
+A chef recipe for administering various MySQL settings on Engine Yard AppCloud.  This cookbook defines multiple recipes which can be enabled through <tt>cookbooks/mysql_administration/recipes/default.rb</tt>. Some of the recipes in this cookbook may limit compatibility with platform functionality; see the available features section for further details.
 
 = USAGE:
 
-1. Uncomment the line for the feature desired in main/recipes/default.rb; all features for this cookbook have a prefix of <tt>mysql_administration_</tt>
+1. Uncomment the line <tt>require_recipe "mysql_administration"</tt> in <tt>cookbooks/main/recipes/default.rb</tt>.
+2. Uncomment the mysql_administration recipe(s) you want to use in <tt>cookbooks/mysql_administration/recipes/default.rb</tt>
 2. Commit and upload: <tt>ey recipes upload -e <ENV></tt> and then apply: <tt>ey recipes apply -e <ENV></tt>
 
 = AVAILABLE FEATURES:
 
-* skip_slave_binlog - Disables binary logging on slave databases which may reduce replica load and disk space requirements. Disabling binary logs may limit future functionality so only use this if absolutely necessary. A database restart <tt>/etc/init.d/mysql restart</tt> on the effected slave is required before this takes effect.
+* skip_slave_binlog - Disables binary logging on slave databases which may reduce replica load and disk space requirements. If binary logging is already active on the slave database then a database restart (<tt>/etc/init.d/mysql restart</tt>) is required before this takes effect. Using this recipe may limit future functionality such as the ability to perform rapid database failovers.

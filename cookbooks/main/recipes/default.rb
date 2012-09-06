@@ -60,16 +60,13 @@
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
 
-#enable features of mysql_administration cookbook
-#  mysql_administration_skip_slave_binlog
-
+#NOTE: the following recipe requires additional configuration options
+# under cookbooks/mysql_administration/recipes/default.rb
+#uncomment to include the mysql_administration recipe
+# require_recipe "mysql_administration"
 
 #uncomment to include the mysql_replication_check recipe
 #require_recipe "mysql_replication_check"
-
-#uncomment to include the mysql_administrative_tools recipe
-# additional configuration of this recipe is required
-#require_recipe "mysql_administrative_tools"
 
 #uncomment to include the Elasticsearch recipe
 #require_recipe "elasticsearch"
