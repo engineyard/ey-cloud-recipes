@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: skip_slave_binlog
-# Recipe:: default
+# Cookbook Name:: mysql_administration
+# Recipe:: skip_slave_binlog
 #
 if ['db_slave'].include?(node[:instance_role])
   template "/etc/mysql.d/ey_skip_slave_binlog.cnf" do

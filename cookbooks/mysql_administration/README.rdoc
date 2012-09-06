@@ -1,6 +1,6 @@
 = DESCRIPTION:
 
-A chef recipe for administering various MySQL settings on Engine Yard AppCloud.  This cookbook defines multiple recipes which can be enabled through <tt>cookbooks/mysql_administration/recipes/default.rb</tt>. Some of the recipes in this cookbook may limit compatibility with platform functionality; see the available features section for further details.
+A chef cookbook for administering various MySQL settings on Engine Yard AppCloud.  This cookbook defines multiple recipes which can be enabled through <tt>cookbooks/mysql_administration/recipes/default.rb</tt>. Some of the recipes in this cookbook may limit compatibility with platform functionality; see the available features section for further details.
 
 = USAGE:
 

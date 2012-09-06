@@ -10,5 +10,8 @@
 # ***************************************************************************************
 
 
-# If you want to disable binary logging for slave databases uncomment the following line.
+# skip_slave_binlog - Disables binary logging on slave databases. The underlying recipe
+# disables binary logging on all slaves but could be modified to disable this only on
+# specific named slaves. To disable binary logging for slave databases uncomment the
+# following line.
 #  require_recipe "mysql_administration::skip_slave_binlog"
