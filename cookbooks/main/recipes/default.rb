@@ -49,6 +49,9 @@
 #uncomment to run the redis recipe
 #require_recipe "redis"
 
+#uncomment to run the api-keys-yml recipe
+# require_recipe "api-keys-yml"
+
 #require_recipe "logrotate"
 #
 #uncomment to use the solr recipe
