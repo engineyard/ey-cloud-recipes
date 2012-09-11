@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 # Save credentials on app_master
-if ['app_master','app','solo'].include? @node[:instance_role]
+if ['app_master','app','solo','util'].include? @node[:instance_role]
   Chef::Log.info "creating app mongo.yml code"
   require_recipe "mongodb::app"
 end
