@@ -50,7 +50,7 @@
 #require_recipe "redis"
 
 #uncomment to run the api-keys-yml recipe
-require_recipe "api-keys-yml"
+# require_recipe "api-keys-yml"
 
 #require_recipe "logrotate"
 #
