@@ -86,7 +86,7 @@
 #require_recipe "newrelic_server_monitoring"
 
 # uncomment to include the PHP recipe
-# require_recipe "php"
+require_recipe "php"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])

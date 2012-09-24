@@ -9,7 +9,7 @@ node['applications'].each do |app_name, data|
     execute "update Nginx root path" do
       # The following assume the index path for your app is /public.
       # You will need to modify this if the path is different, ie: /app/webroot
-      command "sed -i -e 's_/data/#{app_name}/current;_/data/#{app_name}/current/public;_' /data/nginx/servers/#{app_name}.conf"
+      command "sed -i -e 's_/data/#{app_name}/current;_/data/#{app_name}/current/app/webroot;_' /data/nginx/servers/#{app_name}.conf"
       action :run
     end
   
