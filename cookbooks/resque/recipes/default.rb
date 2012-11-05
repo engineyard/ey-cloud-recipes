@@ -36,7 +36,7 @@ if ['util'].include?(node[:instance_role]) && node[:name] =~ /^Worker/
       owner node[:owner_name]
       group node[:owner_name]
       mode 0644
-      source "resque_yml.erb"
+      source "resque.yml.erb"
       variables({
         :environment => node[:environment][:framework_env],
         :hostname => redis_instance[:hostname]
