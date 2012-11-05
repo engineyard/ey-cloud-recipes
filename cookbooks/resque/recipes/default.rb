@@ -2,7 +2,7 @@
 # Cookbook Name:: resque
 # Recipe:: default
 #
-if ['solo', 'util'].include?(node[:instance_role])
+if ['util'].include?(node[:instance_role]) && node[:name] =~ /^Worker/
   
   execute "install resque gem" do
     command "gem install resque redis redis-namespace yajl-ruby -r"
@@ -16,6 +16,7 @@ if ['solo', 'util'].include?(node[:instance_role])
   else worker_count = 4
   end
 
+  redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
 
   node[:applications].each do |app, data|
     template "/etc/monit.d/resque_#{app}.monitrc" do
@@ -28,6 +29,18 @@ if ['solo', 'util'].include?(node[:instance_role])
       :app_name => app, 
       :rails_env => node[:environment][:framework_env] 
       }) 
+    end
+
+    # Used to set the redis hostname for the worker
+    template "/data/#{app}/shared/config/resque.yml" do
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0644
+      source "resque_yml.erb"
+      variables({
+        :environment => node[:environment][:framework_env],
+        :hostname => redis_instance[:hostname]
+      })
     end
 
     worker_count.times do |count|
