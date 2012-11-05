@@ -53,7 +53,7 @@ remote_file "/etc/logrotate.d/mongodb" do
   action :create
 end
 
-mongodb_options = { :exec => "#{@node[:mongo_path]}/mongod",
+mongodb_options = { :exec => "#{mongodb_bin}/mongod",
                     :data_path => mongo_data,
                     :log_path => mongo_log,
                     :user => user[:username],

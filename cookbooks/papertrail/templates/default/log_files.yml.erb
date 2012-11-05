@@ -1,0 +1,9 @@
+hostname: <%= @hostname %>
+files:
+  - <%= @other_logs.join("\n  - ") %>
+exclude_patterns:
+  - <%= @exclude_patterns.join("\n  - ") %>
+destination:
+  host: logs.papertrailapp.com
+  port: <%= @port %>
+ssl_server_cert: /etc/syslog.papertrail.crt
