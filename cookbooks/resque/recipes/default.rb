@@ -43,6 +43,10 @@ if ['util'].include?(node[:instance_role]) && node[:name] =~ /^Worker/
       })
     end
 
+    execute "Symlink /data/#{app}/shared/config/resque.yml to /data/#{app}/current/config/resque.yml" do
+      command "ln -sf /data/#{app}/shared/config/resque.yml /data/#{app}/current/config/resque.yml"
+    end
+
     worker_count.times do |count|
       template "/data/#{app}/shared/config/resque_#{count}.conf" do
         owner node[:owner_name]
