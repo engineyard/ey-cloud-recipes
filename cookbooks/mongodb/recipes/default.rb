@@ -21,6 +21,7 @@ else
 
     require_recipe "mongodb::install"
     require_recipe "mongodb::configure"
+    require_recipe "mongodb::backup"
     require_recipe "mongodb::start"
 
     if @node[:mongo_replset]
@@ -33,6 +34,7 @@ else
     Chef::Log.info "Setting up Mongo in db_master or solo"
     require_recipe "mongodb::install"
     require_recipe "mongodb::configure"
+    require_recipe "mongodb::backup"
     require_recipe "mongodb::start"
   end
 end
