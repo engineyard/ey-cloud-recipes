@@ -1,4 +1,4 @@
-ey-cloud-recipes/mongodb v2.0.2
+ey-cloud-recipes/mongodb v2.2.0
 --------
 
 A chef recipe for enabling mongodb v2.0.2 on Engine Yard AppCloud.  This recipe downloads the latest version binary from 10gen and sets up a 3 node MongoDB Replica Set.
@@ -8,7 +8,7 @@ It makes a few assumptions:
   * You will be running MongoDB on a utility instance(s).
   * You will be using Replica sets.
 
-MMS support 
+MMS support
 --------
 The recipe will also install Mongo Monitoring Service (MMS) on a solo or db_master. You will need to provide your api & secret keys. 
 See https://mms.10gen.com/help/ for more information.
@@ -19,11 +19,11 @@ Using it
 
   * add the following to main/recipes/default.rb,
 
-``require_recipe "mongodb"``  
+``require_recipe "mongodb"``
 
   * Upload recipes to your environment
 
-``ey recipes upload -e <environment>``  
+``ey recipes upload -e <environment>``
 
   * Add an utility instance with the following naming scheme(s)
     * For an replica set,
@@ -38,9 +38,10 @@ Using it
 Caveats
 --------
 
-Replica sets should normally be in a size of 3 or greater. This recipe does not and will not support 32-bit instances.  
+Replica sets should normally be in a size of 3 or greater. This recipe does not and will not support 32-bit instances.
 Please ensure you use 64-bit instances when you create the Utility slices.
 
+This recipe has been extended to support very basic backups. 
 
 Legend
 --------
@@ -51,9 +52,7 @@ TODO
 --------
 Things (currently) lacking from this recipe:
 
-  * Ability to set up scheduled backups of your MongoDB database
   * Ability to set up a sharded installation
-  * Arbiter support
 
 Known Bugs
 --------
