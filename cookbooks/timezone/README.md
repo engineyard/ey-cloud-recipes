@@ -1,6 +1,8 @@
 # Changing the Timezone
 
-This cookbook makes it easy to change the timezone of an instance to one that suits your geographical location, rather than the default PST zone.
+This cookbook makes it easy to change the timezone of an instance to one that suits your geographical location, rather than the default UTC zone.
+
+NOTE: Older instances on Engine Yard Cloud use(d) the PST time zone by default. We've made changes to our stack to default to UTC in an effort to better standardize our product, and any new instances launched will default to UTC.
 
 
 ## Installation
