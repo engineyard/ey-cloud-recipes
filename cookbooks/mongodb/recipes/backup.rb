@@ -14,7 +14,7 @@ if @node[:name] == mongo_nodes.last[:name]
     user = node[:users].first
     db_name = "#{app_name}_#{node[:environment][:framework_env]}"
 
-    template "/usr/local/bin/#{app_name}-mongo-backup" do
+    template "/usr/local/bin/mongo-backup" do
       source "mongo-backup.rb.erb"
       owner "root"
       group "root"
@@ -34,7 +34,7 @@ if @node[:name] == mongo_nodes.last[:name]
       cron "#{app_name}-mongo-backup" do
         hour "1"
         minute "30"
-        command "/usr/local/bin/#{app_name}-mongo-backup"
+        command "/usr/local/bin/mongo-backup"
       end
     end
   end

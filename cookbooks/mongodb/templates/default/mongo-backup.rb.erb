@@ -25,7 +25,7 @@ AWS::S3::Base.establish_connection!(
 @ismaster = `mongo --quiet --eval 'printjson(db.runCommand("ismaster"))' | grep ismaster | awk '{print $3}'| sed s/,//`
 @environment = '<%= @env %>'
 @app_name = '<%= @app_name %>'
-@keep = 10 * @collections.length
+@keep = 10 * @databases.length
 @bucket = "ey-backup-#{Digest::SHA1.hexdigest('<%= @id_key %>')[0..11]}-mongo"
 @tmpname = "#{Time.now.strftime("%Y-%m-%dT%H:%M:%S").gsub(/:/, '-')}"
 FileUtils.mkdir_p '/mnt/tmp'
@@ -36,22 +36,20 @@ end
 
 if @ismaster == "false" #only dump non-primary nodes
   @databases.each do |database|
-    @collections.each do |collection|
-      token = "#{database}-#{collection}"
-      mongocmd = "mongodump -h 127.0.0.1 -d #{database} -u #{@dbuser} -p #{@dbpass} -o /mnt/tmp/#{token}.#{@tmpname} && tar cjf \"/mnt/tmp/#{token}.#{@tmpname}.tar.bz\" \"/mnt/tmp/#{token}.#{@tmpname}\""
-      if system(mongocmd)
-        AWS::S3::S3Object.store(
-          "/#{@environment}.#{@app_name}/#{@app_name}-#{collection}.#{@tmpname}.bson.tar.bz",
-          open("/mnt/tmp/#{token}.#{@tmpname}.tar.bz"),
-          @bucket,
-          :access => :private
-        )
-        FileUtils.rm "/mnt/tmp/#{token}.#{@tmpname}.tar.bz"
-        FileUtils.rm_r "/mnt/tmp/#{token}.#{@tmpname}"
-        puts "successful backup: #{database}.#{@tmpname}"
-      else
-        raise "Unable to dump database#{database} wtf?"
-      end
+    token = "#{database}"
+    mongocmd = "mongodump -h 127.0.0.1 -d #{database} -u #{@dbuser} -p #{@dbpass} -o /mnt/tmp/#{token}.#{@tmpname} && tar cjf \"/mnt/tmp/#{token}.#{@tmpname}.tar.bz\" \"/mnt/tmp/#{token}.#{@tmpname}\""
+    if system(mongocmd)
+      AWS::S3::S3Object.store(
+        "/#{@environment}.#{@app_name}/#{@app_name}-#{token}.#{@tmpname}.bson.tar.bz",
+        open("/mnt/tmp/#{token}.#{@tmpname}.tar.bz"),
+        @bucket,
+        :access => :private
+      )
+      FileUtils.rm "/mnt/tmp/#{token}.#{@tmpname}.tar.bz"
+      FileUtils.rm_r "/mnt/tmp/#{token}.#{@tmpname}"
+      puts "successful backup: #{database}.#{@tmpname}"
+    else
+      raise "Unable to dump database#{database} wtf?"
     end
   end
 
