@@ -2,7 +2,7 @@ if @node[:postgres_version] == "9.0"
   postgis_version = "1.5.2"
   proj_version = "4.6.1"
   geos_version = "3.2.2"
-  
+
   package_use "sci-libs/geos" do
     flags "-ruby"
   end
@@ -45,7 +45,7 @@ elsif @node[:postgres_version] == "9.1"
   execute "setting emerge options" do
     command "emerge --ignore-default-opts dev-db/postgis"
   end
-
+elsif@node[:postgres_version] == "9.2"
 end
 
 
