@@ -37,7 +37,7 @@ Using it
       * elasticsearch_2
       * ...
 
-  * Produce /data/<appname>/shared/config/elasticsearch.yml on all instances so you can easily parse/configure elasticsearch for your usage.
+  * Produce /data/#{appname}/shared/config/elasticsearch.yml on all instances so you can easily parse/configure elasticsearch for your usage.
 
 Plugins
 --------
