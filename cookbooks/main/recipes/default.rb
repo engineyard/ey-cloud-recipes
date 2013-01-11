@@ -113,7 +113,12 @@
   # postgresql9_pg_trgm "dbname"
   # postgresql9_pgcrypto "dbname"
   # postgresql9_pgrowlocks "dbname"
-  # postgresql9_postgis "dbname" - Only works for 9.0 and 9.1 atm
+
+  # PostGis 1.5 (use with versions 9.0, 9.1)
+  # postgresql9_postgis "dbname"
+
+  # PostGis 2.0 (use with version 9.2)
+  # postgresql9_postgis2 "dbname"
   # postgresql9_seg "dbname"
   # postgresql9_sslinfo "dbname"
   # postgresql9_tablefunc "dbname"
