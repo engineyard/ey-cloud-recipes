@@ -114,7 +114,7 @@
   # postgresql9_pgcrypto "dbname"
   # postgresql9_pgrowlocks "dbname"
 
-  # PostGis 1.5 (use with versions 9.0, 9.1)
+  # PostGis 1.5 (use with versions 9.0, 9.1, 9.2)
   # postgresql9_postgis "dbname"
 
   # PostGis 2.0 (use with version 9.2)

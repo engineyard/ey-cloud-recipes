@@ -278,7 +278,7 @@ extension applied to.
 ``postgresql9_pg_stat_statements "dbname""``
 
 ##PostGIS 1.5
-###supported versions: 9.0, 9.1
+###supported versions: 9.0, 9.1, 9.2
 This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend
 spatial database for geographic information systems (GIS).
 
