@@ -21,19 +21,19 @@ define :postgresql9_postgis do
         supported_versions %w[9.0]
         extname"postgis-1.5/postgis_comments"
       end
-  elsif ["9.1"].include?(@node[:postgres_version])
+  elsif ["9.1","9.2"].include?(@node[:postgres_version])
     pgversion = @node[:postgres_version]
     include_recipe "postgresql9_extensions::ext_postgis_install"
 
-     execute "Postgresql loading postgis on database #{dbname_to_use} for version #{pgversion}" do
+     execute "Postgresql loading postgis 1.5 on database #{dbname_to_use} for version #{pgversion}" do
        command "psql -U postgres -d #{dbname_to_use} -f /usr/share/postgresql-#{pgversion}/contrib/postgis-1.5/postgis.sql"
      end
 
-    execute "Postgresql loading spatial_ref_sys on database #{dbname_to_use} for version #{pgversion} as a contrib" do
+    execute "Postgresql loading spatial_ref_sys on database #{dbname_to_use} for version #{pgversion}" do
       command "psql -U postgres -d #{dbname_to_use} -f /usr/share/postgresql-#{pgversion}/contrib/postgis-1.5/spatial_ref_sys.sql"
     end
 
-    execute "Postgresql loading postgis_comments on database #{dbname_to_use} for version #{pgversion} as a contrib" do
+    execute "Postgresql loading postgis_comments on database #{dbname_to_use} for version #{pgversion}" do
       command "psql -U postgres -d #{dbname_to_use} -f /usr/share/postgresql-#{pgversion}/contrib/postgis-1.5/postgis_comments.sql"
     end
 
