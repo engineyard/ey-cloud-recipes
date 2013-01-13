@@ -277,7 +277,7 @@ extension applied to.
 
 ``postgresql9_pg_stat_statements "dbname""``
 
-##PostGIS
+##PostGIS 1.5
 ###supported versions: 9.0, 9.1
 This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend
 spatial database for geographic information systems (GIS).
@@ -289,6 +289,18 @@ extension applied to.
 
 ``postgresql9_postgis "dbname""``
 
+
+##PostGIS 2.0
+###supported versions: 9.2
+This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend
+spatial database for geographic information systems (GIS).
+
+Enabling this extension:
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this
+extension applied to.
+
+``postgresql9_postgis2 "dbname""``
 
 ##seg
 ###supported versions: 9.0, 9.1, 9.2
