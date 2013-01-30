@@ -29,13 +29,11 @@ define :update_file, :action => :append do
     end
   # truncate
   when :truncate
-
     execute "truncate-#{filepath}" do
       command "> #{filepath}"
 
       not_if params[:not_if] if params[:not_if]
       only_if params[:only_if] if params[:only_if]
     end
-
   end
 end
