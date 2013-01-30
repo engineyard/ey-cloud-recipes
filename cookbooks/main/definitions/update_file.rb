@@ -1,26 +1,25 @@
 define :update_file, :action => :append do
   require 'tempfile'
 
+  # variables
   filepath = params[:path] || params[:name]
+  params[:action] = params[:action].to_sym
 
+  # the file
   file params[:name] do
-    backup params[:backup] if params[:backup]
-    group params[:group] if params[:group]
-    mode params[:mode] if params[:mode]
-    owner params[:owner] if params[:owner]
     path filepath
-    not_if params[:not_if] if params[:not_if]
-    only_if params[:only_if] if params[:only_if]
+    %w[backup group mode owner only_if not_if].each do |attr|
+      send(attr, params[attr.to_sym]) if params[attr.to_sym]
+    end
   end
 
-  case params[:action].to_sym
-  when :append, :rewrite
-
-    mode = params[:action].to_sym == :append ? 'a' : 'w'
-
-    ruby_block "#{params[:action]}-to-#{filepath}" do
+  # perform action
+  case params[:action]
+  # append
+  when :append
+    ruby_block "append-to-#{filepath}" do
       block do
-        File.open(filepath, mode) do |f|
+        File.open(filepath, 'a') do |f|
           f.puts params[:body]
         end
       end
@@ -28,7 +27,7 @@ define :update_file, :action => :append do
       not_if params[:not_if] if params[:not_if]
       only_if params[:only_if] if params[:only_if]
     end
-
+  # truncate
   when :truncate
 
     execute "truncate-#{filepath}" do
