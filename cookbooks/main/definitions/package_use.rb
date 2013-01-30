@@ -1,11 +1,6 @@
 define :package_use, :flags => nil do
-  name = params[:name]
-  flags = params[:flags]
-  full_name = name + (" #{flags}" if flags)
-
   file "/etc/portage/package.use" do
     action :delete
-
     not_if "file -d /etc/portage/package.use"
   end
 
@@ -15,12 +10,12 @@ define :package_use, :flags => nil do
 
   execute "touch /etc/portage/package.use/local" do
     action :run
-    not_if { FileTest.exists?("/etc/portage/package.use/local") }
+    not_if "test -f /etc/portage/package.use/local"
   end
 
   update_file "local portage package.use" do
     path "/etc/portage/package.use/local"
-    body full_name
+    body [params[:name], params[:flags]].compact.join(' ')
     not_if "grep '#{full_name}' /etc/portage/package.use/local"
   end
 end
