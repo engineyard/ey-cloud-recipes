@@ -1,16 +1,16 @@
-= DESCRIPTION:
+## DESCRIPTION:
 
 This cookbook configures exim on each instance.  
 
-= SECURITY:
+## SECURITY:
 
 Security concerns? If you are an AppCloud customer we do not open port 25 outside of your environment in the Security Groups.  So no one outside of your environment can contact your exim server.
 
-= WARNING: 
+## WARNING: 
 
 Please keep your SMTP credentials private, do not ever post them in a public github repo.  If you use this recipe please mark your repository as private and never post your credentials on github.
 
-= USAGE:
+## USAGE:
 
 Step 1) Modify main/recipes/default.rb to uncomment the exim_auth block like below with your credentials.
 
@@ -23,7 +23,7 @@ Step 1) Modify main/recipes/default.rb to uncomment the exim_auth block like bel
 
 Then commit and ey recipes upload -e <ENV> and then apply ey recipes apply -e <ENV>
 
-= NOTES:
+## NOTES:
 
 There is no queue monitoring with this enabled.  As ideally you would be sending directly to Sendgrid.  
 
