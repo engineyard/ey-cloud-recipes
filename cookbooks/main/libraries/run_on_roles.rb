@@ -14,7 +14,13 @@ class Chef
     
     def on_utilities(*names, &block) do
       if names.include?(node[:name])
-        run_on_roles('util', 'solo', &block)
+        run_on_roles('util', &block)
+      end
+    end
+
+    def on_utility_or_solo(name, &block) do
+      if node[:instance_role] == 'solo' || node[:name] == name
+        yield
       end
     end
     
@@ -22,10 +28,8 @@ class Chef
       run_on_roles('db_master', 'solo', &block)
     end
     
-    def on_db_servers(&block) do
-      if names.include?(node[:name])
-        run_on_roles('db_slave', 'solo', &block)
-      end
+    def on_db_servers(*names, &block) do
+      run_on_roles('db_master', 'db_slave', 'solo', &block)
     end
     
     protected
