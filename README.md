@@ -64,6 +64,10 @@ TODO
 
 TODO
 
+#### Solr / Sunspot
+
+TODO
+
 ### Removed Recipes
 
 The following recipes have been deemed obselete and therefore removed:
