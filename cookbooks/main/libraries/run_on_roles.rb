@@ -19,7 +19,7 @@ class Chef
     end
 
     def on_solo_or_utility(name, &block) do
-      if role == 'solo' || (role == 'util' && [nil, '', name.to_s].include?(node[:name].to_s))
+      if role?(:solo) || (role?(:util) && [nil, '', name.to_s].include?(node[:name].to_s))
         yield
       end
     end
@@ -35,7 +35,7 @@ class Chef
     protected
     
     def run_on_roles(*roles, &block)
-      yield if roles.include?(role)
+      yield if role?(roles)
     end
   end
 end
