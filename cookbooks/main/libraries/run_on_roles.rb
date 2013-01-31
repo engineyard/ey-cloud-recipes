@@ -13,13 +13,13 @@ class Chef
     end
     
     def on_utilities(*names, &block) do
-      if names.include?(node[:name])
+      if names.empty? || names.flatten.map(&:to_s).include?(node[:name])
         run_on_roles('util', &block)
       end
     end
 
-    def on_utility_or_solo(name, &block) do
-      if node[:instance_role] == 'solo' || node[:name] == name
+    def on_solo_or_utility(name, &block) do
+      if role == 'solo' || (role == 'util' && [nil, '', name.to_s].include?(node[:name].to_s))
         yield
       end
     end
@@ -28,14 +28,14 @@ class Chef
       run_on_roles('db_master', 'solo', &block)
     end
     
-    def on_db_servers(*names, &block) do
+    def on_db_servers(&block) do
       run_on_roles('db_master', 'db_slave', 'solo', &block)
     end
     
     protected
     
     def run_on_roles(*roles, &block)
-      yield if roles.include?(node[:instance_role])
+      yield if roles.include?(role)
     end
   end
 end
