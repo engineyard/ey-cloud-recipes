@@ -4,4 +4,4 @@ Dir['tasks/*.rake'].each do |task|
 end
 
 # default task
-task :default => "test:syntax"
+task :default => ["test:syntax", "test:lint"]
