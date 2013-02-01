@@ -1,3 +1,14 @@
+desc "Test your cookbooks for syntax errors"
+task :test do
+  Dir["cookbooks/**/*.rb"].each do |recipe|
+    sh "ruby -c #{recipe}" do |ok, res|
+      raise "Syntax error in #{recipe}" unless ok
+    end
+  end
+end
+
+task :default => :test
+
 desc "Create new cookbook skeleton"
 task :cookbook do
   # check cookbook name
