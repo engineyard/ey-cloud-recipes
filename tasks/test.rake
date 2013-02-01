@@ -11,7 +11,7 @@ namespace :test do
   desc "Lint your cookbooks"
   task :lint do
     if Gem::Version.new("1.9.2") <= Gem::Version.new(RUBY_VERSION.dup)
-      sh "foodcritic --epic-fail any cookbooks/"
+      sh "foodcritic -I test/foodcritic/* --epic-fail any cookbooks/"
     else
       puts "Lint run skipped for Ruby 1.9.1 and below."
     end
