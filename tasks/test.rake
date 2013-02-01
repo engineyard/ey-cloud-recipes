@@ -17,3 +17,6 @@ namespace :test do
     end
   end
 end
+
+desc "Run all testing"
+task :test => ["test:syntax", "test:lint"]
