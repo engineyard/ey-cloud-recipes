@@ -13,6 +13,19 @@ on_solo_or_utility(node[:sidekiq_utility_name]) do
     message "Setting up sidekiq"
   end
   
+  # reload monit
+  execute "sidekiq-reload-monit" do
+    command "monit reload && sleep 2 && monit restart all -g #{app_name}_sidekiq"
+    action :nothing
+  end
+
+  # bin script
+  template "/engineyard/bin/sidekiq" do
+    mode 0755
+    source "sidekiq.erb" 
+    notifies :run, resources(:execute => 'sidekiq-reload-monit') 
+  end
+  
   # loop through applications
   applications.each do |app_name, data|
     # monit
@@ -24,13 +37,6 @@ on_solo_or_utility(node[:sidekiq_utility_name]) do
         :app_name => app_name, 
         :rails_env => framework_env
       })
-      notifies :run, resources(:execute => 'sidekiq-reload-monit') 
-    end
-
-    # bin script
-    template "/engineyard/bin/sidekiq" do
-      mode 0755
-      source "sidekiq.erb" 
       notifies :run, resources(:execute => 'sidekiq-reload-monit') 
     end
 
@@ -46,12 +52,6 @@ on_solo_or_utility(node[:sidekiq_utility_name]) do
         })
         notifies :run, resources(:execute => 'sidekiq-reload-monit') 
       end
-    end
-
-    # reload monit
-    execute "sidekiq-reload-monit" do
-      command "monit reload && sleep 2 && monit restart all -g #{app_name}_sidekiq"
-      action :nothing
     end
   end 
 end
