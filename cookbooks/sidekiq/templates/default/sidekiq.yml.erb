@@ -1,22 +1,9 @@
+# sidekiq settings
+# see: https://github.com/mperham/sidekiq/blob/master/examples/config.yml
 ---
-<% if @verbose %>
 :verbose: <%= @verbose %>
-<% end %>
-<% if @environment %>
-:environment: <%= @environment %>
-<% end %>
-<% if @require %>
-:require: <%= @require %>
-<% end %>
-<% if @pidfile %>
-:pidfile: <%= @pidfile %>
-<% end %>
-<% if @concurrency %>
 :concurrency: <%= @concurrency %>
-<% end %>
-<% if @queues %>
 :queues:
-  <% @queues.each do |name, priority| %>
-  - [<%= name %>, <%= priority %>]
-  <% end %>
+<% @queues.to_a.each do |q| %>
+  - [<%= q.join(', ') %>]
 <% end %>
