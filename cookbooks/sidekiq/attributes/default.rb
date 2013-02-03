@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #
 # Cookbook Name:: sidekiq
 # Attrbutes:: default
@@ -25,3 +26,7 @@ sidekiq({
   # Verbose
   :verbose => false
 })
+=======
+sidekiq_workers(1)
+sidekiq_utility_name('sidekiq')
+>>>>>>> ec0a0fd3582b9d5d364f67ff40890c82baa71261
