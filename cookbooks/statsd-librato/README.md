@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a simple chef recipe that installs [StatsD][statsd] with [Librato Metrics](https://metrics.librato.com) backend.
+This is a simple chef recipe that installs [StatsD](https://github.com/etsy/statsd) with [Librato Metrics](https://metrics.librato.com) backend.
 
 ## Requirements
 
@@ -10,7 +10,7 @@ This is a simple chef recipe that installs [StatsD][statsd] with [Librato Metric
 
 ## Configuration
 
-* Set your [Librato Metrics](https://metrics.librato.com) credentials in recipes/defatult.rb.
+* Set your [Librato Metrics](https://metrics.librato.com) credentials in ```cookbooks/recipes/defatult.rb```.
 
 ```ruby
 librato_email = "you@example.com"
@@ -19,7 +19,7 @@ librato_token = "your-token-goes-here"
 
 ## Enabling
 
-* Enable the recipe in cookbooks/main/recipes/default.rb.
+* Enable the recipe in ```cookbooks/main/recipes/default.rb```.
 
 ```ruby
 # uncomment to include the StatsD-Librato recipe
