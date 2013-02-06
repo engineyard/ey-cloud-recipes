@@ -39,7 +39,7 @@ if statsd_enabled_env && statsd_enabled_instance
     mode 0644
     source "config.js.erb"
     variables({
-      :statsd_port => port
+      :statsd_port => port,
       :librato_email => librato_email,
       :librato_token => librato_token
     })
