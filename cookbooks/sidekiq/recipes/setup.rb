@@ -10,9 +10,9 @@ if named_util_or_app_server?(node[:sidekiq][:utility_name])
   end
 
   # bin script
-  template "/engineyard/bin/sidekiq" do
+  remote_file "/engineyard/bin/sidekiq" do
     mode 0755
-    source "sidekiq.erb" 
+    source "sidekiq" 
     backup false
   end
   
@@ -34,7 +34,7 @@ if named_util_or_app_server?(node[:sidekiq][:utility_name])
         :workers => node[:sidekiq][:workers],
         :rails_env => node[:environment][:framework_env]
       })
-      notifies :run, resources(:execute => "restart-sidekiq-for-#{app_name}"), :immediately
+      notifies :run, resources(:execute => "restart-sidekiq-for-#{app_name}")
     end
 
     # yml files
@@ -46,7 +46,7 @@ if named_util_or_app_server?(node[:sidekiq][:utility_name])
         source "sidekiq.yml.erb"
         backup false
         variables(node[:sidekiq])
-        notifies :run, resources(:execute => "restart-sidekiq-for-#{app_name}"), :immediately
+        notifies :run, resources(:execute => "restart-sidekiq-for-#{app_name}")
       end
     end
   end 

@@ -2,6 +2,11 @@
 # Cookbook Name:: sidekiq
 # Recipe:: cleanup
 #
+  
+# monit
+service "monit" do
+  supports :reload => true
+end
 
 unless named_util_or_app_server?(node[:sidekiq][:utility_name]) 
   # report to dashboard
@@ -9,20 +14,9 @@ unless named_util_or_app_server?(node[:sidekiq][:utility_name])
     message "Cleaning up sidekiq (if needed)"
   end
   
-  # monit
-  service "monit" do
-    supports :reload => true
-  end
-  
   if is_app_server? || is_util?
     # loop through applications
     node[:applications].each do |app_name, _|
-      # stop sidekiq
-      execute "stop-sidekiq-for-#{app_name}" do
-        command "monit stop all -g #{app_name}_sidekiq"
-        only_if "test -f /etc/monit.d/sidekiq_#{app_name}.monitrc"
-      end
-    
       # monit
       file "/etc/monit.d/sidekiq_#{app_name}.monitrc" do 
         action :delete
@@ -36,10 +30,16 @@ unless named_util_or_app_server?(node[:sidekiq][:utility_name])
         end
       end
     end 
-  end
 
-  # bin script
-  file "/engineyard/bin/sidekiq" do
-    action :delete
+    # bin script
+    file "/engineyard/bin/sidekiq" do
+      action :delete
+    end
+
+    # stop sidekiq
+    execute "kill-sidekiq" do
+      command "pkill -f sidekiq"
+      only_if "pgrep -f sidekiq"
+    end
   end
 end

@@ -40,7 +40,7 @@ start ()
 {
   # check if process is already running
   if [[ -f $pid_file ]]; then
-    pid=$(cat ${pid_file})
+    pid=$(cat "${pid_file}")
     
     if [[ -d /proc/$pid ]]; then
       echo "${0} is already running (${pid})"
@@ -51,7 +51,7 @@ start ()
   fi
   
   # start sidekiq
-  sidekiq -C ${conf_file} -e ${rails_env} -r ${app_root} -P ${pid_file} -L ${log_file} &
+  sidekiq -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
   exit $?
 }
 
@@ -59,7 +59,7 @@ start ()
 stop ()
 {
   # stop using sidekiqctl
-  sidekiqctl stop ${pid_file}
+  sidekiqctl stop "${pid_file}"
   exit $?
 }
 
