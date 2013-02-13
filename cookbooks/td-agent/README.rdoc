@@ -1,0 +1,44 @@
+= DESCRIPTION:
+
+{Opscode Chef}[http://www.opscode.com/chef/] cookbook for td-agent (Treasure Data Agent). The release log of td-agent is available {here}[http://help.treasure-data.com/kb/installing-td-agent-daemon/changelog-of-td-agent].
+
+NOTE: td-agent is open-sourced as {Fluentd project}[http://github.com/fluent/]. If you want to use stable version of Fluentd, using this cookbook is recommended.
+
+= INSTALLATION:
+
+The {knife-github-cookbooks}[https://github.com/websterclay/knife-github-cookbooks] gem is a plugin for knife that supports installing cookbooks directly from a GitHub repository. To install with this plugin, please follow these steps:
+
+    $ gem install knife-github-cookbooks
+    $ cd chef-repo
+    $ knife cookbook github install treasure-data/chef-td-agent
+
+= REQUIREMENTS:
+
+This cookbook has these external dependencies.
+
+- apt cookbook
+- yum cookbook
+
+= ATTRIBUTES:
+
+API Key, and the Secret Key are required.
+
+- node[:td_agent][:api_key] (required)
+
+= USAGE:
+
+This is an example role file.
+
+    name "base"
+    description "base server role."
+    run_list(
+      "recipe[apt]",
+      "recipe[yum]",
+      "recipe[td-agent]",
+    )
+    override_attributes(
+      # for td-agent
+      :td_agent => {
+        :api_key => 'foo_bar_buz',
+      }
+    )

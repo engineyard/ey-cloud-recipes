@@ -1,0 +1,22 @@
+# Source descriptions
+## built-in TCP input
+<source>
+  type tcp
+  port 24224
+</source>
+
+## HTTP input
+<source>
+  type http
+  port 8888
+</source>
+
+# Match descriptions
+## Treasure Data output
+## match events whose tag is td.DATABASE.TABLE
+<match td.*.*>
+  type tdlog
+  apikey <%= node['td_agent']['api_key'] %>
+  buffer_type file
+  buffer_path /var/log/td-agent/buffer/td
+</match>
