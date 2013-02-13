@@ -1,4 +1,4 @@
-if ['app_master', 'app'].include?(node[:instance_role])
+if ['app_master', 'app', 'util', 'solo'].include?(node[:instance_role])
   node[:applications].each do |app, data|
     template "/data/#{app}/shared/config/api-keys.yml"do
       source 'api-keys.yml.erb'
