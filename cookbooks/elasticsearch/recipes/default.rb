@@ -115,7 +115,8 @@ if ['util'].include?(node[:instance_role])
     mode 0644
     backup 0
     variables(
-      :es_max_mem => ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m"
+      :es_max_mem => ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m",
+      :es_version => node[:elasticsearch_version]
     )
   end
 
