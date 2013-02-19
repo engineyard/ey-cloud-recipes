@@ -138,3 +138,6 @@
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
 #end
+
+# Install Treasure Data Agent
+require recipe "td-agent"
