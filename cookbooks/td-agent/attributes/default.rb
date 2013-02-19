@@ -1,1 +1,1 @@
-default[:td_agent][:api_key] = ''
+td_agent_api_key('')
