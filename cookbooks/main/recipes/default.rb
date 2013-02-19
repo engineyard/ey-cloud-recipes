@@ -140,4 +140,4 @@
 #end
 
 # Install Treasure Data Agent
-require recipe "td-agent"
+require_recipe "td-agent"
