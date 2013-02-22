@@ -16,7 +16,7 @@ template "/etc/newrelic/nrsysmond.cfg" do
   variables(:key => node[:newrelic][:license_key])
 end
 
-File.exists?('/etc/descriptive_hostname')
+if File.exists?('/etc/descriptive_hostname')
   descriptive_hostname = File.read('/etc/descriptive_hostname').strip
 end
 
