@@ -13,16 +13,20 @@ template "/etc/newrelic/nrsysmond.cfg" do
   group 'root'
   mode 0644
   backup 0
-  variables(
-    :key   => node[:newrelic][:license_key])
+  variables(:key => node[:newrelic][:license_key])
 end
 
-remote_file "/etc/monit.d/nrsysmond.monitrc" do
+File.exists?('/etc/descriptive_hostname')
+  descriptive_hostname = File.read('/etc/descriptive_hostname').strip
+end
+
+template "/etc/monit.d/nrsysmond.monitrc" do
   owner "root"
   group "root"
   mode 0644
   backup 0
-  source "nrsysmond.monitrc"
+  source "nrsysmond.monitrc.erb"
+  variables(:hostname => descriptive_hostname)
 end
 
 directory "/var/log/newrelic" do
