@@ -36,6 +36,10 @@
 #  password "password"
 #end
 
+#uncomment to install specified packages
+# You must add your packages to packages/attributes/packages.rb
+#require_recipe "packages"
+
 #uncomment to run the exim::auth recipe
 #require_recipe "exim::auth"
 #require_recipe "mongodb"
