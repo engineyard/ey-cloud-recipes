@@ -27,9 +27,12 @@ if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
     
     case node[:environment][:stack]
     when /nginx_passenger/i
-      execute "update-nginx-passneger-ruby" do
+      execute "update-nginx-passenger-ruby" do
         command "echo 'passenger_ruby /data/#{app_name}/shared/bin/ruby_wrapper;' >> /etc/nginx/stack.conf"
         not_if "grep passenger_ruby /etc/nginx/stack.conf"
+      end
+      execute "reload-nginx" do
+        command "/etc/init.d/nginx reload"
       end
     end
     
