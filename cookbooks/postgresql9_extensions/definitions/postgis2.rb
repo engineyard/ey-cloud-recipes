@@ -4,8 +4,10 @@ define :postgresql9_postgis2 do
   if @node[:postgres_version] == "9.2"
     include_recipe "postgresql9_extensions::ext_postgis2_install"
 
-    execute "Create PostGIS Extension" do
-      command "psql -U postgres -d #{dbname_to_use} -c \"CREATE EXTENSION postgis;\""
+    load_sql_file do
+      db_name dbname_to_use
+      supported_versions %w[9.2]
+      extname "postgis"
     end
 
     execute "Grant permissions to the deploy user on the geometry_columns schema" do
