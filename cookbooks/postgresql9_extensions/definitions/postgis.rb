@@ -36,7 +36,6 @@ define :postgresql9_postgis do
     execute "Postgresql loading postgis_comments on database #{dbname_to_use} for version #{pgversion}" do
       command "psql -U postgres -d #{dbname_to_use} -f /usr/share/postgresql-#{pgversion}/contrib/postgis-1.5/postgis_comments.sql"
     end
-
   end
 
   execute "Grant permissions to the deploy user on the geometry_columns schema" do
