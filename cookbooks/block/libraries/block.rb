@@ -76,10 +76,8 @@ class Chef
         
         # write rules
         @new_resource.ip.each_pair do |ip, options|
-          if options[:ports]
-            options[:ports].each do |port|
-              add_rule(ip, port)
-            end
+          if ports
+            port.each {|port| add_rule(ip, port)}
           else
             add_rule(ip)
           end
