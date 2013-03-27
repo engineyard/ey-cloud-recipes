@@ -1,0 +1,5 @@
+check process fail2ban
+  with pidfile /var/run/fail2ban/fail2ban.pid
+  start program = "/etc/init.d/fail2ban start"
+  stop program = "/etc/init.d/fail2ban stop"
+  group fail2ban
