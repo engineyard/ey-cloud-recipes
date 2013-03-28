@@ -36,7 +36,7 @@ maxretry = 6
 # block bad bots
 [nginx-badbots]
 enabled  = true
-filter = apache-badbots
+filter = nginx-badbots
 action = iptables-multiport[name=BadBots, port="http,https"]
 logpath = /var/log/nginx*/*access*.log
 bantime = 86400 # 1 day
