@@ -10,6 +10,9 @@
 # uncomment to use the collectd recipe. See cookbooks/collectd/readme.md for documentation.
 # require_recipe "collectd"
 
+# uncomment to use the block recipe. See cookbooks/block/readme.md for documentation.
+# require_recipe "ban"
+
 #uncomment to turn on memcached
 # require_recipe "memcached"
 
