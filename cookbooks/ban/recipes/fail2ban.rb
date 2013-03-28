@@ -20,7 +20,7 @@ execute "clear-fail2ban-actions-and-filters" do
 end
 
 # copy filters
-%w[nginx-auth nginx-login nginx-noscript nginx-proxy].each do |filter|
+%w[nginx-auth nginx-login nginx-noscript nginx-proxy nginx-dos].each do |filter|
   remote_file "/etc/fail2ban/filter.d/#{filter}.conf" do
     source "filter.d/#{filter}.conf"
     mode 0644

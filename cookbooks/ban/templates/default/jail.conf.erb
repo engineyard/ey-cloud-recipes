@@ -59,3 +59,12 @@ filter = nginx-proxy
 logpath = /var/log/nginx*/*access*.log
 maxretry = 0
 bantime  = 86400 # 1 day
+
+# ban dos attacks
+[nginx-dos]
+enabled = true
+filter = nginx-dos
+logpath = /var/log/nginx/*-access.log
+findtime = 60
+bantime  = 172800
+maxretry = 240
