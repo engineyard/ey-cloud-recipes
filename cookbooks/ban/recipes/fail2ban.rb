@@ -19,20 +19,27 @@ execute "clear-fail2ban-actions-and-filters" do
   action :run
 end
 
-# copy filters and actions
-remote_directory "/etc/fail2ban/action.d" do
-  source "action.d"
+# copy filters
+%w[nginx-auth nginx-login nginx-noscript nginx-proxy].each do |filter|
+  remote_file "/etc/fail2ban/filter.d/#{filter}.conf" do
+    source "filter.d/#{filter}.conf"
+    mode 0644
+    backup false
+  end
 end
 
-remote_directory "/etc/fail2ban/filter.d" do
-  source "filter.d"
+# copy actions
+%w[iptables-multiport].each do |action|
+  remote_file "/etc/fail2ban/action.d/#{action}.conf" do
+    source "action.d/#{action}.conf"
+    mode 0644
+    backup false
+  end
 end
 
 # jail.conf
 template "/etc/fail2ban/jail.conf" do
   source "jail.conf.erb"
-  owner node[:owner_name]
-  group node[:owner_name]
   mode 0644
   backup false
   notifies :reload, resources(:service => 'fail2ban')
@@ -40,7 +47,7 @@ end
 
 # setup monitoring with monit
 execute "restart-monit" do
-  command "monit reload && wait 2s && monit quit"
+  command "monit reload && sleep 2s && monit quit"
   action :nothing
 end
 
