@@ -8,6 +8,11 @@ package "net-analyzer/fail2ban" do
   action :install
 end
 
+# fail2ban service
+service "fail2ban" do
+  supports :reload => true
+end
+
 # clean default unused filters and actions
 execute "clear-unused-fail2ban-actions" do
   command "find /etc/fail2ban/action.d -mindepth 1 -maxdepth 1 -type f ! -name iptables.conf ! -name hostsdeny.conf -delete"
@@ -17,6 +22,16 @@ end
 execute "clear-unused-fail2ban-filters" do
   command "find /etc/fail2ban/filter.d -mindepth 1 -maxdepth 1 -type f ! -name common.conf ! -name sshd.conf -delete"
   action :run
+end
+
+# jail.conf
+template "/etc/fail2ban/jail.conf" do
+  source "jail.conf.erb"
+  owner node[:owner_name]
+  group node[:owner_name]
+  mode 0644
+  backup false
+  notifies :reload, resources(:service => 'fail2ban')
 end
 
 # setup monitoring with monit
