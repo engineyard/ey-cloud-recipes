@@ -13,15 +13,19 @@ service "fail2ban" do
   supports :reload => true
 end
 
-# clean default unused filters and actions
-execute "clear-unused-fail2ban-actions" do
-  command "find /etc/fail2ban/action.d -mindepth 1 -maxdepth 1 -type f ! -name iptables.conf ! -name hostsdeny.conf -delete"
+# clean default filters and actions
+execute "clear-fail2ban-actions-and-filters" do
+  command "find /etc/fail2ban/{action.d,filter.d} -mindepth 1 -type f -delete"
   action :run
 end
 
-execute "clear-unused-fail2ban-filters" do
-  command "find /etc/fail2ban/filter.d -mindepth 1 -maxdepth 1 -type f ! -name common.conf ! -name sshd.conf -delete"
-  action :run
+# copy filters and actions
+remote_directory "/etc/fail2ban/action.d" do
+  source "action.d"
+end
+
+remote_directory "/etc/fail2ban/filter.d" do
+  source "filter.d"
 end
 
 # jail.conf
@@ -40,15 +44,11 @@ execute "restart-monit" do
   action :nothing
 end
 
-template "/etc/monit.d/fail2ban.monitrc" do
-  source "fail2ban.monitrc.erb"
+remote_file "/etc/monit.d/fail2ban.monitrc" do
+  source "fail2ban.monitrc"
   owner node[:owner_name]
   group node[:owner_name]
   mode 0644
   backup false
-  variables({
-    :user => node[:owner_name],
-    :group => node[:owner_name]
-  })
   notifies :run, resources(:execute => "restart-monit")
 end

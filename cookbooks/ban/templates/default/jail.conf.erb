@@ -1,38 +1,61 @@
 [DEFAULT]
 
-# "ignoreip" can be an IP address, a CIDR mask or a DNS host. Fail2ban will not
-# ban a host which matches an address in this list. Several addresses can be
-# defined using space separator.
+# ip addresses to ignore
 ignoreip = 127.0.0.1
 
-# "bantime" is the number of seconds that a host is banned.
+# ban time in seconds
 bantime  = 600
 
-# A host is banned if it has generated "maxretry" during the last "findtime"
-# seconds.
+# window to check for issues
 findtime  = 600
 
-# "maxretry" is the number of failures before a host get banned.
+# number of failures before banning
 maxretry = 3
 
-# "backend" specifies the backend used to get files modification. Available
-# options are "gamin", "polling" and "auto". This option can be overridden in
-# each jail too (use "gamin" for a jail and "polling" for another).
-#
-# gamin:   requires Gamin (a file alteration monitor) to be installed. If Gamin
-#          is not installed, Fail2ban will use polling.
-# polling: uses a polling algorithm which does not require external libraries.
-# auto:    will choose Gamin if available and polling otherwise.
+# choose gamin backend if available, otherwise fallback to polling
 backend = auto
 
-# This jail corresponds to the standard configuration in Fail2ban 0.6.
-# The mail-whois action send a notification e-mail with a whois request
-# in the body.
+# nginx basic auth
+[nginx-auth]
+enabled = true
+filter = nginx-auth
+action = iptables-multiport[name=NoAuthFailures, port="http,https"]
+logpath = /var/log/nginx*/*error*.log
+bantime = 600 # 10 minutes
+maxretry = 6
 
-[ssh-iptables]
-
-enabled  = false
-filter   = sshd
-action   = iptables[name=SSH, port=ssh, protocol=tcp]
-logpath  = /var/log/sshd.log
-maxretry = 5
+# nginx login 
+[nginx-login]
+enabled = true
+filter = nginx-login
+action = iptables-multiport[name=NoLoginFailures, port="http,https"]
+logpath = /var/log/nginx*/*access*.log
+bantime = 600 # 10 minutes
+maxretry = 6
+ 
+# block bad bots
+[nginx-badbots]
+enabled  = true
+filter = apache-badbots
+action = iptables-multiport[name=BadBots, port="http,https"]
+logpath = /var/log/nginx*/*access*.log
+bantime = 86400 # 1 day
+maxretry = 1
+ 
+# block access to executable file names (exe, cgi, pl, etc)
+[nginx-noscript]
+enabled = true
+action = iptables-multiport[name=NoScript, port="http,https"]
+filter = nginx-noscript
+logpath = /var/log/nginx*/*access*.log
+maxretry = 6
+bantime  = 86400 # 1 day
+ 
+# prevent using nginx as a proxy
+[nginx-proxy]
+enabled = true
+action = iptables-multiport[name=NoProxy, port="http,https"]
+filter = nginx-proxy
+logpath = /var/log/nginx*/*access*.log
+maxretry = 0
+bantime  = 86400 # 1 day

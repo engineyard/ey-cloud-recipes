@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: block
+# Cookbook Name:: ban
 # Recipe:: default
 #
 
 # setup fail2ban
-require_recipe "block::fail2ban"
+require_recipe "ban::fail2ban"
 
 # ban do
 #   ip "128.23.83.192"
