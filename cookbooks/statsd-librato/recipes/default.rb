@@ -34,8 +34,8 @@ if statsd_enabled_env && statsd_enabled_instance
   end
 
   template "/data/#{app_name}/shared/config/statsd.js" do
-    owner 'deploy'
-    group 'deploy'
+    owner node[:owner_name]
+    group node[:owner_name]
     mode 0644
     source "config.js.erb"
     variables({
@@ -46,8 +46,8 @@ if statsd_enabled_env && statsd_enabled_instance
   end
 
   template "/data/#{app_name}/shared/statsd" do
-    owner 'deploy'
-    group 'deploy'
+    owner node[:owner_name]
+    group node[:owner_name]
     mode 0744
     source "statsd.erb"
     variables({
@@ -57,8 +57,8 @@ if statsd_enabled_env && statsd_enabled_instance
   end
 
   template "/etc/monit.d/statsd.monitrc" do
-    owner 'deploy'
-    group 'deploy'
+    owner node[:owner_name]
+    group node[:owner_name]
     mode 0644
     source "monitrc.conf.erb"
     variables({
