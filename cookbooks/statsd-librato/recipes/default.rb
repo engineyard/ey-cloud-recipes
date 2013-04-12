@@ -62,6 +62,7 @@ if statsd_enabled_env && statsd_enabled_instance
     mode 0644
     source "monitrc.conf.erb"
     variables({
+      :user => node[:owner_name],
       :app_name => app_name
     })
   end
