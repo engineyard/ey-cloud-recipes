@@ -68,14 +68,10 @@ if ['util'].include?(node[:instance_role])
 end
 
 if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
-  redis_instance = if node.engineyard.environment.solo_cluster?
-    node.engineyard.environment.instances.first
-  else
-    node.engineyard.environment.utility_instances.find {|x| x.name == "redis"}
-  end
+  redis_instance = node[:engineyard][:environment][:instances].find {|x| x[:name] == "redis"}
 
   if redis_instance
-    redis_instance_ip_address = `ping -c 1 #{redis_instance.private_hostname} | awk 'NR==1{gsub(/\\(|\\)/,"",$3); print $3}'`.chomp
+    redis_instance_ip_address = `ping -c 1 #{redis_instance[:private_hostname]} | awk 'NR==1{gsub(/\\(|\\)/,"",$3); print $3}'`.chomp
     redis_instance_host_mapping = "#{redis_instance_ip_address} redis_instance"
 
     execute "Remove existing redis_instance mapping from /etc/hosts" do
