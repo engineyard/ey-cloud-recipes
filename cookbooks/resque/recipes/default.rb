@@ -16,6 +16,15 @@ if (['util'].include?(node[:instance_role]) && node[:name] =~ /^worker/i) || nod
   else worker_count = 4
   end
 
+  # Self shutdown check for graceful restarts
+  template "/engineyard/bin/worker-shutdown-check" do
+    owner  "root"
+    group  "root"
+    mode   "0755"
+    source "worker-shutdown-check"
+    action :create
+  end
+
   redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
 
   node[:applications].reject{ |app, _| app != 'dynamiccreative' }.each do |app, data|
