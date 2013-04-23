@@ -21,8 +21,14 @@ if (['util'].include?(node[:instance_role]) && node[:name] =~ /^worker/i) || nod
     owner  "root"
     group  "root"
     mode   "0755"
-    source "worker-shutdown-check"
+    source "worker-shutdown-check.erb"
     action :create
+  end
+
+  cron "run_worker_shutdown_check" do
+    hour    "*"
+    minute  "*"
+    command "/engineyard/bin/worker-shutdown-check"
   end
 
   redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
