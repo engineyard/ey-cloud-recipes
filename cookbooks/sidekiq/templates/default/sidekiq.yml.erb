@@ -1,0 +1,9 @@
+# sidekiq settings
+# see: https://github.com/mperham/sidekiq/blob/master/examples/config.yml
+---
+:verbose: <%= @verbose %>
+:concurrency: <%= @concurrency %>
+:queues:
+<% @queues.to_a.each do |q| %>
+  - [<%= q.join(', ') %>]
+<% end %>
