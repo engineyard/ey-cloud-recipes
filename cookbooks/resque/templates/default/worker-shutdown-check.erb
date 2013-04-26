@@ -1,0 +1,24 @@
+#!/bin/bash
+# This tool will first look for the worker-shutdown.txt file
+# If it exists it will then look to see if any resque workers are still forked
+# If not then it will call the self shutdown task in the app root
+
+APP_ROOT=/data/dynamiccreative/current
+
+shutdown() {
+  cd $APP_ROOT && bundle exec rake workers:self_shutdown
+  echo $APP_ROOT
+  echo "Instance scheduled for shutdown"
+}
+
+shutdown_if_forked() {
+  ps aux | grep resque | grep -i processing > /dev/null
+  if [ $? == "1" ]; then
+    echo "Workers have completed. Shutting instance down..."
+    shutdown
+  fi
+}
+
+if [ -e "$APP_ROOT/tmp/worker-shutdown.txt" ]; then
+  shutdown_if_forked
+fi
