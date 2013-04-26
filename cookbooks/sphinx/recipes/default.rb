@@ -4,7 +4,7 @@
 #
 
 # Set your application name here
-appname = "myapp"
+appname = "examtime"
 
 # Uncomment the flavor of sphinx you want to use
 flavor = "thinking_sphinx"
@@ -27,7 +27,7 @@ utility_name = nil
 # If you don't want scheduled reindexes, just leave this set to nil.
 # Setting it equal to 10 would run the cron job every 10 minutes.
 
-cron_interval = nil #If this is not set your data will NOT be indexed
+cron_interval = 59 #If this is not set your data will NOT be indexed
 
 if utility_name
   sphinx_host = node[:utility_instances].find {|u| u[:name] == utility_name }[:hostname]
@@ -119,10 +119,10 @@ if utility_name
         })
       end
 
-      gem_package "bundler" do 
-        source "http://rubygems.org" 
-        action :install 
-        version "1.0.21" 
+      gem_package "bundler" do
+        source "http://rubygems.org"
+        action :install
+        version "1.0.21"
       end
 
       execute "sphinx config" do
@@ -227,10 +227,10 @@ else
         })
       end
 
-      gem_package "bundler" do 
-        source "http://rubygems.org" 
-        action :install 
-        version "1.0.21" 
+      gem_package "bundler" do
+        source "http://rubygems.org"
+        action :install
+        version "1.0.21"
       end
 
 
