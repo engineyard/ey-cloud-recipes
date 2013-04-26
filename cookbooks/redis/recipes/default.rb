@@ -3,12 +3,6 @@
 # Recipe:: default
 #
 
-p node[:settings]
-
-node.each do |(k,v)|
-  puts "#{k} => #{v.inspect}"
-end
-
 if (['util'].include?(node[:instance_role]) &&  node[:name] == 'redis') || node[:instance_role] == 'solo'
 
   sysctl "Enable Overcommit Memory" do
