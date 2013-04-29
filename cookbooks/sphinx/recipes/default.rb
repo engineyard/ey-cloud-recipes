@@ -29,6 +29,15 @@ utility_name = nil
 
 cron_interval = 59 #If this is not set your data will NOT be indexed
 
+sphinx_version = "2.0.6"
+enable_package "app-misc/sphinx" do
+  version sphinx_version
+end
+
+package "app-misc/sphinx" do
+  version sphinx_version
+  action :install
+end
 
 if ! File.exists?("/data/#{appname}/current")
   Chef::Log.info "Sphinx was not configured because the app must be deployed first.  Please deploy it then re-run custom recipes."
