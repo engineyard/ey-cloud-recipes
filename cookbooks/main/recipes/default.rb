@@ -7,7 +7,7 @@ require_recipe "delayed_job"
 #end
 
 # uncomment to turn on thinking sphinx/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
-# require_recipe "sphinx"
+require_recipe "sphinx"
 
 #uncomment to turn on memcached
 # require_recipe "memcached"
@@ -98,17 +98,17 @@ require_recipe "delayed_job"
   # postgresql9_lo "dbname"
   # postgresql9_ltree "dbname"
   # postgresql9_pg_stat_statements"postgres_test" - Not done
-  # postgresql9_pg_trgm "postgres_test"  
+  # postgresql9_pg_trgm "postgres_test"
   # postgresql9_pgcrypto "postgres_test"
   # postgresql9_pgrowlocks "dbname"
-  # postgresql9_postgis "dbname" 
+  # postgresql9_postgis "dbname"
   # postgresql9_seg "dbname"
   # postgresql9_tablefunc "dbname"
   # postgresql9_unaccent "dbname"
   # postgresql9_uuid_ossp "dbname"
-  
+
   #Admin-Level Contribs
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
-  
+
 # end
