@@ -140,6 +140,8 @@ else
         end
 
         execute "sphinx config" do
+
+          command "bundle exec rake -T"
           command "bundle exec rake #{flavor}:config"
           user node[:owner_name]
           environment({
@@ -249,6 +251,7 @@ else
 
 
         execute "sphinx config" do
+                    command "bundle exec rake -T"
           command "bundle exec rake #{flavor}:config"
           user node[:owner_name]
           environment({
