@@ -140,7 +140,7 @@ else
         end
 
         execute "sphinx config" do
-          command "bundle exec rake #{flavor}:configure"
+          command "bundle exec rake #{flavor}:config"
           user node[:owner_name]
           environment({
             'HOME' => "/home/#{node[:owner_name]}",
