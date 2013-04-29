@@ -7,7 +7,8 @@
 appname = "examtime"
 
 # Uncomment the flavor of sphinx you want to use
-flavor = "thinking_sphinx"
+flavor = "ts"
+#flavor = "thinking_sphinx"
 #flavor = "ultrasphinx"
 
 # If you want to install on a specific utility instance rather than
