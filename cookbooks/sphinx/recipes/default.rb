@@ -140,8 +140,6 @@ else
         end
 
         execute "sphinx config" do
-
-          command "bundle exec rake -T"
           command "bundle exec rake #{flavor}:config"
           user node[:owner_name]
           environment({
@@ -249,31 +247,29 @@ else
           version "1.0.21"
         end
 
+        #execute "sphinx config" do
+        #  command "bundle exec rake #{flavor}:config"
+        #  user node[:owner_name]
+        #  environment({
+        #    'HOME' => "/home/#{node[:owner_name]}",
+        #    'RAILS_ENV' => node[:environment][:framework_env]
+        #  })
+        #  cwd "/data/#{app_name}/current"
+        #end
 
-        execute "sphinx config" do
-                    command "bundle exec rake -T"
-          command "bundle exec rake #{flavor}:config"
-          user node[:owner_name]
-          environment({
-            'HOME' => "/home/#{node[:owner_name]}",
-            'RAILS_ENV' => node[:environment][:framework_env]
-          })
-          cwd "/data/#{app_name}/current"
-        end
+        #ey_cloud_report "indexing #{flavor}" do
+        #  message "indexing #{flavor}"
+        #end
 
-        ey_cloud_report "indexing #{flavor}" do
-          message "indexing #{flavor}"
-        end
-
-        execute "#{flavor} index" do
-          command "bundle exec rake #{flavor}:index"
-          user node[:owner_name]
-          environment({
-            'HOME' => "/home/#{node[:owner_name]}",
-            'RAILS_ENV' => node[:environment][:framework_env]
-          })
-          cwd "/data/#{app_name}/current"
-        end
+        #execute "#{flavor} index" do
+        #  command "bundle exec rake #{flavor}:index"
+        #  user node[:owner_name]
+        #  environment({
+        #    'HOME' => "/home/#{node[:owner_name]}",
+        #    'RAILS_ENV' => node[:environment][:framework_env]
+        #  })
+        #  cwd "/data/#{app_name}/current"
+        #end
 
         execute "monit reload"
 
