@@ -108,18 +108,6 @@ else
           action :create
         end
 
-        template "/etc/monit.d/sphinx.#{app_name}.monitrc" do
-          source "sphinx.monitrc.erb"
-          owner node[:owner_name]
-          group node[:owner_name]
-          mode 0644
-          variables({
-            :app_name => app_name,
-            :user => node[:owner_name],
-            :flavor => flavor
-          })
-        end
-
         template "/data/#{app_name}/shared/config/sphinx.yml" do
           owner node[:owner_name]
           group node[:owner_name]
@@ -162,8 +150,6 @@ else
           })
           cwd "/data/#{app_name}/current"
         end
-
-        execute "monit reload"
 
         if cron_interval
           cron "sphinx index" do
@@ -215,19 +201,6 @@ else
           action :create
         end
 
-        template "/etc/monit.d/sphinx.#{app_name}.monitrc" do
-          source "sphinx.monitrc.erb"
-          owner node[:owner_name]
-          group node[:owner_name]
-          mode 0644
-          variables({
-            :app_name => app_name,
-            :user => node[:owner_name],
-            :env => node[:environment][:framework_env],
-            :flavor => flavor
-          })
-        end
-
         template "/data/#{app_name}/shared/config/sphinx.yml" do
           owner node[:owner_name]
           group node[:owner_name]
@@ -246,32 +219,6 @@ else
           action :install
           version "1.0.21"
         end
-
-        #execute "sphinx config" do
-        #  command "bundle exec rake #{flavor}:config"
-        #  user node[:owner_name]
-        #  environment({
-        #    'HOME' => "/home/#{node[:owner_name]}",
-        #    'RAILS_ENV' => node[:environment][:framework_env]
-        #  })
-        #  cwd "/data/#{app_name}/current"
-        #end
-
-        #ey_cloud_report "indexing #{flavor}" do
-        #  message "indexing #{flavor}"
-        #end
-
-        #execute "#{flavor} index" do
-        #  command "bundle exec rake #{flavor}:index"
-        #  user node[:owner_name]
-        #  environment({
-        #    'HOME' => "/home/#{node[:owner_name]}",
-        #    'RAILS_ENV' => node[:environment][:framework_env]
-        #  })
-        #  cwd "/data/#{app_name}/current"
-        #end
-
-        execute "monit reload"
 
         if cron_interval
           cron "sphinx index" do
