@@ -2,6 +2,26 @@
 # Cookbook Name:: resque
 # Recipe:: default
 
+# Application servers
+if ['app_master', 'app'].include?(node[:instance_role])
+  redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
+
+  node[:applications].reject{ |app, _| app != 'dynamiccreative' }.each do |app, data|
+    # Used to set the redis hostname for the worker
+    template "/data/#{app}/shared/config/resque.yml" do
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0644
+      source "resque.yml.erb"
+      variables({
+        :environment => node[:environment][:framework_env],
+        :hostname => redis_instance[:hostname]
+      })
+    end
+  end
+end
+
+# Workers
 if (['util'].include?(node[:instance_role]) && node[:name] =~ /^worker/i) || node[:instance_role] == 'solo'
 
   execute "install resque gem" do
@@ -24,20 +44,7 @@ if (['util'].include?(node[:instance_role]) && node[:name] =~ /^worker/i) || nod
     command "/engineyard/bin/worker-shutdown-check"
   end
 
-  redis_instance = node['utility_instances'].find { |instance| instance['name'] == 'redis' }
-
   node[:applications].reject{ |app, _| app != 'dynamiccreative' }.each do |app, data|
-    # Used to set the redis hostname for the worker
-    template "/data/#{app}/shared/config/resque.yml" do
-      owner node[:owner_name]
-      group node[:owner_name]
-      mode 0644
-      source "resque.yml.erb"
-      variables({
-        :environment => node[:environment][:framework_env],
-        :hostname => redis_instance[:hostname]
-      })
-    end
 
     # Find what queue group or queue this worker is configured to use (based on the name)
     node[:name].scan(/worker_([a-z_]*)_[0-9]*/i) do |worker_class|
