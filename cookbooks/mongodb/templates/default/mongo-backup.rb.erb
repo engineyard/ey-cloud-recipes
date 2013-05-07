@@ -19,10 +19,9 @@ AWS::S3::Base.establish_connection!(
   :access_key_id     => '<%= @id_key %>',
   :secret_access_key => '<%= @secret_key %>'
 )
-@dbuser = '<%= @username %>'
-@dbpass = '<%= @password %>'
+
 @databases = `mongo --quiet --eval "for each(var db in db.runCommand('listDatabases').databases) if(db.sizeOnDisk > 1) print(db.name);" admin`.split("\n")
-@ismaster = `mongo --quiet --eval 'printjson(db.runCommand("ismaster"))' | grep ismaster | awk '{print $3}'| sed s/,//`
+@ismaster = `mongo --quiet --eval 'printjson(db.runCommand("ismaster"))' | grep ismaster | awk '{print $3}'| sed s/,//`.strip
 @environment = '<%= @env %>'
 @app_name = '<%= @app_name %>'
 @keep = 10 * @databases.length
@@ -37,7 +36,7 @@ end
 if @ismaster == "false" #only dump non-primary nodes
   @databases.each do |database|
     token = "#{database}"
-    mongocmd = "mongodump -h 127.0.0.1 -d #{database} -u #{@dbuser} -p #{@dbpass} -o /mnt/tmp/#{token}.#{@tmpname} && tar cjf \"/mnt/tmp/#{token}.#{@tmpname}.tar.bz\" \"/mnt/tmp/#{token}.#{@tmpname}\""
+    mongocmd = "mongodump -h 127.0.0.1 -d #{database} -o /mnt/tmp/#{token}.#{@tmpname} && tar cjf \"/mnt/tmp/#{token}.#{@tmpname}.tar.bz\" \"/mnt/tmp/#{token}.#{@tmpname}\""
     if system(mongocmd)
       AWS::S3::S3Object.store(
         "/#{@environment}.#{@app_name}/#{@app_name}-#{token}.#{@tmpname}.bson.tar.bz",
