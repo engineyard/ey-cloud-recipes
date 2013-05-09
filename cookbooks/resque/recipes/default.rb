@@ -52,7 +52,7 @@ if (['util'].include?(node[:instance_role]) && node[:name] =~ /^worker/i) || nod
       # Determine the array of workers dependent on the queue identifier provided
       key     = worker_class[0]
       queues  = node[:queues]
-      workers = [ key ] * 8   # Fallback
+      workers = [ key ] * 5   # Fallback
 
       if queues.has_key?(key) || key.nil?
         workers = queues[:all].values.map { |v| v.values }.flatten

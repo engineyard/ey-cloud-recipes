@@ -5,13 +5,8 @@ queues({
       :inventory => [
         :cloning,
         :inventory,
-        :schedule
-      ],
-      :sync => [
-        :synchronization,
-        :performance_aggregation,
-        :performance_keyword_sync,
-        :performance_ad_sync,
+        :inventory,
+        :schedule,
         :notification
       ]
     },
@@ -23,15 +18,16 @@ queues({
       ],
       :pub => [
         :publication,
-        :publication,
-        :vendor_instance
+        :publication
       ]
     },
     :groupc => {
       :perf => [
+        :performance_aggregation,
         :performance_download,
         :performance_import
       ]
     }
   }
 })
+
