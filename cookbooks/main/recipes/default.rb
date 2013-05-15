@@ -9,6 +9,23 @@ require_recipe "delayed_job"
 # uncomment to turn on thinking sphinx/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 require_recipe "sphinx"
 
+# uncomment to turn on qt-webkit
+require_recipe "qt-webkit"
+
+#imagemagick
+enable_package "media-gfx/imagemagick" do
+  version "6.4.9.2"
+end
+
+package "media-gfx/imagemagick" do
+  version "6.4.9.2"
+  action :upgrade
+end
+
+#uncomment to turn on xorg-server
+require_recipe "xorg-server"
+
+
 #uncomment to turn on memcached
 # require_recipe "memcached"
 
