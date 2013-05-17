@@ -28,7 +28,7 @@ utility_name = nil
 # If you don't want scheduled reindexes, just leave this set to nil.
 # Setting it equal to 10 would run the cron job every 10 minutes.
 
-cron_interval = 59 #If this is not set your data will NOT be indexed
+cron_interval = 10 #If this is not set your data will NOT be indexed
 
 sphinx_version = "2.0.6"
 enable_package "app-misc/sphinx" do
