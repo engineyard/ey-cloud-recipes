@@ -88,9 +88,6 @@
 #  action :install
 #end
 
-#uncomment to include the newrelic_server_monitoring recipe
-#require_recipe "newrelic_server_monitoring"
-
 # uncomment to include the PHP recipe
 # require_recipe "php"
 
