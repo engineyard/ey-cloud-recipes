@@ -58,8 +58,6 @@
 #uncomment to run the api-keys-yml recipe
 # require_recipe "api-keys-yml"
 
-#require_recipe "logrotate"
-#
 #uncomment to use the solr recipe
 #require_recipe "solr"
 
@@ -90,9 +88,6 @@
 
 #uncomment to include the newrelic_server_monitoring recipe
 #require_recipe "newrelic_server_monitoring"
-
-# uncomment to include the PHP recipe
-# require_recipe "php"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
