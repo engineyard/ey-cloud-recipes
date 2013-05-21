@@ -1,23 +1,26 @@
+# sets use flags for packages
 define :package_use, :flags => nil do
-  name = params[:name]
-  flags = params[:flags]
-  full_name = name + (" #{flags}" if flags)
+  # full package name
+  full_name = [params[:name], params[:flags]].compact.join(' ')
 
+  # delete package.use file
   file "/etc/portage/package.use" do
     action :delete
-
     not_if "file -d /etc/portage/package.use"
   end
 
+  # recreate package.use as directory
   directory "/etc/portage/package.use" do
     action :create
   end
 
+  # create local file 
   execute "touch /etc/portage/package.use/local" do
     action :run
-    not_if { FileTest.exists?("/etc/portage/package.use/local") }
+    not_if "test -f /etc/portage/package.use/local"
   end
 
+  # write flags to local use file
   update_file "local portage package.use" do
     path "/etc/portage/package.use/local"
     body full_name
