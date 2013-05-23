@@ -61,8 +61,6 @@
 #uncomment to run the api-keys-yml recipe
 # require_recipe "api-keys-yml"
 
-#require_recipe "logrotate"
-#
 #uncomment to use the solr recipe
 #require_recipe "solr"
 
