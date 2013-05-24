@@ -1,7 +1,0 @@
-check process nrsysmond
-  with pidfile /var/run/nrsysmond.pid
-  start program = "/bin/bash -c '/usr/sbin/nrsysmond -p /var/run/nrsysmond.pid -c /etc/newrelic/nrsysmond.cfg'"
-  stop program = "/bin/bash -c '/bin/kill `cat /var/run/nrsysmond.pid`'"
-  if mem > 255.0 MB for 2 cycles then restart
-  if cpu > 100% for 2 cycles then restart
-  group newrelic
