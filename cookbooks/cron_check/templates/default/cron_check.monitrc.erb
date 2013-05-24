@@ -1,4 +1,0 @@
-check file cron_timestamp_check with path /home/<%= @owner %>/cron.timestamp.check
-  start program = "/etc/init.d/vixie-cron restart"
-  stop program = "/etc/init.d/vixie-cron stop"
-  if timestamp > 16 minutes for 3 cycles then restart

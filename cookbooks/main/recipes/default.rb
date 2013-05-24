@@ -13,6 +13,9 @@
 # uncomment to use the block recipe. See cookbooks/block/readme.md for documentation.
 # require_recipe "ban"
 
+# uncomment to use the sidekiq recipe. See cookbooks/sidekiq/readme.md for documentation.
+# require_recipe "sidekiq"
+
 #uncomment to turn on memcached
 # require_recipe "memcached"
 
@@ -63,8 +66,6 @@
 #uncomment to use the solr recipe
 #require_recipe "solr"
 
-#uncomment to include the emacs recipe
-#require_recipe "emacs"
 #require_recipe "varnish_frontend"
 #uncomment to include the eybackup_verbose recipe
 #require_recipe "eybackup_verbose"
@@ -87,9 +88,6 @@
 #es_plugin "transport-memcached" do
 #  action :install
 #end
-
-# uncomment to include the PHP recipe
-# require_recipe "php"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])

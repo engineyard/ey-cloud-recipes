@@ -1,0 +1,9 @@
+<% @workers.times do |count| %>
+# sidekiq worker <%= count %>
+check process sidekiq_<%= @app_name %>_<%= count %>
+  with pidfile /var/run/engineyard/sidekiq/<%= @app_name %>/sidekiq_<%= count %>.pid
+  start program = "/engineyard/bin/sidekiq <%= @app_name %> start <%= @rails_env %> <%= count %>" with timeout 90 seconds
+  stop program = "/engineyard/bin/sidekiq <%= @app_name %> stop <%= @rails_env %> <%= count %>" with timeout 90 seconds
+  if totalmem is greater than <%= @memory_limit %> MB for 3 cycles then restart 
+  group <%= @app_name %>_sidekiq
+<% end %>
