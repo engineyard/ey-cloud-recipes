@@ -7,7 +7,7 @@ This Cookbook is for an "Unsupported" Stack item; Engine Yard does not support m
 
 = USAGE:
 
-require_recipe "solr" in main/recipes/default.rb
+include_recipe "solr" in main/recipes/default.rb
 
 = RAMBLINGS:
 

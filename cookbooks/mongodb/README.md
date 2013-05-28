@@ -19,7 +19,7 @@ Using it
 
   * add the following to main/recipes/default.rb,
 
-``require_recipe "mongodb"``
+``include_recipe "mongodb"``
 
   * Upload recipes to your environment
 

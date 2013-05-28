@@ -8,7 +8,7 @@ This Cookbook should be relatively safe and harmless; however if you move eyback
 
 = USAGE: 
 
-Uncomment require_recipe "eybackup_verbose" in main/recipes/default.rb
+Uncomment include_recipe "eybackup_verbose" in main/recipes/default.rb
 
 = CREDITS:
 

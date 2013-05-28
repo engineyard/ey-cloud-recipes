@@ -15,7 +15,7 @@ https://github.com/mperham/sidekiq/wiki/Getting-Started
 To install Sidekiq to your environment, first uncomment the following line in `main/recipes/default.rb`:
 
 ```
-require_recipe "sidekiq"
+include_recipe "sidekiq"
 ```
 
 Next, update the settings in `sidekiq/attributes/default.rb`:
