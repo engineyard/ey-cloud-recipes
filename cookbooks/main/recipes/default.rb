@@ -67,8 +67,6 @@
 #require_recipe "solr"
 
 #require_recipe "varnish_frontend"
-#uncomment to include the eybackup_verbose recipe
-#require_recipe "eybackup_verbose"
 
 #uncomment to include the mysql_replication_check recipe
 #require_recipe "mysql_replication_check"
