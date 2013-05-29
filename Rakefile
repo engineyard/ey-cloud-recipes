@@ -40,3 +40,8 @@ EOH
     end
   end
 end
+
+desc "Run cookbooks through knife test"
+task :knife do
+	sh "bundle exec knife cookbook test -a"
+end

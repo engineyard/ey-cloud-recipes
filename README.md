@@ -19,3 +19,21 @@ Continuous Integration
 ======================
 
 [![Build Status](https://secure.travis-ci.org/engineyard/ey-cloud-recipes.png?branch=master)](http://travis-ci.org/engineyard/ey-cloud-recipes)
+
+Testing
+=======
+
+If you want to test your cookbook changes (and you should) here's how 
+to do that. After downloading the cookbooks, make sure to run
+`bundle install`  to pull in the gem dependencies. After that, you can use the
+`knife` command provided by Chef. For a single cookbook, just run
+
+```
+$ knife cookbook test elasticsearch
+```
+
+To test all of the cookbooks, you can use the `knife` rake task like so:
+
+```
+$ rake knife
+```
