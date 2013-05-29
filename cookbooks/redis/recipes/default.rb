@@ -69,11 +69,11 @@ end
 
 if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
   instances = node[:engineyard][:environment][:instances]
-  redis_instance = (node[:instance_role][/solo/] && instances.length == 1) ? instances[0] : instances.find{|i| i['name'][/redis/]}
+  redis_instance = (node[:instance_role][/solo/] && instances.length == 1) ? instances[0] : instances.find{|i| i[:name].to_s[/redis/]}
 
   if redis_instance
-    redis_instance_ip_address = `ping -c 1 #{redis_instance[:private_hostname]} | awk 'NR==1{gsub(/\\(|\\)/,"",$3); print $3}'`.chomp
-    redis_instance_host_mapping = "#{redis_instance_ip_address} redis_instance"
+    ip_address = `ping -c 1 #{redis_instance[:private_hostname]} | awk 'NR==1{gsub(/\\(|\\)/,"",$3); print $3}'`.chomp
+    host_mapping = "#{ip_address} redis_instance"
 
     execute "Remove existing redis_instance mapping from /etc/hosts" do
       command "sudo sed -i '/redis_instance/d' /etc/hosts"
@@ -81,7 +81,7 @@ if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
     end
 
     execute "Add redis_instance mapping to /etc/hosts" do
-      command "sudo echo #{redis_instance_host_mapping} >> /etc/hosts"
+      command "sudo echo #{host_mapping} >> /etc/hosts"
       action :run
     end
   end
