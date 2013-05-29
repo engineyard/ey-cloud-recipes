@@ -1,7 +1,7 @@
 <% @worker_roles.each do | worker_role | %>
 <% (worker_role.count || 1).times do |num| %>
 check process <%= @worker_name %><% unless worker_role.queue.nil? %>_<%= worker_role.queue %><% end %>_<%= num + 1 %> with pidfile <%= @pid_dir %>/<%= @worker_name %><% unless worker_role.queue.nil? %>.<%= worker_role.queue %><% end %>.<%= num + 1 %>.pid
-  start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> <%= @app_dir %>/script/delayed_job <% unless worker_role.queue.nil? %>--queue=<%= worker_role.queue %><% end %> --identifier <% unless worker_role.queue.nil? %><%= worker_role.queue %>.<% end %><%= num + 1 %> --pid-dir=<%= @pid_dir %> start" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
+  start program = "/usr/bin/env RAILS_ENV=<%= @framework_env %> DISPLAY=:99 <%= @app_dir %>/script/delayed_job <% unless worker_role.queue.nil? %>--queue=<%= worker_role.queue %><% end %> --identifier <% unless worker_role.queue.nil? %><%= worker_role.queue %>.<% end %><%= num + 1 %> --pid-dir=<%= @pid_dir %> start" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
   stop program =  "/usr/bin/env RAILS_ENV=<%= @framework_env %> <%= @app_dir %>/script/delayed_job <% unless worker_role.queue.nil? %>--queue=<%= worker_role.queue %><% end %> --identifier <% unless worker_role.queue.nil? %><%= worker_role.queue %>.<% end %><%= num + 1 %> --pid-dir=<%= @pid_dir %> stop" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
   group <%= @app_name %>_delayed_jobs
 
