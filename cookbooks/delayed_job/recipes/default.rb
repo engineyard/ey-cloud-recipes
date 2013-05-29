@@ -49,6 +49,86 @@ class GenericWorkerStrategy
 
 end
 
+
+class ExamTimeWorkerStrategy
+
+  def self.generate(node)
+    if node[:instance_role] == 'solo'
+      Chef::Log.info "Delayed Job being configured for a solo instance"
+      strategy = self.for_solo
+    else
+      strategy = self.for_cluster node[:instance_role], node[:ec2][:instance_type], node
+    end
+    log strategy, node
+    return strategy
+  end
+
+  def self.for_solo
+    [ WorkerRole.new(1, "mail") ]
+    [ WorkerRole.new(1, "scrape") ]
+    [ WorkerRole.new(1, "default") ]
+  end
+
+  def self.for_cluster(role, instance_type, node)
+    worker_count_for_mail = 0
+    worker_count_for_scrape = 0
+    worker_count_for_default = 0
+    utility_instances_present = ( node['utility_instances'].length > 0 )
+    
+    if role != 'util' # regular app instance
+      case instance_type
+        when 'm1.small'
+          worker_count_for_default = 1
+          worker_count_for_mail = 1
+          worker_count_for_scrape = (utility_instances_present == true) ? 0 : 1
+        when 'c1.medium'
+          worker_count_for_default = 2
+          worker_count_for_mail = 2
+          worker_count_for_scrape = (utility_instances_present == true) ? 0 : 1
+        when 'c1.xlarge'
+          worker_count_for_default = 4
+          worker_count_for_mail = 4
+          worker_count_for_scrape = (utility_instances_present == true) ? 0 : 2
+        else
+          worker_count_for_default = 2
+          worker_count_for_mail = 2
+          worker_count_for_scrape = (utility_instances_present == true) ? 0 : 1
+      end
+    else # utility instance
+      case instance_type
+        when 'm1.small'
+          worker_count_for_scrape = 1
+        when 'm1.medium'
+          worker_count_for_scrape  2
+        when 'm1.large'
+          worker_count_for_scrape = 4
+        when 'm1.xlarge'
+          worker_count_for_scrape =  6
+        else
+          worker_count_for_scrape = 2
+      end
+    end
+
+
+    [
+      WorkerRole.new(worker_count_for_mail, 'mail'),
+      WorkerRole.new(worker_count_for_default, 'default'),
+      WorkerRole.new(worker_count_for_scrape, 'scrape')
+    ]
+  end
+
+  def self.log(strategy, node)
+    strategy.each do | role |
+      if role.queue.nil?
+        Chef::Log.info "Using ExamTime Worker Strategy: Delayed Job worker count has been set to '#{role.count}' as this is an EC2 instance of size #{node[:ec2][:instance_type]}"
+      else
+        Chef::Log.info "Using ExamTime Worker Strategy: Delayed Job worker count has been set to '#{role.count}' for queue '#{role.queue}' as this is an EC2 instance of size #{node[:ec2][:instance_type]}"
+      end
+    end
+  end
+
+end
+
 class NamedWorkerStrategy < GenericWorkerStrategy
 
   def self.for_solo
@@ -102,7 +182,7 @@ if ( %w(solo app_master app).include?(node[:instance_role]) || (node[:instance_r
       group "root"
       mode 0644
       variables({
-        :worker_roles => GenericWorkerStrategy.generate(node),
+        :worker_roles => ExamTimeWorkerStrategy.generate(node),
         :app_name => app_name,
         :app_dir => "/data/#{app_name}/current",
         :pid_dir => "/data/#{app_name}/current/tmp/pids",
