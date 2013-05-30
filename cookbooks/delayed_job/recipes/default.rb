@@ -64,9 +64,11 @@ class ExamTimeWorkerStrategy
   end
 
   def self.for_solo
-    [ WorkerRole.new(1, "mail") ]
-    [ WorkerRole.new(1, "scrape") ]
-    [ WorkerRole.new(1, "default") ]
+    [
+      WorkerRole.new(1, "mail"),
+      WorkerRole.new(1, "scrape"),
+      WorkerRole.new(1, "default")
+    ]
   end
 
   def self.for_cluster(role, instance_type, node)
@@ -99,7 +101,7 @@ class ExamTimeWorkerStrategy
         when 'm1.small'
           worker_count_for_scrape = 1
         when 'm1.medium'
-          worker_count_for_scrape  2
+          worker_count_for_scrape =  2
         when 'm1.large'
           worker_count_for_scrape = 4
         when 'm1.xlarge'
