@@ -1,0 +1,4 @@
+check process xvfb with pidfile /var/run/xvfb.pid
+  start program = "/etc/init.d/xvfb start"
+  stop program =  "/etc/init.d/xvfb stop"
+  group <%= @app_name %>_xvfb

@@ -55,7 +55,7 @@ class ExamTimeWorkerStrategy
   def self.generate(node)
     if node[:instance_role] == 'solo'
       Chef::Log.info "Delayed Job being configured for a solo instance"
-      strategy = self.for_solo
+      strategy = self.for_solo node
     else
       strategy = self.for_cluster node[:instance_role], node[:ec2][:instance_type], node
     end
@@ -63,11 +63,16 @@ class ExamTimeWorkerStrategy
     return strategy
   end
 
-  def self.for_solo
+  def self.for_solo(node)
+    # a solo instance means one app server but can still contain util
+    # instances
+    utility_instances_present = ( node['utility_instances'].length > 0 )
+    worker_count_for_scrape = (utility_instances_present == true) ? 0 : 1
+    
     [
-      WorkerRole.new(1, "mail"),
-      WorkerRole.new(1, "scrape"),
-      WorkerRole.new(1, "default")
+      WorkerRole.new(1, "mail"),      
+      WorkerRole.new(1, "default"),
+      WorkerRole.new(worker_count_for_scrape, "scrape")
     ]
   end
 

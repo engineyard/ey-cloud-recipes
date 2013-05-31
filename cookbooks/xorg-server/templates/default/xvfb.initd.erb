@@ -1,0 +1,15 @@
+#!/sbin/runscript
+
+PIDFILE=/var/run/xvfb.pid 
+
+start() {
+        ebegin "Start XVFB"
+        start-stop-daemon --background --start --pidfile $PIDFILE --make-pidfile --background --exec /usr/bin/Xvfb -- ":99 -screen 0 800x600x16"
+        eend ${?}
+}
+
+stop() {
+        ebegin  "Stop XBFV"
+        start-stop-daemon --stop --pidfile $PIDFILE
+        eend ${?}
+} 
