@@ -3,7 +3,7 @@
 # Attrbutes:: default
 #
 
-default[:sidekiqk] = {
+default[:sidekiq] = {
   # Sidekiq will be installed on to application/solo instances,
   # unless a utility name is set, in which case, Sidekiq will
   # only be installed on to a utility instance that matches
