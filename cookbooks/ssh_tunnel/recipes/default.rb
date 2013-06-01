@@ -6,7 +6,7 @@
 # if you want to have more than one tunnel set up on a given instance
 # (which should be fairly rare) then copy the entire cookbook with a
 # different top level name (don't change any filenames in it) and change 
-# this value to match before deploying.  Oh, and be sure to add a require_recipe 
+# this value to match before deploying.  Oh, and be sure to add a include_recipe 
 # line with the new cookbook name to the main cookbook's default.rb recipe file
 tunnel_name = 'ssh_tunnel'
 
