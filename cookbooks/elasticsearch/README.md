@@ -19,11 +19,11 @@ Using it
 
   * There is two ways to run this recipe.  By default you can use the 'default' recipe and use this in an clustered configuration that requires utility instances.  Alternatively you can use the alternate recipe called 'non_util' which will configure your app_master/solo instance to have elasticsearch.  You would add to main/recipes/default.rb the following,
 
-``require_recipe "elasticsearch::non_util"``  
+``include_recipe "elasticsearch::non_util"``  
 
   * Otheriwse you would do the following
 
-``require_recipe "elasticsearch"``  
+``include_recipe "elasticsearch"``  
 
   * Now you should upload the recipes to your environment,
   

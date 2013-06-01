@@ -37,7 +37,7 @@ Installation
 Ensure you have the Dependencies installed in your local cookbooks repository ...
 Add the following to your main/recipes/default.rb
 
-``require_recipe "redis"``
+``include_recipe "redis"``
 
 How to get Support
 --------

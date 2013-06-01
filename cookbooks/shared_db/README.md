@@ -8,4 +8,4 @@ multiple-application environment.
 Modify the `app` and `parent_app` variables in the default recipe then require
 it in the `cookbooks/main/recipes/default.rb`.
 
-    require_recipe "shared_db"
+    include_recipe "shared_db"
