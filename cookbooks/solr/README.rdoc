@@ -11,7 +11,8 @@ require_recipe "solr" in main/recipes/default.rb
 The script will work 
 
 To stop the solr server use the following on the SSH console: /engineyard/bin/solr stop
-ro start the solr server use the following on the SSH console: /engineyard/bin/solr start
+
+To start the solr server use the following on the SSH console: /engineyard/bin/solr start
 = RAMBLINGS:
 
 This sets up Solr in /data/solr, and then sets up /engineyard/bin/solr and a monitrc file for this solr instance.  
