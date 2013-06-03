@@ -8,7 +8,6 @@ This Cookbook is for an "Unsupported" Stack item; Engine Yard does not support m
 = USAGE:
 
 require_recipe "solr" in main/recipes/default.rb
-The script will work 
 
 To stop the solr server use the following on the SSH console: /engineyard/bin/solr stop
 
@@ -26,7 +25,7 @@ Access the Solr logs: [missing]
 It doesn't support multiple instances of Solr, or configuration of the Schema File or anything special like that.  It just starts it, and controls it in monit.
 
 For Sunspot Users:
-The default schema.xml that comes with this version of solr will probably not work with sunspot's configuration. Specifically, there are datatypes used by sunspot that do no exist in solr's default schema.xml and other types that are defined differently. You also cannot simply copy the sunpot-provided schema.xml file from your application/solr/conf/schema.xml into /data/solr/solr/conf/schema.xml on the engine yard server  because this will introduce other errors.  You need to make sure taht all unique data types that are used by sunspot are included in the /data/solr/solr/conf/schema.xml  
+The default schema.xml that comes with this version of solr will probably not work with sunspot's configuration. Specifically, there are datatypes used by sunspot that do no exist in solr's default schema.xml and other types that are defined differently. You also cannot simply copy the sunpot-provided schema.xml file from your application/solr/conf/schema.xml into /data/solr/solr/conf/schema.xml on the Engine Yard server  because this will introduce other errors.  You need to make sure that all unique data types that are used by sunspot, as defined in you application in /solr/conf/schema are included in the /data/solr/solr/conf/schema.xml. 
 = CREDITS:
 
 Scott M. Likens (damm)
