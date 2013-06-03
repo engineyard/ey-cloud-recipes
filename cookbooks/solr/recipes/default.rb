@@ -4,7 +4,7 @@
 #
 # We specify what version we want below.
 solr_desiredversion = 1.4
-if ['solo', 'util'].include?(node[:instance_role])
+if ['solo', 'util', 'app_master'].include?(node[:instance_role])
   if solr_desiredversion == 1.3
     solr_file = "apache-solr-1.3.0.tgz"
     solr_dir = "apache-solr-1.3.0"
