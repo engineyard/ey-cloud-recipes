@@ -6,7 +6,7 @@ Logrotate cookbook, primarily this cookbook is only setup currently to rotate ng
 
 uncomment / add to main/recipes/default.rb
 
-require_recipe "logrotate"
+include_recipe "logrotate"
 
 = NOTES:
 
