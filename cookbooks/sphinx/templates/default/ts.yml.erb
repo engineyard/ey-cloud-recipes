@@ -1,0 +1,10 @@
+<%= @node[:environment][:framework_env] %>:
+  log: /var/log/engineyard/sphinx/<%= @app_name %>/searchd.log
+  query_log: /var/log/engineyard/sphinx/<%= @app_name %>/query.log
+  pid_file: /var/run/sphinx/<%= @app_name %>.pid
+  address: <%= @address %>
+  mysql41: 9312
+  mem_limit: <%= @mem_limit %>
+  configuration_file: /data/<%= @app_name %>/shared/config/sphinx/<%= @node[:environment][:framework_env] %>.sphinx.conf
+  indices_location: /var/log/engineyard/sphinx/<%= @app_name %>/indexes
+
