@@ -1,0 +1,5 @@
+check process sphinx_<%= @app_name %>
+  with pidfile <%= @pid_file %>
+  start program = "/usr/bin/searchd --pidfile --config /data/<%= @app_name %>/current/config/<%= @environment %>.sphinx.conf" as uid <%= @user %> and gid <%= @user %>
+  stop program = "/usr/bin/searchd --stopwait --config /data/<%= @app_name %>/current/config/<%= @environment %>.sphinx.conf" as uid <%= @user %> and gid <%= @user %>
+  group sphinx_<%= @app_name %>
