@@ -9,12 +9,14 @@ if @node[:postgres_version] == "9.2"
   end
 
   enable_package "sci-libs/gdal" do
+    flags "-ruby"
     version gdal_version
   end
 
   enable_package "sci-libs/geos" do
     version geos_version
   end
+
   enable_package "sci-libs/proj" do
     version proj_version
   end
