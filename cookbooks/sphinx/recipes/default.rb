@@ -48,7 +48,7 @@ if flavor == 'ts'
   remote_file "/engineyard/bin/ts_searchd" do
     owner "root"
     group "root"
-    mode 0744
+    mode 0755
     source "ts_searchd"
     action :create
   end
