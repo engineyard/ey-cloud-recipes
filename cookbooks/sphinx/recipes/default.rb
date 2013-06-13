@@ -44,6 +44,15 @@ if flavor == 'ts'
     version sphinx_version
     action :install
   end
+
+  remote_file "/engineyard/bin/ts_searchd" do
+    owner "root"
+    group "root"
+    mode 0744
+    source "ts_searchd"
+    action :create
+  end
+  
 end
 
 if ! File.exists?("/data/#{appname}/current")
