@@ -11,7 +11,7 @@ Take a look in `/usr/share/zoneinfo` to find the relevant timezone, and set the 
 
 Add the following to cookbooks/main/recipes/default.rb:
 
-    require_recipe "timezone"
+    include_recipe "timezone"
 
 
 NOTE: the recipe has 'UTC' as an example timezone, so make sure you change as necessary before using.

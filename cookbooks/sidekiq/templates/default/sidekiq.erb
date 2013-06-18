@@ -26,6 +26,7 @@ conf_file="/data/${app_name}/shared/config/${worker_ref}.yml"
 
 # add binstubs to $PATH
 export PATH="${app_root}/ey_bundler_binstubs:$PATH"
+export HOME="/home/<%= @user %>"
 
 # script usage
 usage ()
