@@ -7,7 +7,7 @@ Chef::Log.info "Apply custom configuration for unicorn"
 if ['app', 'app_master', 'solo'].include? node[:instance_role]
 
   execute "restart unicorn" do
-    command "monit restart unicorn_master_#{app_name}"
+    command "monit restart unicorn_master_examtime"
     action :nothing
   end
 
