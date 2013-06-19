@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: custom_unicorn
+# Cookbook Name:: unicorn_custom
 # Recipe:: default
 #
 if ['app', 'app_master'].include? node[:instance_role]
