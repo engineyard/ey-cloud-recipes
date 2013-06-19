@@ -16,7 +16,7 @@ node[:applications].each do |app_name, data|
       owner node[:owner_name]
       group node[:owner_name]
       mode 0644
-      source "env_custom"
+      source "env_custom.erb"
       notifies :run, resources(:execute => "restart unicorn")
       variables({
         :app_name => app_name
