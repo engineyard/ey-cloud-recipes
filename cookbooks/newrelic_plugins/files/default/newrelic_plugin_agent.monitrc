@@ -1,0 +1,5 @@
+check process newrelic_plugin_agent
+  with pidfile /var/run/newrelic_plugin_agent.pid
+  start program = "/etc/init.d/newrelic_plugin_agent start"
+  stop program = "/etc/init.d/newrelic_plugin_agent stop"
+  group newrelic_plugin_agent

@@ -1,0 +1,434 @@
+{
+  "kernel": {
+    "name": "Linux",
+    "release": "3.4.45-amazon-xen",
+    "version": "#1 SMP Fri May 17 17:56:50 Local time zone must be set--see zic",
+    "machine": "x86_64",
+    "modules": {
+      "ipv6": {
+        "size": "258465",
+        "refcount": "20"
+      }
+    },
+    "os": "GNU/Linux"
+  },
+  "os": "linux",
+  "os_version": "3.4.45-amazon-xen",
+  "platform": "gentoo",
+  "platform_version": "2.1",
+  "platform_family": "gentoo",
+  "ohai_time": 1371660529.723438,
+  "command": {
+    "ps": "ps -ef"
+  },
+  "dmi": {
+  },
+  "filesystem": {
+    "rootfs": {
+      "kb_size": "15481840",
+      "kb_used": "4739932",
+      "kb_available": "9955476",
+      "percent_used": "33%",
+      "mount": "/",
+      "fs_type": "rootfs",
+      "mount_options": [
+        "rw"
+      ]
+    },
+    "/dev/root": {
+      "kb_size": "15481840",
+      "kb_used": "4739932",
+      "kb_available": "9955476",
+      "percent_used": "33%",
+      "mount": "/",
+      "fs_type": "ext4",
+      "mount_options": [
+        "rw",
+        "relatime",
+        "data=ordered"
+      ]
+    },
+    "tmpfs": {
+      "kb_size": "867920",
+      "kb_used": "200",
+      "kb_available": "867720",
+      "percent_used": "1%",
+      "mount": "/run",
+      "fs_type": "tmpfs",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "relatime",
+        "mode=755"
+      ]
+    },
+    "udev": {
+      "kb_size": "10240",
+      "kb_used": "0",
+      "kb_available": "10240",
+      "percent_used": "0%",
+      "mount": "/dev",
+      "fs_type": "devtmpfs",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "relatime",
+        "size=10240k",
+        "nr_inodes=216800",
+        "mode=755"
+      ]
+    },
+    "shm": {
+      "kb_size": "867920",
+      "kb_used": "0",
+      "kb_available": "867920",
+      "percent_used": "0%",
+      "mount": "/dev/shm",
+      "fs_type": "tmpfs",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime"
+      ]
+    },
+    "cgroup_root": {
+      "kb_size": "10240",
+      "kb_used": "0",
+      "kb_available": "10240",
+      "percent_used": "0%",
+      "mount": "/sys/fs/cgroup",
+      "fs_type": "tmpfs",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "size=10240k",
+        "mode=755"
+      ]
+    },
+    "/dev/xvdb": {
+      "kb_size": "350891748",
+      "kb_used": "1623556",
+      "kb_available": "331443912",
+      "percent_used": "1%",
+      "mount": "/mnt",
+      "fs_type": "ext3",
+      "mount_options": [
+        "rw",
+        "user_xattr"
+      ],
+      "uuid": "f1b8188c-4c90-4ec5-ae4c-614c1b1773a3"
+    },
+    "/dev/xvdz1": {
+      "kb_size": "15481840",
+      "kb_used": "174396",
+      "kb_available": "14521012",
+      "percent_used": "2%",
+      "mount": "/data",
+      "fs_type": "ext3",
+      "mount_options": [
+        "rw"
+      ],
+      "uuid": "7ee820ef-56c7-461d-ba24-0667aaaa4200"
+    },
+    "/dev/xvdz2": {
+      "kb_size": "15481840",
+      "kb_used": "387576",
+      "kb_available": "14307832",
+      "percent_used": "3%",
+      "mount": "/db",
+      "fs_type": "ext3",
+      "mount_options": [
+        "rw"
+      ],
+      "uuid": "3ec63161-19ec-46c2-95f7-1f0cd509c000"
+    },
+    "proc": {
+      "mount": "/proc",
+      "fs_type": "proc",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime"
+      ]
+    },
+    "devpts": {
+      "mount": "/dev/pts",
+      "fs_type": "devpts",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "noexec",
+        "relatime",
+        "gid=5",
+        "mode=620",
+        "ptmxmode=000"
+      ]
+    },
+    "sysfs": {
+      "mount": "/sys",
+      "fs_type": "sysfs",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime"
+      ]
+    },
+    "openrc": {
+      "mount": "/sys/fs/cgroup/openrc",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "release_agent=/lib64/rc/sh/cgroup-release-agent.sh",
+        "name=openrc"
+      ]
+    },
+    "cpuset": {
+      "mount": "/sys/fs/cgroup/cpuset",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "cpuset"
+      ]
+    },
+    "cpu": {
+      "mount": "/sys/fs/cgroup/cpu",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "cpu"
+      ]
+    },
+    "cpuacct": {
+      "mount": "/sys/fs/cgroup/cpuacct",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "cpuacct"
+      ]
+    },
+    "devices": {
+      "mount": "/sys/fs/cgroup/devices",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "devices"
+      ]
+    },
+    "freezer": {
+      "mount": "/sys/fs/cgroup/freezer",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "freezer"
+      ]
+    },
+    "blkio": {
+      "mount": "/sys/fs/cgroup/blkio",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "blkio"
+      ]
+    },
+    "perf_event": {
+      "mount": "/sys/fs/cgroup/perf_event",
+      "fs_type": "cgroup",
+      "mount_options": [
+        "rw",
+        "nosuid",
+        "nodev",
+        "noexec",
+        "relatime",
+        "perf_event"
+      ]
+    },
+    "/mnt/log": {
+      "mount": "/var/log",
+      "fs_type": "none",
+      "mount_options": [
+        "rw",
+        "bind"
+      ]
+    },
+    "/db/mysql.d": {
+      "mount": "/etc/mysql.d",
+      "fs_type": "none",
+      "mount_options": [
+        "rw",
+        "bind"
+      ]
+    },
+    "/dev/xvda1": {
+      "fs_type": "ext4",
+      "uuid": "c2d9ec1e-ed87-4b31-93a4-ec2ab9385b91",
+      "label": "rootfs"
+    },
+    "/dev/xvda3": {
+      "fs_type": "swap",
+      "uuid": "efbeed7e-5957-49bb-8e08-6756eeaf591f"
+    }
+  },
+  "languages": {
+    "ruby": {
+      "platform": "x86_64-linux",
+      "version": "1.9.3",
+      "release_date": "2013-05-15",
+      "target": "x86_64-pc-linux-gnu",
+      "target_cpu": "x86_64",
+      "target_vendor": "pc",
+      "target_os": "linux",
+      "host": "x86_64-pc-linux-gnu",
+      "host_cpu": "x86_64",
+      "host_os": "linux-gnu",
+      "host_vendor": "pc",
+      "bin_dir": "/usr/local/bin",
+      "ruby_bin": "/usr/local/bin/ruby",
+      "gems_dir": "/usr/local/gems",
+      "gem_bin": "/usr/local/bin/gem"
+    }
+  },
+  "chef_packages": {
+    "chef": {
+      "version": "11.4.4",
+      "chef_root": "/usr/local/gems/chef-11.4.4/lib"
+    },
+    "ohai": {
+      "version": "6.16.0",
+      "ohai_root": "/usr/local/gems/ohai-6.16.0/lib/ohai"
+    }
+  },
+  "counters": {
+    "network": {
+      "interfaces": {
+        "eth0": {
+          "rx": {
+            "bytes": "0",
+            "packets": "0",
+            "errors": "0",
+            "drop": 0,
+            "overrun": 0,
+            "frame": 0,
+            "compressed": 0,
+            "multicast": 0
+          },
+          "tx": {
+            "bytes": "342",
+            "packets": "0",
+            "errors": "0",
+            "drop": 0,
+            "overrun": 0,
+            "collisions": "0",
+            "carrier": 0,
+            "compressed": 0
+          }
+        }
+      }
+    }
+  },
+  "current_user": "fauxhai",
+  "domain": "local",
+  "etc": {
+    "passwd": {
+      "fauxhai": {
+        "dir": "/home/fauxhai",
+        "gid": 0,
+        "uid": 0,
+        "shell": "/bin/bash",
+        "gecos": "Fauxhai"
+      }
+    },
+    "group": {
+      "fauxhai": {
+        "gid": 0,
+        "members": [
+          "fauxhai"
+        ]
+      }
+    }
+  },
+  "hostname": "Fauxhai",
+  "fqdn": "fauxhai.local",
+  "ipaddress": "10.0.0.2",
+  "keys": {
+    "ssh": {
+      "host_dsa_public": "ssh-dss AAAAB3NzaC1kc3MAAACBAJFo9BLAw4WKEs5hgipk5m423FzBsDXCZSMcC9ca/om/1VYzMqImixGe3uICDzNFUWxFoLJTQAOccyzo6MXZiQqwWJDLFi5qOSr6w2XcMyE+zd4wOyMoDiVM5fizmG8K3FzrqvGjwBcHcBdOQnavSijoj38DN25J9zhrid5BY4WlAAAAFQDxXrCyG52XCzn3FV4ej38wJBkomQAAAIBovGPJ4mP2P6BK8lHl0PPbktwQbWlpJ13oz6REJFDVcUi7vV26bX/BjQX+ohzZQzljdz1SpUbPc/8nuA4darYkVh91eBi307EN8IdxRHj2eBgp/ZG4yshIebG3WHrwJD/xUjjZ1MRfyDT1ermVi4LvjjPgWDxLZnPpMaR6S1nzgQAAAIEAj0Vd6DCWslvlsZ8+N53HWsqPi3gnx35JoLPz9Z2epkKIKqmEHav+93G3hdfztVa4I4t3phoPniQchYryF5+RNg8hqxKzjNtrIqUYCeuf2NJrksNsH7OZygPHZpqt4kTuwAGZxjxEGfAI0y8DhkU2ntp2LnzRnWH106BQBCmcXwo= fauxhai.local",
+      "host_rsa_public": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCtLCeqtqr/HbnORckw1ukdLhpfGoOPFi5/esKEokzTqq1gsgQ2V8emmyjfq1i6XXfRtSBxkdlHv/GWdP5wBTuE2G85MzBkVSQPvmwQN8lX/JMPEEtKXkeOo0o92/PiSmvY4eRsdF0mw40Uvg7jtE3f3fxj497kzh5fKtkrHnF4x9gXCbVdr3FqXJfggR5IJwAxToerbK7x/uRS+7YuZI9Pip3tt14nv9ezwXcuGb/tvjWOZINiFl8izVIFKi7sxfTX09p4NgamxRS7TD2Yd0jT8nEoF9UZTsgXcJ1kDSx7N7NxFfNfP6rCdOGRRz4gUhXtsUjG/XkxPeCwZ7A9VnOD fauxhai.local"
+    }
+  },
+  "macaddress": "11:11:11:11:11:11",
+  "network": {
+    "default_gateway": "10.0.0.1",
+    "default_interface": "eth0",
+    "eth0": {
+      "addresses": {
+        "10.0.0.2": {
+          "broadcast": "10.0.0.255",
+          "family": "inet",
+          "netmask": "255.255.255.0",
+          "prefixlen": "23",
+          "scope": "Global"
+        }
+      },
+      "arp": {
+        "10.0.0.1": "fe:ff:ff:ff:ff:ff"
+      },
+      "encapsulation": "Ethernet",
+      "flags": [
+        "BROADCAST",
+        "MULTICAST",
+        "UP",
+        "LOWER_UP"
+      ],
+      "mtu": "1500",
+      "number": "0",
+      "routes": {
+        "10.0.0.0/255": {
+          "scope": "link",
+          "src": "10.0.0.2"
+        }
+      },
+      "state": "up",
+      "type": "eth"
+    }
+  },
+  "uptime": "30 days 15 hours 07 minutes 30 seconds",
+  "uptime_seconds": 2646450
+}
