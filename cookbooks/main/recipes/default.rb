@@ -1,3 +1,7 @@
+# Include recipe to apply custom config for unicorn
+include_recipe "unicorn_custom"
+
+# Delayed jobs recipe
 require_recipe "delayed_job"
 
 #execute "testing" do
