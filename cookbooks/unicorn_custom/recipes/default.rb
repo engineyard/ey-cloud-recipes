@@ -2,11 +2,10 @@
 # Cookbook Name:: unicorn_custom
 # Recipe:: default
 #
-Chef::Log.info "Apply custom configuration for unicorn on #{node[:instance_role]}"
+Chef::Log.info "Apply custom configuration for unicorn"
 
-if ['app', 'app_master'].include? node[:instance_role]
+if ['app', 'app_master', 'solo'].include? node[:instance_role]
 
-  Chef::Log.info "Applying to #{node[:instance_role]}"
   execute "restart unicorn" do
     command "monit restart unicorn_master_#{app_name}"
     action :nothing
@@ -22,4 +21,6 @@ if ['app', 'app_master'].include? node[:instance_role]
       :app_name => app_name
     })
   end
+
+  Chef::Log.info "Applied custom unicorn config to #{node[:instance_role]} instance"
 end
