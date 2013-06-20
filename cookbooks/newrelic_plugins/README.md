@@ -1,3 +1,7 @@
+# NOTE: Compatible with new Gentoo stack only
+
+------------
+
 newrelic_plugins Cookbook
 =========================
 
