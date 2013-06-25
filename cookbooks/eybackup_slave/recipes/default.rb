@@ -33,7 +33,7 @@ if db_slave
     backup_command << " -k #{key}" unless key.empty?
   end
 
-  backup_command << " /var/log/eybackup.log"
+  backup_command << " >> /var/log/eybackup.log"
   
   # remove db master cronjob
   if node[:instance_role][/db_master/]
@@ -50,7 +50,7 @@ if db_slave
       day "*"
       month "*"
       weekday "*"
-      command >> backup_command
+      command backup_command
     end  
   end
 else
