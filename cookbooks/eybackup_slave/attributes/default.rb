@@ -1,8 +1,4 @@
 # are the backups encrypted
-component_keys = node[:engineyard][:environment][:apps].map do |app| 
-  app[:components].map do |component| 
-    component[:key]
-  end
-end
-
-default[:encrypted_backups] = component_keys.flatten.include?('encrypted_backup')
+components = node[:engineyard][:environment][:apps].map {|a| a[:components]}.flatten
+default[:encrypted_backups] = components.map {|c| c[:key]}.include?('encrypted_backup')
+default[:public_key] = components.find {|c| c[:public_key]}[:public_key]

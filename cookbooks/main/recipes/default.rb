@@ -26,7 +26,7 @@
 #include_recipe "authorized_keys"
 
 #uncomment to run the eybackup_slave recipe
-#include_recipe "eybackup_slave"
+# include_recipe "eybackup_slave"
 
 #uncomment to run the ssmtp recipe
 #include_recipe "ssmtp"
