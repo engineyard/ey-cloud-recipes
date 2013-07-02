@@ -25,6 +25,8 @@
 #uncomment to run the authorized_keys recipe
 #include_recipe "authorized_keys"
 
+include_recipe "imagemagick"
+
 #uncomment to run the eybackup_slave recipe
 #include_recipe "eybackup_slave"
 
