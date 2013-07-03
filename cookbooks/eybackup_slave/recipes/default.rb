@@ -49,7 +49,7 @@ if db_slave
     
       # add the -k flag to the command
       key = `gpg --list-keys --with-colon | awk -F: '$1=="pub"{print $5}'`
-      backup_command << " -k #{key}".strip unless key.empty?
+      backup_command << " -k #{key}".rstrip unless key.empty?
     end
 
     backup_command << " >> /var/log/eybackup.log"
