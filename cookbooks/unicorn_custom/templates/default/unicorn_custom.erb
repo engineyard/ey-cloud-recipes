@@ -115,7 +115,7 @@ after_fork do |server, worker|
     ActiveRecord::Base.establish_connection
   end
   # If Redis is loaded: reconnect
-  if defined?(Redis)
+  if defined?(Redis) && defined?(TRANSLATION_STORE)
     TRANSLATION_STORE.client.reconnect
   end
 end

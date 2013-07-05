@@ -26,7 +26,7 @@ node[:applications].each do |app_name, data|
       action :nothing
     end
 
-    template "/data/#{app_name}/shared_config/unicorn_custom.rb" do
+    template "/data/#{app_name}/shared/config/unicorn_custom.rb" do
       owner node[:owner_name]
       group node[:owner_name]
       mode 0644
