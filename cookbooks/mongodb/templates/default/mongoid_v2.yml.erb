@@ -1,0 +1,14 @@
+<%= @environment %>:
+  database: <%=@mongo_replsetname%>
+  read_secondary: true
+  max_retries_on_connection_failure: 5
+  <% if @replica_set -%>
+  hosts:
+  <% @hosts.each do |host, port| -%>
+    - - <%= host %>
+      - <%= port %>
+  <% end -%>  
+  <% else -%>
+  host: <%= @hosts[0][0] %>
+  port: <%= @hosts[0][1] %>
+  <% end -%>

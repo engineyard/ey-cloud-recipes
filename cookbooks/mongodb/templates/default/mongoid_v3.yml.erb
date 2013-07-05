@@ -1,0 +1,12 @@
+<%= @environment %>:
+  sessions:
+    default:
+      hosts:
+      <% @hosts.each do |host, port| -%>
+        - <%= host %>:<%= port %>
+      <% end -%> 
+      database: <%=@mongo_replsetname%>
+  # Mongoid specific configuration options
+  options:
+  consistency: :eventual
+  max_retries_on_connection_failure: 5

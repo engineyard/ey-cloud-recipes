@@ -4,7 +4,7 @@ Resque is a Redis-backed Ruby library for creating background jobs, placing thos
 
 = USAGE: 
 
-add require_recipe "resque" to main/recipes/default.rb
+add include_recipe "resque" to main/recipes/default.rb
 
 = NOTES:
 

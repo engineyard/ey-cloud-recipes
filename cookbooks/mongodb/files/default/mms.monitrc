@@ -1,0 +1,5 @@
+check process mms
+  with pidfile /var/run/mms.pid
+  start program = "/db/mms/mms.sh start"
+  stop program = "/db/mms/mms.sh stop"  
+  group mms

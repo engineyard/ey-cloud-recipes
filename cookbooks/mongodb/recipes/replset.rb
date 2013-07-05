@@ -1,16 +1,15 @@
 user = @node[:users].first
 
 mongo_arbiter="na"
- 
+
 if @node[:mongo_replset]
-  
   mongo_nodes = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl#{@node[:mongo_replset]}/) }
-  
+
   # Chef::Log.info "Setting up Replica set: #{node[:mongo_replset]} \n mongo_nodes: #{mongo_nodes.inspect} \n executing on node #{@node[:name]}"
-  
+
   if (@node[:name].match(/_1$/) && (mongo_nodes.length == 3 || (mongo_nodes.length ==2 && mongo_arbiter.length > 3)))
     setup_js = "#{node[:mongo_base]}/setup_replset.js"
-    
+
     template setup_js do
       source "setup_replset.js.erb"
       owner user[:username]
@@ -28,7 +27,7 @@ if @node[:mongo_replset]
       execute "wait for mongo on #{mongo_node[:hostname]} to come up" do
         command "until echo 'exit' | #{@node[:mongo_path]}/bin/mongo #{mongo_node[:hostname]}:#{@node[:mongo_port]}/local --quiet; do sleep 10s; done"
       end
-    end    
+    end
     # ----- configure the set
     execute "setup replset #{@node[:mongo_replset]}" do
       command "#{@node[:mongo_path]}/bin/mongo local #{setup_js}"

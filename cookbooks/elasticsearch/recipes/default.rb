@@ -20,7 +20,7 @@ if ['util'].include?(node[:instance_role])
 
   Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
   remote_file "/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip" do
-    source "https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
+    source "http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
     mode "0644"
     checksum node[:elasticsearch_checksum]
     not_if { File.exists?("/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip") }

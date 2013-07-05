@@ -1,4 +1,5 @@
 user = @node[:users].first
+mongodb_bin = "#{@node[:mongo_path]}/bin"
 
 if ['db_master','solo'].include? @node[:instance_role]
   #under /mnt because it's an arbiter. No data saved
@@ -52,7 +53,7 @@ remote_file "/etc/logrotate.d/mongodb" do
   action :create
 end
 
-mongodb_options = { :exec => "#{@node[:mongo_path]}/bin/mongod",
+mongodb_options = { :exec => "#{mongodb_bin}/mongod",
                     :data_path => mongo_data,
                     :log_path => mongo_log,
                     :user => user[:username],
@@ -73,6 +74,8 @@ if @node[:oplog_size]
   mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
 end
 
+mongodb_options[:extra_opts]  << " --directoryperdb"
+
 # Chef::Log.info "Node extra_opts #{mongodb_options[:extra_opts]}"
 
 template "/etc/conf.d/mongodb" do
@@ -85,7 +88,13 @@ template "/etc/conf.d/mongodb" do
   })
 end
 
+execute "enable-mongodb" do
+  command "rc-update add mongodb default"
+  action :run
+end
+
 execute "/etc/init.d/mongodb restart" do
-  command "/etc/init.d/mongodb restart" 
+  command "/etc/init.d/mongodb restart"
+  action :run
 end
 

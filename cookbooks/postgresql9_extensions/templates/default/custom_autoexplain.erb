@@ -1,5 +1,6 @@
 # ------------------------------------
 # PostgreSQL Custom configuration file
+# DB Version: <%= @db_version  %>
 # ------------------------------------
 #
 # This file was created by the postgresql9_extensions custom chef run 
@@ -12,5 +13,6 @@ auto_explain.log_buffers = <%= @auto_explain_log_buffers %>
 auto_explain.log_format = <%= @auto_explain_log_format  %>
 auto_explain.log_nested_statements = <%= @auto_explain_log_nested_statements  %>
 shared_preload_libraries = <%= @shared_preload_libraries %>
-custom_variable_classes = <%= @custom_variable_classes %>
-
+<% if @db_version != "9.2" %>
+  custom_variable_classes = <%= @custom_variable_classes %>
+<% end %>

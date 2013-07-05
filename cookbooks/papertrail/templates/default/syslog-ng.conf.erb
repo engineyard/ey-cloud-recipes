@@ -1,0 +1,50 @@
+@version: 3.3
+# $Header: /var/cvsroot/gentoo-x86/app-admin/syslog-ng/files/syslog-ng.conf.gentoo.3.3,v 1.2 2011/10/04 23:15:44 mr_bones_ Exp $
+#
+# Syslog-ng default configuration file for Gentoo Linux
+
+options { 
+	threaded(yes);
+	chain_hostnames(no); 
+
+	# The default action of syslog-ng is to log a STATS line
+	# to the file every 10 minutes.  That's pretty ugly after a while.
+	# Change it to every 12 hours so you get a nice daily update of
+	# how many messages syslog-ng missed (0).
+	stats_freq(43200); 
+	# The default action of syslog-ng is to log a MARK line
+	# to the file every 20 minutes.  That's seems high for most
+	# people so turn it down to once an hour.  Set it to zero
+	# if you don't want the functionality at all.
+	mark_freq(3600); 
+};
+
+source src {
+    unix-stream("/dev/log" max-connections(256));
+    internal();
+    file("/proc/kmsg");
+};
+
+destination messages { file("/var/log/messages"); };
+
+# By default messages are logged to tty12...
+destination console_all { file("/dev/tty12"); };
+# ...if you intend to use /dev/console for programs like xconsole
+# you can comment out the destination line above that references /dev/tty12
+# and uncomment the line below.
+#destination console_all { file("/dev/console"); };
+
+log { source(src); destination(messages); };
+log { source(src); destination(console_all); };
+
+# everything above this line copied verbatim from syslog-ng 3.3.5 default install on 7/20/12 by @seamusabshere
+# everything below this line added by cookbooks/papertrail/recipes/default.rb
+destination d_papertrail {
+  # UDP (insecure)
+  # udp("logs.papertrailapp.com" port(<%= @port %>));
+  # TLS
+  tcp("logs.papertrailapp.com" port(<%= @port %>) tls(ca_dir("/etc/syslog-ng/cert.d")) );
+};
+log {
+  source(src); destination(d_papertrail);
+};

@@ -34,8 +34,6 @@
 # ** Add kill child functionality (USR1)
 # ** Bug where monit either removes a PID file, or fails to write one, resulting in at least 
 #    one rogue worker.<< DONE Hopefuly!
-PATH=/data/$APP/current/ey_bundler_binstubs:$PATH
-CURDIR=`pwd`
 
 usage() {
   echo "Usage: $0 <appname> {start|stop} <environment>"
@@ -49,11 +47,12 @@ if [ "`whoami`" != "root" ]; then
   exit 1
 fi
 
-#Baisc Setup of default values
-APP=$1 ; ACTION=$2; RACK_ENV=$3; 
+# Basic setup of default values
+APP=$1; ACTION=$2; RACK_ENV=$3;
 
-#Baisc Setup of default values
-APP=$1 ; ACTION=$2; RACK_ENV=$3; CONF_FILE=$4;
+# Paths
+PATH=/data/$APP/current/ey_bundler_binstubs:$PATH
+CURDIR=`pwd`
 
 APP_DIR="/data/${APP}"
 APP_ROOT="${APP_DIR}/current"
@@ -73,7 +72,7 @@ GEMFILE="$APP_ROOT/Gemfile"
 RAKE="rake"
 
 if [ -f $GEMFILE ];then
-  RAKE="bundle exec $APP_ROOT/ey_bundler_binstubs/rake"
+  RAKE="$APP_ROOT/ey_bundler_binstubs/rake"
 fi
 
 if [ -d $APP_ROOT ]; then
@@ -156,4 +155,3 @@ else
   echo "/data/$APP/current doesn't exist."
   usage
 fi
-

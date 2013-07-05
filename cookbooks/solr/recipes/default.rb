@@ -8,11 +8,11 @@ if ['solo', 'util'].include?(node[:instance_role])
   if solr_desiredversion == 1.3
     solr_file = "apache-solr-1.3.0.tgz"
     solr_dir = "apache-solr-1.3.0"
-    solr_url = "http://mirror.its.uidaho.edu/pub/apache/lucene/solr/1.3.0/apache-solr-1.3.0.tgz"
+    solr_url = "http://archive.apache.org/dist/lucene/solr/1.3.0/apache-solr-1.3.0.tgz"
   else
     solr_dir = "apache-solr-1.4.1"
     solr_file = "apache-solr-1.4.1.tgz"
-    solr_url = "http://mirror.candidhosting.com/pub/apache//lucene/solr/1.4.1/apache-solr-1.4.1.tgz"
+    solr_url = "http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz"
   end
 
   directory "/var/run/solr" do
