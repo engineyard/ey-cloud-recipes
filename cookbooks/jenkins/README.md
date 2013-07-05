@@ -13,7 +13,7 @@ Because of the following considerations, we recommend running Jenkins on its own
 Installation
 ------------
 
-Create an application using this repo https://github.com/willluongo/ey-jenkins-app.git. This application is really just a placeholder that doesn't do anything, but you still need to have one on our cloud platform. Do *not* specify a domain. Because passenger doesn't spin up until there is work to be done, select passenger (it will never have work to do).
+Create an application using this repo https://github.com/engineyard/ey-jenkins-app.git. This application is really just a placeholder that doesn't do anything, but you still need to have one on our cloud platform. Do *not* specify a domain. Because passenger doesn't spin up until there is work to be done, select passenger (it will never have work to do).
 
 Then you will need to fork our custom recipes repo found here https://github.com/engineyard/ey-cloud-recipes.git, and enable the jenkins recipe by uncommenting the `include_recipe "jenkins"` line in cookbooks/main/recipes/default.rb.
 
