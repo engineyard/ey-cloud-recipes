@@ -1,0 +1,12 @@
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <Set name="contextPath">/jenkins</Set>
+  <Set name="war"><SystemProperty name="jetty.home" default="."/>/webapps/jenkins.war</Set>
+  <Get name="securityHandler">
+    <Set name="loginService">
+      <New class="org.eclipse.jetty.security.HashLoginService">
+        <Set name="name">Jenkins Realm</Set>
+        <Set name="config"><SystemProperty name="jetty.home" default="."/>/etc/realm.properties</Set>
+      </New>
+    </Set>
+  </Get>
+</Configure>
