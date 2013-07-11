@@ -3,7 +3,7 @@
 #    echo "i ran at #{Time.now}" >> /root/cheftime
 #  }
 #end
-
+#include_recipe "imageick"
 # uncomment to turn on thinking sphinx/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # include_recipe "sphinx"
 
@@ -24,6 +24,8 @@
 
 #uncomment to run the authorized_keys recipe
 #include_recipe "authorized_keys"
+
+#include_recipe "imagemagick"
 
 #uncomment to run the eybackup_slave recipe
 # include_recipe "eybackup_slave"
