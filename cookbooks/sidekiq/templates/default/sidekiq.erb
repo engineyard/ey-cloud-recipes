@@ -13,7 +13,6 @@ if [[ "$(whoami)" != "root" ]]; then
 fi
 
 # arguments 
-[[ $# -ne 4 ]] && usage
 app_name=$1 action=$2 rails_env=$3 worker_id=$4
 
 # variables
@@ -64,6 +63,7 @@ stop ()
 }
 
 # sanity checks
+[[ $# -ne 4 ]] && usage
 [[ ! -L $app_root ]] && { echo "${app_root} does not exist"; exit 1; }
 [[ ! -f $conf_file ]] && { echo "${conf_file} does not exist"; exit 1; }
 [[ ! -d $pid_dir ]] && mkdir -p "${pid_dir}" 
