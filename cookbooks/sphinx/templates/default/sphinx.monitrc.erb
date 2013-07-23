@@ -1,5 +1,5 @@
 check process <%= @app_name %>_sphinx
   with pidfile <%= @pid_file %>
   start program = "BUNDLE_GEMFILE=<%= @app_dir %>/Gemfile bundle exec rake -f <%= @app_dir %>/Rakefile ts:start" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
-  start program = "BUNDLE_GEMFILE=<%= @app_dir %>/Gemfile bundle exec rake -f <%= @app_dir %>/Rakefile ts:stop" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
+  stop program = "BUNDLE_GEMFILE=<%= @app_dir %>/Gemfile bundle exec rake -f <%= @app_dir %>/Rakefile ts:stop" as uid <%= @user %> and gid <%= @user %> with timeout <%= @timeout %> seconds
   group <%= @app_name %>_sphinx
