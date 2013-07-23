@@ -70,6 +70,7 @@ else
             :mem_limit => '32M'
           })
         end
+
       end
     end
 
@@ -163,6 +164,26 @@ else
             user node[:owner_name]
           end
         end
+
+        template "/etc/monit.d/#{app_name}_sphinx.monitrc" do
+          source "sphinx.monitrc.erb"
+          owner "root"
+          group "root"
+          mode 0644
+          variables({
+            :app_name => app_name,
+            :app_dir => "/data/#{app_name}/current",
+            :pid_file => "/data/#{app_name}/current/log/#{node[:environment][:framework_env]}.sphinx.pid",
+            :user => node[:owner_name],
+            :timeout => 240, # seconds
+            :framework_env => node[:environment][:framework_env]
+          })
+        end
+
+        execute "monit reload" do
+           action :run
+           epic_fail true
+        end
       end
     end
   else
@@ -231,6 +252,26 @@ else
             command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
             user node[:owner_name]
           end
+        end
+
+        template "/etc/monit.d/#{app_name}_sphinx.monitrc" do
+          source "sphinx.monitrc.erb"
+          owner "root"
+          group "root"
+          mode 0644
+          variables({
+            :app_name => app_name,
+            :app_dir => "/data/#{app_name}/current",
+            :pid_file => "/data/#{app_name}/current/log/#{node[:environment][:framework_env]}.sphinx.pid",
+            :user => node[:owner_name],
+            :timeout => 240, # seconds
+            :framework_env => node[:environment][:framework_env]
+          })
+        end
+
+        execute "monit reload" do
+           action :run
+           epic_fail true
         end
       end
     end
