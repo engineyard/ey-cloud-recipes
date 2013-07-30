@@ -63,7 +63,7 @@ If Sidekiq is installed on your application instances, rather than a utility ins
 
 ```
 on_app_servers do
-  sudo "monit restart all -g sidekiq_<app_name>"
+  sudo "monit restart all -g <app_name>_sidekiq"
 end
 ```
 
