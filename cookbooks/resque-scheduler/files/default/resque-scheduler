@@ -64,8 +64,8 @@ clean_exit() {
   exit $RESULT
 }
 
-WORKER_REF="resque_scheduler"
-LOG_FILE="/data/$APP/current/log/$WORKER_REF.log"
+WORKER_REF="resque_scheduler_$APP"
+LOG_FILE="/data/$APP/current/log/resque_scheduler.log"
 LOCK_FILE="/tmp/$WORKER_REF.monit-lock"
 PID_FILE="/var/run/engineyard/resque-scheduler_$APP.pid"
 GEMFILE="$APP_ROOT/Gemfile"
