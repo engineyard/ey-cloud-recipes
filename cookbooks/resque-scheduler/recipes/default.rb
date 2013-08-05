@@ -8,6 +8,12 @@ if ['solo', 'util'].include?(node[:instance_role])
     not_if { "gem list | grep resque" }
   end
 
+  directory '/var/run/engineyard' do
+    owner "deploy"
+    group "deploy"
+    mode 0755
+  end
+
   node[:applications].each do |app, data|
     template "/etc/monit.d/resque_scheduler_#{app}.monitrc" do
       owner 'root'
