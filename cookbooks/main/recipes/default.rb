@@ -4,8 +4,11 @@
 #  }
 #end
 
-# uncomment to turn on thinking sphinx/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
+# uncomment to turn on thinking sphinx 2/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # include_recipe "sphinx"
+
+# uncomment to turn on thinking sphinx 3. See cookbooks/thinking-sphinx-3/readme.md for documentation.
+# include_recipe "thinking-sphinx-3"
 
 # uncomment to use the collectd recipe. See cookbooks/collectd/readme.md for documentation.
 # include_recipe "collectd"

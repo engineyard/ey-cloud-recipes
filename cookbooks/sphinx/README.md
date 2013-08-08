@@ -1,7 +1,7 @@
 ey-cloud-recipes/sphinx
 ========================
 
-This recipe is for configuring and deploying sphinx on AppCloud. This is for Rails 3.
+This recipe is for configuring and deploying sphinx on AppCloud. This is for Rails 3. For Thinking Sphinx 3 support, please use the [Thinking Sphinx 3 cookbook](https://github.com/engineyard/ey-cloud-recipes/tree/master/cookbooks/thinking-sphinx-3)
 
 Dependencies
 ============
