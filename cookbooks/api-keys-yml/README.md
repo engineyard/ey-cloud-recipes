@@ -1,11 +1,11 @@
 Don't want to check API keys into version control? No problem!
 --------------------------------------------------------------
 
-This Chef recipe will write api-keys.yml to your Rails app's config/ directory on Engine Yard Cloud.
+This Chef recipe will write api-keys.yml to your application's `config/` directory on Engine Yard Cloud.
 
 # Instructions:
 
-1. Populate the templates/default/api-keys.yml.erb with your production-ready API keys.
+1. Populate the `templates/default/api-keys.yml.erb` with your production-ready API keys.
 2. Have your Rails app check locally at `config/api-keys.yml` for all API keys that it needs.
 3. Be sure to uncomment `include_recipe "api-keys-yml"` from `cookbooks/main/default/recipes.rb` per usual.
 4. That's it! Upload (`ey recipes upload -e [env]`) and apply (`ey recipes apply -e [env]`)
