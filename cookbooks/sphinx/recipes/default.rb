@@ -160,7 +160,7 @@ else
             day     '*'
             month   '*'
             weekday '*'
-            command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
+            command "PATH='/usr/local/bin:/usr/bin:/bin' && cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
             user node[:owner_name]
           end
         end
@@ -249,7 +249,7 @@ else
             day     '*'
             month   '*'
             weekday '*'
-            command "cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
+            command "PATH='/usr/local/bin:/usr/bin:/bin' && cd /data/#{app_name}/current && RAILS_ENV=#{node[:environment][:framework_env]} bundle exec rake #{flavor}:index"
             user node[:owner_name]
           end
         end
