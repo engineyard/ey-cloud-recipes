@@ -25,6 +25,11 @@ node[:sphinx][:apps].each do |app_name|
         :pid_file => "#{shared_path}/log/#{env}.sphinx.pid"
       })
     end
+
+    #symlink config yml
+    link "#{shared_path}/config/thinking_sphinx.yml" do
+      to "#{current_path}/config/thinking_sphinx.yml"
+    end
       
     if util_or_app_server?(node[:sphinx][:utility_name])       
       # create sphinx directory
