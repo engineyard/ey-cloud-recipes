@@ -3,9 +3,9 @@
 # Recipe:: default
 #
 
-unless db_server?
-  include_recipe "sphinx::cleanup"
-  include_recipe "sphinx::install"
-  include_recipe "sphinx::thinking_sphinx"
-  include_recipe "sphinx::setup"
+if solo? || !db_server?
+  include_recipe "thinking-sphinx-3::cleanup"
+  include_recipe "thinking-sphinx-3::install"
+  include_recipe "thinking-sphinx-3::thinking_sphinx"
+  include_recipe "thinking-sphinx-3::setup"
 end
