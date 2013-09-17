@@ -8,7 +8,7 @@ https://github.com/mperham/sidekiq
 
 ## Requirements
 
-Sidekiq requires requires that Redis be installed and assumes it is located at `localhost:6379`. To install redis, add the following to your gemfile:
+Sidekiq requires that Redis be installed and assumes it is located at `localhost:6379`. To install redis, add the following to your gemfile:
 
 ```
 gem 'redis'
@@ -65,7 +65,7 @@ If you wish to have more than one sidekiq utility instance, you can name them `s
 
 ## Multi Instance Deploys
 
-By default engineyard will install Redis to your DB instance and if you wish to keep it there rather than create a utility instance you will need to tell Sidekiq where to find Redis. You can do this by adding a Sidekiq intializer in `config/initializers/sidekiq.rb` with the following information:
+By default engineyard will install Redis to your DB instance and if you wish to keep it there rather than the preferred method of creating a utility instance you will need to tell Sidekiq where to find Redis. You can do this by adding a Sidekiq intializer in `config/initializers/sidekiq.rb` with the following information:
 
 ```
 Sidekiq.configure_server do |config|
