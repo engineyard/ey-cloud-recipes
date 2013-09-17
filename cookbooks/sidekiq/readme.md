@@ -6,6 +6,20 @@ Sidekiq is a simple, efficient message processing for Ruby that uses threads to 
 
 https://github.com/mperham/sidekiq
 
+## Requirements
+
+Sidekiq requires requires that Redis be installed and assumes it is located at `localhost:6379`. To install redis, add the following to your gemfile:
+
+```
+gem 'redis'
+```
+
+Then to install it into your environment uncomment the following line in `main/recipes/default.rb`:
+
+```
+include_recipe "redis"
+```
+
 ## Usage
 
 First ensure that you have Sidekiq working in your development environment by following the Sidekiq "Getting Started" guide:
@@ -48,6 +62,23 @@ sidekiq({
 By default, the recipe will install Sidekiq on to a utility instance with the name `sidekiq`. If the utility name is `nil` or there is no utility instance matching the name given, Sidekiq will be installed on all application/solo instances.
 
 If you wish to have more than one sidekiq utility instance, you can name them `sidekiq_1`, `sidekiq_2`, etc, given the `utility_name` is set to `sidekiq`.
+
+## Multi Instance Deploys
+
+By default engineyard will install Redis to your DB instance and if you wish to keep it there rather than create a utility instance you will need to tell Sidekiq where to find Redis. You can do this by adding a Sidekiq intializer in `config/initializers/sidekiq.rb` with the following information:
+
+```
+Sidekiq.configure_server do |config|
+  config.redis = { :url => "redis://<your_db_server>", :namespace => 'sidekiq' }
+end
+
+Sidekiq.configure_client do |config|
+  config.redis = { :url => "redis://<your_db_server>", :namespace => 'sidekiq' }
+end
+``` 
+
+More information on setting the location of your server can be found at: 
+https://github.com/mperham/sidekiq/wiki/Advanced-Options 
 
 ## Deploy Hooks
 
