@@ -13,7 +13,7 @@ By default, the cookbook will look for a utility instance named `sphinx` and wil
 Uncomment the following line inside of `main/recipes/default.rb`:
 
 ```
-include_recipe "sphinx"
+include_recipe "thinking-sphinx-3"
 ```
 
 Then upload and apply your cookbooks:
