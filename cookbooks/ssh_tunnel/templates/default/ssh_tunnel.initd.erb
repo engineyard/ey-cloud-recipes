@@ -3,24 +3,24 @@
 PIDFILE=/var/run/${SVCNAME}.pid
 
 # connection params
-SSH_HOST='<%= @ssh_hostname %>'
-SSH_PORT=<%= @ssh_port %>
-SSH_USER='<%= @ssh_user %>'
-SSH_KEY='<%= @ssh_private_key %>'
-SSH_KNOWN_HOSTS='<%= @ssh_known_hosts %>'
+SSH_HOST='<%= node['ssh_tunnel']['hostname'] %>'
+SSH_PORT=<%= node['ssh_tunnel']['port'] %>
+SSH_USER='<%= node['ssh_tunnel']['user'] %>'
+SSH_KEY='<%= node['ssh_tunnel']['private_key'] %>'
+SSH_KNOWN_HOSTS='<%= node['ssh_tunnel']['ssh_known_hosts'] %>'
 
 # forwarding params
-CONNECT_PORT=<%= @connect_port %>            # local connection port
-FORWARD_HOST='<%= @forward_host %>'
-FORWARD_PORT=<%= @forward_port %>               # mysql port
+CONNECT_PORT=<%= node['ssh_tunnel']['connect_port'] %> # local connection port
+FORWARD_HOST='<%= node['ssh_tunnel']['forward_host'] %>'
+FORWARD_PORT=<%= node['ssh_tunnel']['forward_port'] %> # mysql port
 
 # forwarding options
 # FWD -> Standard port forward using -L
 # REV -> Reverse tunnel using -R
 # DUAL -> Bi-directional, useful for binary log purge scripts
-DIRECTION="<%= @tunnel_direction %>"
+DIRECTION="<%= node['ssh_tunnel']['tunnel_direction'] %>"
 
-CMD="<%= @ssh_cmd %>"
+CMD="<%= node['ssh_tunnel']['ssh_command'] %>"
 
 depend() {
     use net

@@ -4,6 +4,12 @@
 #  }
 #end
 
+# uncomment to use the ssh_tunnel recipe. Make sure to set the attributes as needed.
+# The attributes can be set in the cookbook or by using
+# node.override['cookbook']['atttribute'] to override them here. See
+# cookbooks/ssh_tunnel/readme.md for documentation.
+# include_recipe "ssh_tunnel"
+
 # uncomment to turn on thinking sphinx 2/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # include_recipe "sphinx"
 

@@ -2,7 +2,7 @@ check process ssh_tunnel
   with pidfile /var/run/ssh_tunnel.pid
   start program = "/bin/sh -c '/etc/init.d/ssh_tunnel restart'"
   stop program = "/bin/sh -c '/etc/init.d/ssh_tunnel stop'"
-  <% if @tunnel_direction != 'REV' %>
-  if failed host 127.0.0.1 port <%= @connect_port %>
+  <% if node['ssh_tunnel']['tunnel_direction'] != 'REV' %>
+  if failed host 127.0.0.1 port <%= node['ssh_tunnel']['connect_port'] %>
     with timeout 15 seconds then restart
   <% end %>
