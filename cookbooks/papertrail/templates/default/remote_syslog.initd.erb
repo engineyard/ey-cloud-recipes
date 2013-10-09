@@ -9,7 +9,7 @@ start() {
     ebegin "Starting ${NAME}"
 
     start-stop-daemon --start --pidfile $PIDFILE --name $NAME \
-        --exec /usr/bin/remote_syslog -- $DAEMON_ARGS
+        --exec <%= @bin_path %>/remote_syslog -- $DAEMON_ARGS
 
     eend $?
 }
@@ -18,7 +18,7 @@ stop() {
     ebegin "Stopping ${NAME}"
 
     start-stop-daemon --stop --pidfile $PIDFILE --name $NAME \
-        --exec /usr/bin/remote_syslog
+        --exec <%= @bin_path %>/remote_syslog
 
     eend $?
 }
