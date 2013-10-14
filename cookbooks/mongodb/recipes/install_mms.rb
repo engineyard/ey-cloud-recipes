@@ -15,7 +15,7 @@ if API_KEYS.has_key? @node[:environment][:name] and SECRET_KEYS.has_key? @node[:
   InstallDirectory = "/db/mms"
   MmsFileName = "10gen-mms-agent"
   MmsZipFile = "#{MmsFileName}.zip"
-  MmsZipUrl = "https://mms-stage.10gen.com/settings/#{MmsZipFile}"
+  MmsZipUrl = "https://mms.10gen.com/settings/#{MmsZipFile}"
 
   directory InstallDirectory do
     owner 'deploy'
