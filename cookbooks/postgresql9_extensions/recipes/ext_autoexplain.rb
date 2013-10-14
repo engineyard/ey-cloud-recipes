@@ -25,6 +25,6 @@ template "#{@node[:postgres_root]}#{@node[:postgres_version]}/custom_autoexplain
 end
 
 execute "restarting postgres service" do
-  command "/etc/init.d/postgresql-#{@node[:postgres_version]} restart"
+  command "/etc/init.d/postgresql-#{@node[:postgres_version]} reload"
 end
 
