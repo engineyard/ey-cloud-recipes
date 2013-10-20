@@ -27,6 +27,9 @@ conf_file="/data/${app_name}/shared/config/${worker_ref}.yml"
 export PATH="${app_root}/ey_bundler_binstubs:$PATH"
 export HOME="/home/<%= @user %>"
 
+# change to current directory
+cd "${app_root}"
+
 # script usage
 usage ()
 {
