@@ -8,7 +8,7 @@ if ['app_master', 'app'].include?(node[:instance_role])
   
   if redis_instance
     node[:applications].each do |app, data|
-      template "/data/#{app}/shared/config/redis.yml"do
+      template "/data/#{app_name}/shared/config/redis.yml" do
         source 'redis.yml.erb'
         owner node[:owner_name]
         group node[:owner_name]
