@@ -23,9 +23,10 @@ define :update_file, :action => :append do
   when :append, :rewrite
     # file mode
     mode = params[:action].to_sym == :append ? 'a' : 'w'
+    digest = Digest::MD5.hexdigest(params[:body])
 
     # carry out the action
-    ruby_block "#{params[:action]}-to-#{filepath}" do
+    ruby_block "#{params[:action]}-to-#{filepath} (#{digest})" do
       block do
         File.open(filepath, mode) do |f|
           f.puts params[:body]
