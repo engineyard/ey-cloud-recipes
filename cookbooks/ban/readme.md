@@ -7,7 +7,7 @@ A custom chef recipe that allows you to ban IP addresses from accessing your ser
 Add the IPs that you wish to ban to the `recipes/default.rb` file, using the following syntax:
 
 ```ruby
-ban do
+ban('ban name') do
   ip "111.111.111.111"
   ip "222.222.222.222", :ports => [22, 80, 443]
   ip "222.0.0.0/8"
