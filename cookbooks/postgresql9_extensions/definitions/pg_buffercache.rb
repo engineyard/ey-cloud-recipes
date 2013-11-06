@@ -4,6 +4,6 @@ define :postgresql9_pg_buffercache do
   load_sql_file do
     db_name dbname_to_use
     extname "pg_buffercache"
-    supported_versions %w[9.0 9.2]
+    supported_versions %w[9.0 9.1 9.2]
   end
 end
