@@ -7,7 +7,7 @@ class ExamTimeWebWorkersStrategy
     return 0 unless %w(solo app_master app).include?(node[:instance_role])
     case node[:ec2][:instance_type]
       when 'c1.medium'
-        return 6
+        return 5
       when 'c1.xlarge'
         return 20
       else
