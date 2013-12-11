@@ -68,9 +68,9 @@ class ExamTimeWorkerStrategy
     # instances
     utility_instances_present = ( node['utility_instances'].length > 0 )
     worker_count_for_scrape = (utility_instances_present == true) ? 0 : 1
-    
+
     [
-      WorkerRole.new(1, "mail"),      
+      WorkerRole.new(1, "mail"),
       WorkerRole.new(1, "default"),
       WorkerRole.new(worker_count_for_scrape, "scrape")
     ]
@@ -81,7 +81,7 @@ class ExamTimeWorkerStrategy
     worker_count_for_scrape = 0
     worker_count_for_default = 0
     utility_instances_present = ( node['utility_instances'].length > 0 )
-    
+
     if role != 'util' # regular app instance
       case instance_type
         when 'm1.small'
@@ -150,7 +150,7 @@ class NamedWorkerStrategy < GenericWorkerStrategy
     reporting_count = 0
     util_count = 0
     mail_count = 0
-    
+
     case instance_type
       when 'm1.small'
         reporting_count = 1 if role == 'app_master'
@@ -169,7 +169,7 @@ class NamedWorkerStrategy < GenericWorkerStrategy
         util_count = 1 if role == 'app'
         mail_count = 2
     end
-    
+
     [
       WorkerRole.new(reporting_count, 'reporting'),
       WorkerRole.new(util_count, 'util'),
