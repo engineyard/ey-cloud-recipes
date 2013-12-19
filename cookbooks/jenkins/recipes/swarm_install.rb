@@ -1,8 +1,8 @@
 version='1.9'
 
 directory "/data/swarm" do
-	owner 'deploy'
-	group 'deploy'
+  	owner node[:owner_name]
+  	group node[:owner_name]
 	mode 0755
 	action :create
 end
@@ -10,8 +10,8 @@ end
 remote_file "/data/swarm/swarm-client.jar" do
 	source "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/#{version}/swarm-client-1.9-jar-with-dependencies.jar"
     mode 0644
-  	user 'deploy'
-  	group 'deploy'
+  	owner node[:owner_name]
+  	group node[:owner_name]
 end
 
 remote_file "/etc/monit.d/swarm.monitrc" do
