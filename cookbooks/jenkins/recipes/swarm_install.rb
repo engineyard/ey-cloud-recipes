@@ -10,7 +10,7 @@ end
 remote_file "/data/swarm/swarm-client.jar" do
 	source "http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/#{version}/swarm-client-1.9-jar-with-dependencies.jar"
     mode 0644
-  	user 'deploy'
+  	owner 'deploy'
   	group 'deploy'
 end
 
