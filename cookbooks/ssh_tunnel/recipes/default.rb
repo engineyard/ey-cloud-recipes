@@ -3,15 +3,14 @@
 # Recipe:: default
 #
 
-# if you want to have more than one tunnel set up on a given instance
-# (which should be fairly rare) then copy the entire cookbook with a
-# different top level name (don't change any filenames in it) and change 
-# this value to match before deploying.  Oh, and be sure to add a include_recipe 
-# line with the new cookbook name to the main cookbook's default.rb recipe file
-tunnel_name = 'ssh_tunnel'
-
 # fill in missing information below
 tunnel_vars = {
+  # if you want to have more than one tunnel set up on a given instance
+  # (which should be fairly rare) then copy the entire cookbook with a
+  # different top level name (don't change any filenames in it) and change
+  # this value to match before deploying.  Oh, and be sure to add a include_recipe
+  # line with the new cookbook name to the main cookbook's default.rb recipe file
+  :name => 'ssh_tunnel',
   # the host hostname (an IP will work) to ssh to
   :ssh_hostname => '',
   # only change this if using a non-default ssh port on the destination host,
@@ -52,15 +51,15 @@ tunnel_vars = {
 # should be set up on
 if node[:instance_role] == ''
 
-  template "/etc/init.d/#{tunnel_name}" do
+  template "/etc/init.d/#{tunnel_vars[:name]}" do
     source "ssh_tunnel.initd.erb"
     owner 'root'
     group 'root'
     mode 0755
     variables(tunnel_vars)
   end
-  
-  template "/etc/monit.d/#{tunnel_name}.monitrc" do
+
+  template "/etc/monit.d/#{tunnel_vars[:name]}.monitrc" do
     source "ssh_tunnel.monitrc.erb"
     owner node[:owner_name]
     group node[:owner_name]
