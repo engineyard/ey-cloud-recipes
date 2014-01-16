@@ -24,14 +24,14 @@ tunnel_vars = {
   :ssh_public_key => '',
   # the port that will be being forwarded
   :connect_port => '',
-  # the host on the remote side (or local side for a reverse tunnel) 
+  # the host on the remote side (or local side for a reverse tunnel)
   # that the :connect_port will be forwarded to
   :forward_host => '',
   # the port on :forward_host that :connect_port will be forwarded to
   :forward_port => '',
   # valid values: FWD, REV, DUAL. Determines what kind of tunnel(s) to create
   # DUAL means create both a forward and reverse tunnel
-  :tunnel_direction => '', 
+  :tunnel_direction => '',
   # the path to the ssh executable to use when making the ssh connection
   :ssh_cmd => '/usr/bin/ssh',
   # whether or not to use StrictHostKeyChecking when making the ssh connection
@@ -40,8 +40,8 @@ tunnel_vars = {
   # only set if :skip_hostkey_auth is set to false
   # note that if :skip_hostkey_auth is set to true then you need to make a
   # manual connection to the remote host *before* deploying this recipe
-  # and use the path to the known_hosts file that the remote host's public 
-  # key is written to here.  It's also even better to copy that key entry to 
+  # and use the path to the known_hosts file that the remote host's public
+  # key is written to here.  It's also even better to copy that key entry to
   # a file somewhere on an EBS volume and use that file's path here to ensure
   # that it won't be wiped after an instance restart (terminate and rebuild)
   :ssh_known_hosts => ''
@@ -66,7 +66,7 @@ if node[:instance_role] == ''
     mode 0644
     variables(tunnel_vars)
   end
-  
+
   execute "monit quit"
-  
+
 end
