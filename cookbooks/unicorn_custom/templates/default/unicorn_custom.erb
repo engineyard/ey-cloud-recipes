@@ -29,7 +29,7 @@ listen '/var/run/engineyard/unicorn_examtime.sock', :backlog => 1024
 # to the scheduling limitations by the worker process.  Due the
 # low-complexity, low-overhead implementation, timeouts of less
 # than 3.0 seconds can be considered inaccurate and unsafe.
-timeout 180
+timeout 360
 
 # sets the +path+ for the PID file of the unicorn master process
 pid "/var/run/engineyard/unicorn_examtime.pid"
