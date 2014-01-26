@@ -14,6 +14,27 @@ Requirements
 
 Other Gentoo platforms should work fine as well.
 
+TL;DR
+-----
+
+If you don't want to read the rest of this README, you can just paste this in your `main::default` recipe and get most of the way there:
+
+```ruby
+service "monit" do
+  supports [:start, :restart, :reload, :stop]
+  action :nothing
+end
+
+include_recipe "collectd-custom::credis"
+include_recipe "collectd-custom"
+include_recipe "collectd-custom::simplercpu"
+# include_recipe "collectd-custom::graphite"
+# include_recipe "collectd-custom::librato"
+include_recipe "collectd-custom::monit"
+```
+
+You'll now need to include either [`collectd-custom::librato`](#collectd-customlibrato) or [`collectd-custom::graphite`](#collectd-customgraphite) as your backend of choice.
+
 Attributes
 ----------
 
