@@ -5,7 +5,7 @@
 
 # default attributes for all platforms
 default['collectd-custom']['service_name'] = 'collectd-custom'
-default['collectd-custom']['version']      = "5.4.0"
+default['collectd-custom']['version']      = "5.4.1"
 default['collectd-custom']['source_url']   = "http://fossies.org/linux/privat/collectd-#{node['collectd-custom']['version']}.tar.gz"
 default['collectd-custom']['checksum']     = "a90fe6cc53b76b7bdd56dc57950d90787cb9c96e"
 default['collectd-custom']['dir']          = "/var/lib/collectd-custom"
