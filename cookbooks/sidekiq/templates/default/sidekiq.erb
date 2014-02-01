@@ -53,7 +53,7 @@ start ()
   fi
   
   # start sidekiq
-  sidekiq -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
+  sidekiq -d -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}"
   exit $?
 }
 
