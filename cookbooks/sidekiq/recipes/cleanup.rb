@@ -21,7 +21,7 @@ unless util_or_app_server?(node[:sidekiq][:utility_name])
       # monit
       file "/etc/monit.d/sidekiq_#{app_name}.monitrc" do 
         action :delete
-        notifies :reload, resources(:execute => "reload-monit")
+        notifies :run, resources(:execute => "reload-monit")
       end
 
       # yml files
