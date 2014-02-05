@@ -22,15 +22,12 @@ if @node[:postgres_version] == "9.0"
     version postgis_version
     action :install
   end
-elsif ["9.1","9.2"].include?(@node[:postgres_version])
+  elsif ["9.1","9.2"].include?(@node[:postgres_version])
   if @node[:postgres_version] == "9.1"
     postgis_version = "1.5.3-r1"
   else
     postgis_version = "1.5.8"
   end
-
-  proj_version = "4.6.1"
-  geos_version = "3.2.2"
 
   package_use "sci-libs/geos" do
     flags "-ruby"
