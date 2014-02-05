@@ -1,0 +1,5 @@
+check process statsd
+  with pidfile /data/<%= @app_name %>/shared/pids/statsd.pid
+  start = "/data/<%= @app_name %>/shared/statsd start" as uid <%= @user %> and gid <%= @user %>
+  stop = "/data/<%= @app_name %>/shared/statsd stop" as uid <%= @user %> and gid <%= @user %>
+  group statsd

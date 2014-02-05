@@ -1,0 +1,8 @@
+{
+  port: <%= @statsd_port %>,
+  backends: [ "statsd-librato-backend" ],
+  librato: {
+    email: "<%= @librato_email %>",
+    token: "<%= @librato_token %>"
+  }
+}

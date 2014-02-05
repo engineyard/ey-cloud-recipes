@@ -1,0 +1,14 @@
+#!/bin/bash
+
+case $1 in
+  start)
+    echo $$ > /data/<%= @app_name %>/shared/pids/statsd.pid;
+    exec 2>&1 node <%= @src_dir %>/stats.js /data/<%= @app_name %>/shared/config/statsd.js
+    ;;
+  stop)
+    kill `cat /data/<%= @app_name %>/shared/pids/statsd.pid` ;;
+  *)
+  echo "usage: statsd {start|stop}" ;;
+
+esac
+exit 0
