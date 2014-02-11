@@ -5,14 +5,30 @@
 
 if node[:instance_role] == 'solo'
 
-  remote_file "/etc/nginx/servers/examtime/custom.conf" do
+  template "/etc/nginx/servers/examtime/custom.conf" do
+ #   owner node[:owner_name]
+ #   group node[:owner_name]
     owner "deploy"
     group "deploy"
     mode 0644
-    source "custom.conf"
-    backup false
-    action :create
+    source "custom.erb"
+    if node[:instance_role] == 'solo'
+    variables({
+                :auth_basic => 'auth_basic "ExamTime integration - Company Confidential - this site is restricted to ExamTime staff only";',
+                :auth_basic_user_file => "auth_basic_user_file /data/nginx/servers/examtime/examtime.users;",
+
+              })
+      end
   end
+
+  # remote_file "/etc/nginx/servers/examtime/custom.conf" do
+  #   owner "deploy"
+  #   group "deploy"
+  #   mode 0644
+  #   source "custom.conf"
+  #   backup false
+  #   action :create
+  # end
   
   remote_file "/etc/nginx/servers/examtime/custom.ssl.conf" do
     owner "deploy"
