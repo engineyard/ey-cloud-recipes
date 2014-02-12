@@ -6,8 +6,6 @@
 if node[:instance_role] == 'solo'
 
   template "/etc/nginx/servers/examtime/custom.conf" do
- #   owner node[:owner_name]
- #   group node[:owner_name]
     owner "deploy"
     group "deploy"
     mode 0644
@@ -21,15 +19,6 @@ if node[:instance_role] == 'solo'
       end
   end
 
-  # remote_file "/etc/nginx/servers/examtime/custom.conf" do
-  #   owner "deploy"
-  #   group "deploy"
-  #   mode 0644
-  #   source "custom.conf"
-  #   backup false
-  #   action :create
-  # end
-  
   remote_file "/etc/nginx/servers/examtime/custom.ssl.conf" do
     owner "deploy"
     group "deploy"
