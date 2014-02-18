@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-if node[:instance_role] == 'db_master' 
+if ['db_master', 'solo'].include?(node[:instance_role])
   cron "OPTIMIZE TABLE" do
   
     minute "0"
