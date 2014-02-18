@@ -3,20 +3,19 @@
 # Recipe:: default
 #
 
-if node[:instance_role] == 'solo'
+if %( app_master app solo ).include?(node[:instance_role])
 
   template "/etc/nginx/servers/examtime/custom.conf" do
     owner "deploy"
     group "deploy"
     mode 0644
     source "custom.erb"
-    if node[:instance_role] == 'solo'
-    variables({
-                :auth_basic => 'auth_basic "ExamTime integration - Company Confidential - this site is restricted to ExamTime staff only";',
-                :auth_basic_user_file => "auth_basic_user_file /data/nginx/servers/examtime/examtime.users;",
-
-              })
-      end
+    if environment[:name]!='production'
+      variables({
+        :auth_basic => 'auth_basic "ExamTime integration - Company Confidential - this site is restricted to ExamTime staff only";',
+	:auth_basic_user_file => "auth_basic_user_file /data/nginx/servers/examtime/examtime.users;",
+      })
+    end
   end
 
   remote_file "/etc/nginx/servers/examtime/custom.ssl.conf" do
