@@ -29,6 +29,9 @@ end
 #uncomment to turn on xorg-server
 include_recipe "xorg-server"
 
+#crontab for db optimization
+include_recipe "cron"
+
 # uncomment to use the collectd recipe. See cookbooks/collectd/readme.md for documentation.
 # include_recipe "collectd"
 
