@@ -32,6 +32,9 @@ include_recipe "xorg-server"
 #nginx configuration
 include_recipe "nginx_config"
 
+#crontab for db optimization
+include_recipe "cron"
+
 # uncomment to use the collectd recipe. See cookbooks/collectd/readme.md for documentation.
 # include_recipe "collectd"
 
