@@ -10,7 +10,7 @@ if %( app_master app solo ).include?(node[:instance_role])
     group "deploy"
     mode 0644
     source "custom.erb"
-    if environment[:name]!='production'
+    if node[:environment][:name]!='production'
       variables({
         :auth_basic => 'auth_basic "ExamTime integration - Company Confidential - this site is restricted to ExamTime staff only";',
 	:auth_basic_user_file => "auth_basic_user_file /data/nginx/servers/examtime/examtime.users;",
@@ -26,7 +26,7 @@ if %( app_master app solo ).include?(node[:instance_role])
     backup false
     action :create
   end
-  
+
   remote_file "/etc/nginx/http-custom.conf" do
     owner "deploy"
     group "deploy"
@@ -35,10 +35,10 @@ if %( app_master app solo ).include?(node[:instance_role])
     backup false
     action :create
   end
-  Chef::Log.info "Nginx configuration deployed" 
+  Chef::Log.info "Nginx configuration deployed"
 end
 
-ey_cloud_report "nginx_config" do 
-  message "Nginx configuration deployed" 
-end 
+ey_cloud_report "nginx_config" do
+  message "Nginx configuration deployed"
+end
 
