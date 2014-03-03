@@ -45,7 +45,8 @@ node[:applications].each do |app_name, data|
       source "env_custom.erb"
       notifies :run, resources(:execute => "restart unicorn")
       variables({
-        :app_name => app_name
+        :app_name => app_name,
+        :max_time => 720
       })
     end
 
