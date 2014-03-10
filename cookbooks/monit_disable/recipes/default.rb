@@ -18,6 +18,11 @@ services.each do |service|
     only_if {::File.exists? monit_file_absolute_path}
   end
 
+  execute "add a keep file" do
+    command "touch /etc/monit.d/keep.#{monit_file}.monitrc"
+    ignore_failure true
+  end
+
   execute "monit reload" do
     action :nothing
   end
