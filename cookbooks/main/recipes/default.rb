@@ -23,7 +23,7 @@
 # include_recipe "memcached"
 
 # uncomment to turn on monit_disable
-include_recipe "monit_disable"
+# include_recipe "monit_disable"
 
 #uncomment ot run the riak recipe
 # include_recipe "riak"
