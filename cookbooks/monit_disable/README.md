@@ -1,7 +1,7 @@
-monit_disable Cookbook for Engine Yard Cloud
+monit_disable
 =======================================
 
-This cookbook allows you to disable monit services that have been installed by default in your Engine Yard Cloud instances. The monit entry will be stopped and unmonitored, and then the monitrc file will be removed.
+This recipe allows you to disable monit services that have been installed by default in your Engine Yard Cloud instances. The monit entry will be stopped and unmonitored, and then the monitrc file will be removed.
 
 To specify the monit services to be disabled, edit the services variable in recipes/default.rb file in this recipe:
 
