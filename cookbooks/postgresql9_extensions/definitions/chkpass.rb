@@ -5,6 +5,6 @@ define :postgresql9_chkpass do
     db_name dbname_to_use
     username "postgres"
     extname "chkpass"
-    supported_versions %w[9.0 9.1 9.2]
+    minimum_version 9.0
   end
 end

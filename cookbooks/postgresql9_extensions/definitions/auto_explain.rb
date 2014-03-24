@@ -4,7 +4,7 @@ define :postgresql9_autoexplain do
  load_shared_library do
     db_name dbname_to_use
     library_name "auto_explain"
-    supported_versions %w[9.0 9.1 9.2]
+    minimum_version 9.0
   end
 
   include_recipe "postgresql9_extensions::ext_autoexplain"

@@ -4,7 +4,7 @@ define :postgresql9_unaccent do
   load_sql_file do 
     db_name dbname_to_use
     extname "unaccent"
-    supported_versions %w[9.0 9.1]
+    minimum_version 9.0
   end
 
 end

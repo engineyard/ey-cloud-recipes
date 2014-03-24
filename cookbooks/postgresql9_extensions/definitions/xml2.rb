@@ -4,6 +4,6 @@ define :postgresql9_xml2 do
   load_sql_file do
     db_name dbname_to_use
     extname "xml2"
-    supported_versions %w[9.1 9.2]
+    minimum_version 9.1
   end
 end

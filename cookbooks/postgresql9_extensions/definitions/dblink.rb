@@ -4,6 +4,6 @@ define :postgresql9_dblink do
   load_sql_file do
     db_name dbname_to_use
     extname "dblink"
-    supported_versions %w[9.0 9.1 9.2]
+    minimum_version 9.0
   end
 end

@@ -4,6 +4,6 @@ define :postgresql9_pg_stat_statements do
   load_sql_file do
     db_name dbname_to_use
     extname "pg_stat_statements"
-    supported_versions %w[9.2]
+    minimum_version 9.2
   end
 end

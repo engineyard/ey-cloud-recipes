@@ -4,6 +4,6 @@ define :postgresql9_earthdistance do
   load_sql_file do
     db_name dbname_to_use
     extname "earthdistance"
-    supported_versions %w[9.0 9.1 9.2]
+    minimum_version 9.0
   end
 end

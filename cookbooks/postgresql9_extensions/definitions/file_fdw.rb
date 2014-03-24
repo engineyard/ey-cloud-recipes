@@ -4,6 +4,6 @@ define :postgresql9_file_fdw do
   load_sql_file do
     db_name dbname_to_use
     extname "file_fdw"
-    supported_versions %w[9.1 9.2]
+    minimum_version 9.1
   end
 end
