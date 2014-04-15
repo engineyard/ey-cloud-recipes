@@ -1,4 +1,4 @@
-if @node[:postgres_version] == "9.0"
+if @node[:postgres_version] == 9.0
   postgis_version = "1.5.2"
   proj_version = "4.6.1"
   geos_version = "3.2.2"
@@ -22,8 +22,8 @@ if @node[:postgres_version] == "9.0"
     version postgis_version
     action :install
   end
-elsif ["9.1","9.2"].include?(@node[:postgres_version])
-  if @node[:postgres_version] == "9.1"
+elsif @node[:postgres_version] >= 9.1
+  if @node[:postgres_version] == 9.1
     postgis_version = "1.5.3-r1"
   else
     postgis_version = "1.5.8"
@@ -48,7 +48,7 @@ elsif ["9.1","9.2"].include?(@node[:postgres_version])
   end
 
   execute "setting emerge options" do
-    command "emerge --ignore-default-opts dev-db/postgis"
+    command "emerge --ignore-default-opts =dev-db/postgis-#{postgis_version}"
   end
 end
 

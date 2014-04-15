@@ -1,8 +1,8 @@
-if @node[:postgres_version] == "9.2"
-  postgis_version = "2.0.2"
+if @node[:postgres_version] >= 9.2
+  postgis_version = "2.1.1"
   proj_version = "4.6.1"
-  geos_version = "3.2.2"
-  gdal_version = "1.8.1"
+  geos_version = "3.4.2"
+  gdal_version = "1.10.0-r1"
 
   package_use "sci-libs/geos" do
     flags "-ruby"

@@ -13,6 +13,6 @@ auto_explain.log_buffers = <%= @auto_explain_log_buffers %>
 auto_explain.log_format = <%= @auto_explain_log_format  %>
 auto_explain.log_nested_statements = <%= @auto_explain_log_nested_statements  %>
 shared_preload_libraries = <%= @shared_preload_libraries %>
-<% if @db_version != "9.2" %>
+<% if @db_version < 9.2 %>
   custom_variable_classes = <%= @custom_variable_classes %>
 <% end %>
