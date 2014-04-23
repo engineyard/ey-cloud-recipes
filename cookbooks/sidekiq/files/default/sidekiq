@@ -22,10 +22,12 @@ pid_dir="/var/run/engineyard/sidekiq/${app_name}"
 pid_file="${pid_dir}/${worker_ref}.pid"
 log_file="${app_root}/log/${worker_ref}.log"
 conf_file="/data/${app_name}/shared/config/${worker_ref}.yml"
+app_user=$(stat -L -c"%U" "${app_root}")
 
-# add binstubs to $PATH
-export PATH="${app_root}/ey_bundler_binstubs:$PATH"
-export HOME="/home/<%= @user %>"
+sidekiq="${app_root}/ey_bundler_binstubs/sidekiq"
+sidekiqctl="${app_root}/ey_bundler_binstubs/sidekiqctl"
+
+export HOME="/home/${app_user}"
 
 # change to current directory
 cd "${app_root}"
@@ -43,7 +45,7 @@ start ()
   # check if process is already running
   if [[ -f $pid_file ]]; then
     pid=$(cat "${pid_file}")
-    
+
     if [[ -d /proc/$pid ]]; then
       echo "${0} is already running (${pid})"
       exit 1
@@ -51,9 +53,9 @@ start ()
       rm -f "${pid_file}"
     fi
   fi
-  
+
   # start sidekiq
-  sidekiq -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
+  sudo -u "${app_user}" -H "${sidekiq}" -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
   exit $?
 }
 
@@ -61,7 +63,7 @@ start ()
 stop ()
 {
   # stop using sidekiqctl
-  sidekiqctl stop "${pid_file}"
+  sudo -u "${app_user}" -H "${sidekiqctl}" stop "${pid_file}"
   exit $?
 }
 
@@ -69,7 +71,7 @@ stop ()
 [[ $# -ne 4 ]] && usage
 [[ ! -L $app_root ]] && { echo "${app_root} does not exist"; exit 1; }
 [[ ! -f $conf_file ]] && { echo "${conf_file} does not exist"; exit 1; }
-[[ ! -d $pid_dir ]] && mkdir -p "${pid_dir}" 
+[[ ! -d $pid_dir ]] && mkdir -p "${pid_dir}" && chown "${app_user}:${app_user}" "${pid_dir}"
 
 # execute action
 case "${action}" in
