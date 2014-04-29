@@ -49,6 +49,10 @@
 # You must add your packages to packages/attributes/packages.rb
 #require_recipe "packages"
 
+#uncomment to add specified cron jobs for application user (deploy)
+# You must add your cron jobs to cron/attributes/cron.rb
+#require_recipe "cron"
+
 #uncomment to run the exim::auth recipe
 #include_recipe "exim::auth"
 #include_recipe "mongodb"
