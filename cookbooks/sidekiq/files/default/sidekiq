@@ -27,6 +27,7 @@ app_user=$(stat -L -c"%U" "${app_root}")
 sidekiq="${app_root}/ey_bundler_binstubs/sidekiq"
 sidekiqctl="${app_root}/ey_bundler_binstubs/sidekiqctl"
 
+export PATH="${app_root}/ey_bundler_binstubs:$PATH"
 export HOME="/home/${app_user}"
 
 # change to current directory
