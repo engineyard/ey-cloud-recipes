@@ -11,6 +11,7 @@ collectd do
   data_space [3000000000, 1500000000]
   root_space :warning => '1245MB', :failure => '500MB'
   mnt_space :warning => 400000, :failure => 200000
+  swap :warning => '700MB', :failure => '1GB'
 end
 ```
 
@@ -25,6 +26,7 @@ Below is a list of all available options that can be passed to the `collectd` bl
 | data_space | sets the alerting levels for the disk space remaining on the /data volume |
 | root_space | sets the alerting levels for the disk space remaining on the / volume     |
 | mnt_space  | sets the alerting levels for the disk space remaining on the /mnt volume  |
+| swap       | sets the alerting levels for the amount of swap space used                |
 
 ## Arguments
 

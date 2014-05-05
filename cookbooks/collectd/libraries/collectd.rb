@@ -55,6 +55,11 @@ class Chef
         set_or_return(:mnt_space, arg, :kind_of => [Hash])
       end
       
+      def swap(arg = nil)
+        arg = check_options(arg)
+        set_or_return(:swap, arg, :kind_of => [Hash])
+      end
+
       protected
       
       def check_options(arg = nil)
@@ -94,7 +99,7 @@ class Chef
       def action_update
         expressions = []
         
-        %w[load root_space db_space data_space mnt_space].each do |type|
+        %w[load root_space db_space data_space mnt_space swap].each do |type|
           if (threshold = @new_resource.send(type))
             Chef::Log.info "Setting collectd #{type} thresholds (#{threshold.inspect})"
             plugin = type[/_space$/] ? "df-#{type[/(.*)_space$/, 1]}" : type
