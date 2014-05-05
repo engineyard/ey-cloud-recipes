@@ -10,15 +10,12 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
   end
 
   # bin script
-  template "/engineyard/bin/sidekiq" do
+  remote_file "/engineyard/bin/sidekiq" do
     mode 0755
-    source "sidekiq.erb" 
+    source "sidekiq"
     backup false
-    variables({
-      :user => node[:owner_name]
-    })
   end
-  
+
   # loop through applications
   node[:applications].each do |app_name, _|
     # reload monit
