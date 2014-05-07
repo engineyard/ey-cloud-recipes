@@ -69,6 +69,9 @@
 #uncomment to run the redis recipe
 #include_recipe "redis"
 
+#uncomment to run the magento_redis recipe
+#include_recipe "magento_redis"
+
 #uncomment to run the api-keys-yml recipe
 # include_recipe "api-keys-yml"
 
