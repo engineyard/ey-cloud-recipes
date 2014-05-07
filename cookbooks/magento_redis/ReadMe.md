@@ -1,7 +1,7 @@
 #Magento with Redis on Cloud.EngineYard.com#
 
 
-##Steps to get redis and Magento working.##
+##This recipe is to write out the local.xml file for Magento. Steps to get redis and Magento working.##
 
 1. You will need your encryption key to add to the default.rb of this repository for your local.xml to be written properly.
 1.Fill in app_name in recipes/default.rb
