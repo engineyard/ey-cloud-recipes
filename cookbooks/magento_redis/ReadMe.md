@@ -1,4 +1,4 @@
-#Magento with Redis on Engine Yard#
+#Magento with Redis on Cloud.EngineYard.com#
 
 
 ##Steps to get redis and Magento working.##
