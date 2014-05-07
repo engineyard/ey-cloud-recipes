@@ -1,7 +1,6 @@
-+Magento on Cloud.EngineYard.com
-+===============================
+#Magento on Cloud.EngineYard.com#
 
-This recipe is to write out the local.xml file for Magento.
+##This recipe is to write out the local.xml file for Magento.##
 
 1. Fill in `app_name` in `recipes/default.rb`
 2. Fill in your encryption key in the `key` variable in `recipes/default.rb`
