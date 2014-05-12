@@ -111,6 +111,9 @@
 
 # include_recipe "eventmachine"
 
+#uncomment to include the Magento recipe
+# include_recipe "magento"
+
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
   # Extensions that support Postgres >= 9.0
