@@ -69,9 +69,6 @@
 #uncomment to run the redis recipe
 #include_recipe "redis"
 
-#uncomment to run the magento_redis recipe
-#include_recipe "magento_redis"
-
 #uncomment to run the api-keys-yml recipe
 # include_recipe "api-keys-yml"
 
@@ -112,7 +109,7 @@
 # include_recipe "eventmachine"
 
 #uncomment to include the Magento recipe
-# include_recipe "magento"
+#include_recipe "magento"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
