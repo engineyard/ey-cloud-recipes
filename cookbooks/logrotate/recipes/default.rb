@@ -7,7 +7,7 @@ remote_file "/etc/logrotate.d/nginx" do
   source "nginx.logrotate"
   owner "root"
   group "root"
-  mode "0655"
+  mode "0644"
   backup 0
 end
 
