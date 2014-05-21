@@ -1,11 +1,11 @@
-services = [
+services_to_disable = [
   {:name => "memcache_11211", :monit_file => "memcached"},
   {:name => "redis"}
 ]
 
-services.each do |service|
-  service_name = service[:name]
-  monit_file = service[:monit_file] || service[:name]
+services_to_disable.each do |svc|
+  service_name = svc[:name]
+  monit_file = svc[:monit_file] || svc[:name]
   monit_file_absolute_path = "/etc/monit.d/#{monit_file}.monitrc"
 
   ey_cloud_report "monit-disable" do
