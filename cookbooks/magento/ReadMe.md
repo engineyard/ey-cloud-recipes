@@ -16,7 +16,6 @@ This recipe will write out the local.xml file required for Magento configuration
 1. You need to use either a single solo instance (application and database), an environment containing a utility instance called 'redis' or an environment with a database master.
 2. If you are using a utility instance for redis, uncomment the include_recipe for redis in the main cookbook recipe.  If you are using a solo instance, Redis will already be installed and you can skip this step.  If you plan on using your database master, Redis will already be installed and you can skip this step.
 3. Set redis_session_store and/or redis_page_caching to true in attributes/default.rb
-4. If you are enabling page caching, make sure you set the proper cached backend class name in attributes/default.rb
 
 ## Configurable Attributes
 
