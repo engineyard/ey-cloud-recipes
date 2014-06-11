@@ -53,6 +53,43 @@
             </default_setup>
         </resources>
         <session_save><![CDATA[db]]></session_save>
+<% if @redis_session_store -%>
+        <redis_session>                     
+            <host><%= @redis_host %></host>
+            <port>6379</port>
+            <password></password> 
+            <timeout>2.5</timeout>    
+            <persistent></persistent>
+            <db>0</db>
+            <compression_threshold>2048</compression_threshold>
+            <compression_lib>gzip</compression_lib>
+            <log_level>1</log_level>
+            <max_concurrency>6</max_concurrency>
+            <break_after_frontend>5</break_after_frontend>
+            <break_after_adminhtml>30</break_after_adminhtml>
+            <bot_lifetime>7200</bot_lifetime>
+        </redis_session>
+<% end 
+   if @redis_page_caching -%>
+        <cache>
+            <backend>Mage_Cache_Backend_Redis</backend>
+            <backend_options>
+              <server><%= @redis_host %></server>
+              <port>6379</port>
+              <persistent></persistent>  <!-- Specify a unique string like "cache-db0" to enable persistent connections. -->
+              <database>2</database>
+              <password></password>
+              <force_standalone>1</force_standalone>  <!-- 0 for phpredis, 1 for standalone PHP -->
+              <connect_retries>1</connect_retries>    <!-- Reduces errors due to random connection failures -->
+              <read_timeout>10</read_timeout>         <!-- Set read timeout duration -->
+              <automatic_cleaning_factor>0</automatic_cleaning_factor> <!-- Disabled by default -->
+              <compress_data>1</compress_data>        <!-- 0-9 for compression level, recommended: 0 or 1 -->
+              <compress_tags>1</compress_tags>        <!-- 0-9 for compression level, recommended: 0 or 1 -->
+              <compress_threshold>20480</compress_threshold>  <!-- Strings below this size will not be compressed -->
+              <compression_lib>gzip</compression_lib> <!-- Supports gzip, lzf and snappy -->
+            </backend_options>
+        </cache>   
+<% end -%>
     </global>
     <admin>
         <routers>
