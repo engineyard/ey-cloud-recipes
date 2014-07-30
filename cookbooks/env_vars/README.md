@@ -16,3 +16,12 @@ Set environment variables in attributes/env_vars.rb
     :RUBY_HEAP_FREE_MIN => "4096",
   }
   ```
+
+To have the environment variables available to a Rails console they must be sourced for the bash session. The most straight-forward way to acheive this is have the .bash_profile source the same env.custom file created by the recipe.
+
+To do this you would update the /home/deploy/.bash_profile to contain:
+
+```
+  [[ -f ~/.bashrc ]] && . ~/.bashrc
+  [[ -f ~/.bashrc ]] && . /data/INSERT_APP_NAME/shared/config/env.custom
+```
