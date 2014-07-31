@@ -26,7 +26,7 @@ To do this you would update the /home/deploy/.bash_profile to contain:
   [[ -f /data/INSERT_APP_NAME/shared/config/env.custom ]] && . /data/INSERT_APP_NAME/shared/config/env.custom
 ```
 
-This works best on environments with just one app, as the specified app's variables will be sourced for all sessions. If you have multiple apps, you should choose just per environment.
+This works best on environments with just one app, as the specified app's variables will be sourced for all sessions. If you have multiple apps, you should choose just one per environment.
 
 Rails 4.1 adds secret.yml support as a better solution than environment variables. You can put this file into the the shared/config directory (like database.yml) so it's not stored in your repo (just on the snapshots) and you can use it in Rails 4.0 and 3.2 with https://github.com/pixeltrix/rails-secrets.
 
