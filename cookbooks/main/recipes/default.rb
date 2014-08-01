@@ -1,3 +1,5 @@
+include_recipe "npm_update"
+
 #execute "testing" do
 #  command %Q{
 #    echo "i ran at #{Time.now}" >> /root/cheftime
