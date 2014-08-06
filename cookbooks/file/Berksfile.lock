@@ -1,0 +1,10 @@
+{
+  "sources": {
+    "file": {
+      "path": "."
+    },
+    "test": {
+      "path": "./spec/support/cookbooks/test"
+    }
+  }
+}
