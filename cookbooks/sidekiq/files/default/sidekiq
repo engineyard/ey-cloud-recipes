@@ -25,7 +25,8 @@ conf_file="/data/${app_name}/shared/config/${worker_ref}.yml"
 app_user=$(stat -L -c"%U" "${app_root}")
 
 sidekiq="${app_root}/ey_bundler_binstubs/sidekiq"
-sidekiqctl="${app_root}/ey_bundler_binstubs/sidekiqctl"
+cmd_kill="/bin/kill"
+cmd_cat="/bin/cat"
 
 export HOME="/home/${app_user}"
 
@@ -62,8 +63,8 @@ start ()
 # stop sidekiq
 stop ()
 {
-  # stop using sidekiqctl
-  sudo -u "${app_user}" -H "${sidekiqctl}" stop "${pid_file}"
+  # stop using kill
+  sudo -u "${app_user}" -H "${cmd_kill}" -s TERM `${cmd_cat} ${pid_file}`
   exit $?
 }
 
