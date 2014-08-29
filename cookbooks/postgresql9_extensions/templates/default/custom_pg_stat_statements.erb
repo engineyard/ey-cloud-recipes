@@ -1,0 +1,11 @@
+# ------------------------------------
+# PostgreSQL Custom configuration file
+# DB Version: <%= @db_version  %>
+# ------------------------------------
+#
+# This file was created by the postgresql9_extensions custom chef run
+# the pg_stats_statements extension and consists of lines of the form:
+#
+shared_preload_libraries = <%= @shared_preload_libraries %>
+pg_stat_statements.max = 10000
+pg_stat_statements.track = all
