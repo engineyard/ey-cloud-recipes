@@ -3,11 +3,11 @@
 
 backend default {
    .host = "127.0.0.1";
-   .port = "80"; 
-} 
+   .port = "80";
+}
 
 sub vcl_recv {
-  set req.grace = 120s; 
+  set req.grace = 120s;
 
 ##### Exclude specific urls
 #
@@ -51,8 +51,8 @@ sub vcl_recv {
 #  }
 #####
 
-} 
-  
+}
+
 sub vcl_fetch {
 ##### Grace period
 #
@@ -62,8 +62,9 @@ sub vcl_fetch {
 # eliminate this value as needed.
 #
 #####
-  set obj.grace = 120s;
-  
+#  DEPRECATED - works in 2.x, not 3.x
+#  set obj.grace = 120s;
+
 ##### Force caching
 #
 # If the normal TTL on the content is less than 120 seconds, set it to 120 seconds.
@@ -94,12 +95,12 @@ sub vcl_fetch {
 #    # The Cookie Monster eats the cookies.
 #    unset obj.http.set-cookie;
 #  }
-} 
+}
 
 sub vcl_deliver {
   # This just inserts a diagnostic header to let us know if the content
   # was served via a cache hit, or whether it was a miss.
-  
+
   if (obj.hits > 0) {
     set resp.http.X-Cache = "HIT";
   } else {
