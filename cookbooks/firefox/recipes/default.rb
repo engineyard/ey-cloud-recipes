@@ -12,9 +12,10 @@ if ['app_master', 'app', 'solo', 'util'].include?(node[:instance_role])
   end
 
   dir_path = "/home/firefoxes"
+  user = node[:owner_name]
 
   directory dir_path do
-    owner "root"
+    owner user
     mode "0755"
     action :create
   end
@@ -25,7 +26,7 @@ if ['app_master', 'app', 'solo', 'util'].include?(node[:instance_role])
   node[:firefox][:versions] = firefox_default_version | node[:firefox][:other_versions]
   node[:firefox][:versions].each do |firefox_version|
     directory "#{dir_path}/#{firefox_version}" do
-      owner "root"
+      owner user
       mode "0755"
       action :create
     end
@@ -35,7 +36,7 @@ if ['app_master', 'app', 'solo', 'util'].include?(node[:instance_role])
     tar_file = "#{firefox_version_path}/#{firefox[:filename]}"
 
     remote_file tar_file do
-      owner "root"
+      owner user
       source firefox[:url]
       checksum firefox[:sha]
       action :create_if_missing
