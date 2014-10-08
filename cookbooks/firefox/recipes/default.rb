@@ -23,7 +23,7 @@ if ['app_master', 'app', 'solo', 'util'].include?(node[:instance_role])
   # all the firefox versions which needs to be downloaded and extracted
   firefox_default_version = node[:firefox][:default_version]
   # all the firefox versions which need to be downloaded and installed
-  node[:firefox][:versions] = firefox_default_version | node[:firefox][:other_versions]
+  node[:firefox][:versions] = [firefox_default_version] | node[:firefox][:other_versions]
   node[:firefox][:versions].each do |firefox_version|
     directory "#{dir_path}/#{firefox_version}" do
       owner user
@@ -52,10 +52,18 @@ if ['app_master', 'app', 'solo', 'util'].include?(node[:instance_role])
     link "/usr/bin/firefox#{firefox_version}" do
       to"#{firefox_version_path}/#{firefox[:firefox_dir]}/firefox"
     end
+
+    link "/usr/bin/firefox-bin#{firefox_version}" do
+      to"#{firefox_version_path}/#{firefox[:firefox_dir]}/firefox-bin"
+    end
   end
 
   # the default firefox version is sym linked
   link "/usr/bin/firefox" do
     to"/usr/bin/firefox#{firefox_default_version}"
+  end
+
+  link "/usr/bin/firefox-bin" do
+    to"/usr/bin/firefox-bin#{firefox_default_version}"
   end
 end
