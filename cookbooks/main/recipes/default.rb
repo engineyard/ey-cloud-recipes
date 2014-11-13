@@ -4,6 +4,9 @@
 #  }
 #end
 
+# uncomment to deny access to /log, /config, and .git directories as well as any .yml files
+# include_recipe "deny-directories"
+
 # uncomment to turn on thinking sphinx 2/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # include_recipe "sphinx"
 
