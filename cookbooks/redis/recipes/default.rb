@@ -11,11 +11,13 @@ if ['util'].include?(node[:instance_role])
     end
 
     enable_package "dev-db/redis" do
-      version "2.4.6"
+      version node[:redis][:version]
+      override_hardmask true
+      unmask :true
     end
 
     package "dev-db/redis" do
-      version "2.4.6"
+      version node[:redis][:version]
       action :upgrade
     end
 
@@ -44,6 +46,7 @@ if ['util'].include?(node[:instance_role])
         :timeout => node[:redis][:timeout],
         :databases => node[:redis][:databases],
         :rdbcompression => node[:redis][:rdbcompression],
+        :hz => node[:redis][:hz]
       })
     end
     
