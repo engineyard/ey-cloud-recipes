@@ -20,10 +20,20 @@ if ['solo','app_master'].include?(node[:instance_role])
 
   # Update JAVA as the Java on the AMI can sometimes crash
   #
-  Chef::Log.info "Updating Sun JDK"
-  package "dev-java/sun-jdk" do
-    version "1.6.0.26"
+  Chef::Log.info "Updating Java JDK"
+  enable_package node[:elastic_search_java_package_name] do
+    version node[:elasticsearch_java_version]
+    unmask true
+  end
+
+  package node[:elastic_search_java_package_name] do
+    version node[:elasticsearch_java_version]
     action :upgrade
+  end
+
+  execute "Set the default Java version to #{node[:elasticsearch_java_version]}" do
+    command "eselect java-vm set system #{node[:elasticsearch_java_eselect_version]}"
+    action :run
   end
 
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}" do
@@ -94,6 +104,17 @@ if ['solo','app_master'].include?(node[:instance_role])
     group "elasticsearch"
     group "nogroup"
     mode 0755
+  end
+
+  max_mem = ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m"
+  template "/usr/share/elasticsearch/elasticsearch.in.sh" do
+    source "elasticsearch.in.sh.erb"
+    mode 0644
+    backup 0
+    variables(
+      :elasticsearch_version => node[:elasticsearch_version],
+      :es_max_mem => ((node[:memory][:total].to_i / 1024 * 0.75)).to_i.to_s + "m"
+    )
   end
 
   template "/etc/monit.d/elasticsearch_#{node[:elasticsearch_clustername]}.monitrc" do
