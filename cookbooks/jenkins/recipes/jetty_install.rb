@@ -1,5 +1,5 @@
 remote_file "/tmp/jetty.tar.gz" do
-  source "jetty-distribution-8.1.11.v20130520.tar.gz"
+  source "http://download.eclipse.org/jetty/stable-8/dist/jetty-distribution-8.1.16.v20140903.tar.gz"
   action :create_if_missing
   mode 0644
 end
@@ -11,12 +11,12 @@ remote_file "/etc/monit.d/jetty.monitrc" do
 end
 
 execute "Install Jetty" do
-  command "tar -zxvf /tmp/jetty.tar.gz jetty-distribution-8.1.11.v20130520/"
+  command "tar -zxvf /tmp/jetty.tar.gz jetty-distribution-8.1.16.v20140903/"
   cwd "/data/"
 end
 
 execute "symlink Jetty" do
-  command "sudo ln -fs /data/jetty-distribution-8.1.11.v20130520 /opt/jetty"
+  command "sudo ln -fs /data/jetty-distribution-8.1.16.v20140903 /opt/jetty"
 end
 
 execute "symlink initscript" do
