@@ -23,6 +23,12 @@ if "solo" == @node[:instance_role] then
   remote_file "/etc/nginx/servers/jetty.conf" do
     source "nginx.jetty.conf"
   end 
+
+  execute "Restart nginx" do
+    command %Q{
+     /etc/init.d/nginx restart
+    }
+  end
 end
 
 if @node[:instance_role] == 'util' then
