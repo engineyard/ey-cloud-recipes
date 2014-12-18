@@ -1,0 +1,9 @@
+# -- generate server keys
+pg_datadir=<%= @datadir %>
+cd ${pg_datadir}
+openssl genrsa -des3 -passout pass:$(cat ~/.pgpass|awk -F: '{print $5}') -out server.key 1024
+openssl rsa -passin pass:$(cat ~/.pgpass|awk -F: '{print $5}') -in server.key -out server.key
+chmod 400 server.key
+chown postgres.postgres server.key
+openssl req -new -key server.key -days 3650 -out server.crt -x509 -subj '/C=US/ST=California/L=San Francisco/O=Engine Yard/CN=engineyard.com/emailAddress=support@engineyard.com'
+cp server.crt root.crt

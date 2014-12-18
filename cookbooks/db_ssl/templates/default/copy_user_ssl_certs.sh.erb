@@ -1,0 +1,23 @@
+instances="<%= @instances %>"
+pg_datadir="<%= @datadir %>"
+# Copy certificates to app user home on each instance
+for instance in ${instances}
+do
+  user="deploy"
+  cd <%= @dataroot %>/pgkeygen/${user}
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${instance} "mkdir -p /home/${user}/.postgresql"
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.crt ${instance}:/home/${user}/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.key ${instance}:/home/${user}/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' $pg_datadir/root.crt ${instance}:/home/${user}/.postgresql/
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${instance} "chown -R ${user}.${user} /home/${user}/.postgresql; chmod 0400 /home/${user}/.postgresql/postgresql.key"
+done
+
+# Copy core files to replica /db partition if they don't exist
+<% if @replicas.length > 0 %>
+cd <%= @dataroot %>
+for replica in <%= @replicas %>
+do
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' 9.srl ${replica}:<%= @dataroot %>
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' pgkeygen ${replica}:<%= @dataroot %>
+done
+<% end %>

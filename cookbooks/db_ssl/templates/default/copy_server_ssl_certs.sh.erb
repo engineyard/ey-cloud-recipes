@@ -1,0 +1,47 @@
+# copy postgres keys for root and postgres users
+user="postgres"
+pg_datadir="<%= @datadir %>"
+cd <%= @dataroot %>/pgkeygen/${user}
+mkdir -p ~/.postgresql
+cp postgresql.crt ~/.postgresql/
+cp postgresql.key ~/.postgresql/
+cp ${pg_datadir}/root.crt ~/.postgresql/
+chmod 0400 ~/.postgresql/postgresql.key
+
+pg_home=$(cat /etc/passwd|grep postgres |awk -F: '{print $6}')
+mkdir -p ${pg_home}/.postgresql
+cp postgresql.crt ${pg_home}/.postgresql/
+cp postgresql.key ${pg_home}/.postgresql/
+cp ${pg_datadir}/root.crt ${pg_home}/.postgresql/
+chmod 0400 ${pg_home}/.postgresql/postgresql.key
+chown -R postgres.postgres ${pg_home}/.postgresql
+
+<% if @replicas.length > 0 %>
+user="postgres"
+# Copy to user home directories of root and postgres
+for replica in <%= @replicas %>
+do
+  cd <%= @dataroot %>/pgkeygen/${user}
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $replica "mkdir -p /root/.postgresql; mkdir -p ${pg_home}/.postgresql"
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.crt ${replica}:/root/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.key ${replica}:/root/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ${pg_datadir}/root.crt ${replica}:/root/.postgresql/
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $replica "chmod 0400 /root/.postgresql/postgresql.key"
+
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.crt ${replica}:${pg_home}/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' postgresql.key ${replica}:${pg_home}/.postgresql/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' ${pg_datadir}/root.crt ${replica}:${pg_home}/.postgresql/
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $replica "chown -R postgres.postgres ${pg_home}/.postgresql; chmod 0400 ${pg_home}/.postgresql/postgresql.key"
+done
+<% end %>
+
+# Copy core files to /db partition if they don't exist
+<% if @replicas.length > 0 %>
+for replica in <%= @replicas %>
+do
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' root.crt ${replica}:${pg_datadir}/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' server.crt ${replica}:${pg_datadir}/
+  rsync -au -e 'ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' server.key ${replica}:${pg_datadir}/
+  ssh -i /root/.ssh/internal -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${replica} "chown postgres:postgres ${pg_datadir}/server.key"
+done
+<% end %>
