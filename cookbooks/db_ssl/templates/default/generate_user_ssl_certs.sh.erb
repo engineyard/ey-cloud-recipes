@@ -11,7 +11,7 @@ do
   cd ${temppath}
   openssl genrsa -des3 -passout pass:$(cat ~/.pgpass|awk -F: '{print $5}') -out postgresql.key 1024
   openssl rsa -passin pass:$(cat ~/.pgpass|awk -F: '{print $5}') -in postgresql.key -out postgresql.key
-  openssl req -new -key postgresql.key -days 3650 -out postgresql.csr -subj "/C=US/ST=California/L=San Francisco/O=${organization}/CN=${user}"
-  openssl x509 -req -in postgresql.csr -CA ${pg_datadir}/root.crt -CAkey ${pg_datadir}/server.key -out postgresql.crt -CAcreateserial
+  openssl req -new -key postgresql.key -out postgresql.csr -subj "/C=US/ST=California/L=San Francisco/O=${organization}/CN=${user}"
+  openssl x509 -req -in postgresql.csr -days 3650 -CA ${pg_datadir}/root.crt -CAkey ${pg_datadir}/server.key -out postgresql.crt -CAcreateserial
   cd <%= @dataroot %>
 done
