@@ -6,4 +6,6 @@ define :postgresql9_pg_stat_statements do
     extname "pg_stat_statements"
     minimum_version 9.2
   end
+
+  include_recipe "postgresql9_extensions::ext_pg_stat_statements"
 end
