@@ -164,3 +164,6 @@
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
 # end
+#
+#uncomment to include the firefox recipe
+#include_recipe "firefox"
