@@ -55,6 +55,7 @@ default['fail2ban']['jails'] = {
 				'enabled'   => 'true',
 				'port'      => 'ssh',
 				'filter'    => 'sshd',
+				'protocol'	=> 'tcp',
 				'logpath'   => '/var/log/auth.log',
 				'maxretry'   => '3'
 			}
@@ -65,6 +66,7 @@ default['fail2ban']['jails'] = {
 				'enabled'   => 'true',
 				'port'      => 'ssh',
 				'filter'    => 'sshd-ddos',
+				'protocol'	=> 'tcp',
 				'logpath'   => '/var/log/auth.log',
 				'maxretry'   => '3'
             }
