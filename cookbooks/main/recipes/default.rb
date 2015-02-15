@@ -4,6 +4,9 @@
 #  }
 #end
 
+# uncomment to deny access to /log, /config, and .git directories as well as any .yml files
+# include_recipe "deny-directories"
+
 # uncomment to turn on thinking sphinx 2/ultra sphinx. Remember to edit cookbooks/sphinx/recipes/default.rb first!
 # include_recipe "sphinx"
 
@@ -110,6 +113,9 @@
 
 #uncomment to include the Magento recipe
 #include_recipe "magento"
+
+# uncomment to include the Postgres Maintenance recipe
+#include_recipe "postgresql_maintenance"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
