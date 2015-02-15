@@ -63,13 +63,13 @@ banaction = <%= @banaction %>
 mta = <%= @mta %>
 protocol = <%= @protocol %>
 
-mailaction = %(mta)s-whois[name=%(__name__)s, dest="%(destemail)s", protocol="%(protocol)s, logpath=%(logpath)s, sender="<%= @mail['sender'] %>", host="<%= @host %>"]
+mailaction = %(mta)s-whois[name="%(__name__)s", dest="%(destemail)s", protocol="%(protocol)s", logpath="%(logpath)s", sender="<%= @mail['sender'] %>", host="<%= @host %>"]
 
-action_ = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protocol)s]
+action_ = %(banaction)s[name="%(__name__)s", port="%(port)s", protocol="%(protocol)s"]
 action_mw = %(action_)s
               %(mailaction)s
 action_mwl = %(action_)s
-               %(mta)s-whois-lines[name=%(__name__)s, dest="%(destemail)s", protocol="%(protocol)s, logpath=%(logpath)s, sender="<%= @mail['sender'] %>", host="<%= @host %>"]
+               %(mta)s-whois-lines[name="%(__name__)s", dest="%(destemail)s", protocol="%(protocol)s", logpath="%(logpath)s", sender="<%= @mail['sender'] %>", host="<%= @host %>"]
 
 action = %(<%= @actions %>)s
 
