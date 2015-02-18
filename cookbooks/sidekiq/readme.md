@@ -55,15 +55,25 @@ You will need to add a deploy hook to restart Sidekiq during deploys. Add the fo
 
 ```
 on_utilities("sidekiq") do
-  sudo "monit restart all -g <app_name>_sidekiq"
+  worker_count = 3 # please replace your own value
+  (0...worker_count).each do |i|
+    sudo "/engineyard/bin/sidekiq #{config.app} stop #{config.framework_env} #{i}"
+  end
+  sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
+
+
 
 If Sidekiq is installed on your application instances, rather than a utility instance, you can do the following:
 
 ```
 on_app_servers do
-  sudo "monit restart all -g <app_name>_sidekiq"
+  worker_count = 3 # please replace your own value
+  (0...worker_count).each do |i|
+    sudo "/engineyard/bin/sidekiq #{config.app} stop #{config.framework_env} #{i}"
+  end
+  sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
 
