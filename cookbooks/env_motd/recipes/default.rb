@@ -1,3 +1,3 @@
 
-include_recipe "env_humanization::bash"
-include_recipe "env_humanization::motd"
+include_recipe "env_motd::bash"
+include_recipe "env_motd::motd"
