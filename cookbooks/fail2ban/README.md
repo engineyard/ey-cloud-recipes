@@ -1,6 +1,8 @@
 This cookbook deploy and configure fail2ban on Engine Yard Cloud.
 This cookbooks is also the result of the collaboration of the Engine Yard support team andthe BePark team!
 
+replace_line are taken from https://github.com/jenssegers/chef-file
+
 # Description
 Deploy & configure fail2ban, a tool that check your logs to detect potential attack and block them with firewall rules.
 * auto copy filter and action from chef files

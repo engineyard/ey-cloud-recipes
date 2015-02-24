@@ -19,19 +19,19 @@ package 'net-analyzer/fail2ban' do
 end
 
 # configuration of fail2ban.conf
-file_replace_line "fail2ban conf loglevel" do
+fail2ban_replace_line "fail2ban conf loglevel" do
     replace  "loglevel="
     with     "loglevel=#{node['fail2ban']['loglevel']}"
     path     "/etc/fail2ban/fail2ban.conf"
 end
 
-file_replace_line "fail2ban conf logtarget" do
+fail2ban_replace_line "fail2ban conf logtarget" do
     replace  "logtarget="
     with     "logtarget=#{node['fail2ban']['logtarget']}"
     path     "/etc/fail2ban/fail2ban.conf"
 end
 
-file_replace_line "fail2ban conf socket" do
+fail2ban_replace_line "fail2ban conf socket" do
     replace  "socket="
     with     "socket=#{node['fail2ban']['socket']}"
     path     "/etc/fail2ban/fail2ban.conf"
