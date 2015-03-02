@@ -1,4 +1,5 @@
 include_recipe "npm_update"
+include_recipe "grunt-cli"
 
 #execute "testing" do
 #  command %Q{
