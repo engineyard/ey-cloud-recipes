@@ -9,17 +9,17 @@ execute "reload-monit" do
   action :nothing
 end
 
-unless util_or_app_server?(node[:sidekiq][:utility_name]) 
+if util_or_app_server?(node[:sidekiq][:utility_name]) 
   # report to dashboard
   ey_cloud_report "sidekiq" do
     message "Cleaning up sidekiq (if needed)"
   end
-  
+
   if app_server? || util?
     # loop through applications
     node[:applications].each do |app_name, _|
       # monit
-      file "/etc/monit.d/sidekiq_#{app_name}.monitrc" do 
+      file "/etc/monit.d/sidekiq_#{app_name}.monitrc" do
         action :delete
         notifies :run, resources(:execute => "reload-monit")
       end
@@ -30,7 +30,7 @@ unless util_or_app_server?(node[:sidekiq][:utility_name])
           action :delete
         end
       end
-    end 
+    end
 
     # bin script
     file "/engineyard/bin/sidekiq" do
