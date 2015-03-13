@@ -1,4 +1,4 @@
-ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/elasticsearch-0.16.3.jar:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
+ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/elasticsearch-<%= @elasticsearch_version %>.jar:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
 
 if [ "x$ES_MIN_MEM" = "x" ]; then
     ES_MIN_MEM=256m
@@ -15,7 +15,9 @@ JAVA_OPTS="$JAVA_OPTS -Xms${ES_MIN_MEM}"
 JAVA_OPTS="$JAVA_OPTS -Xmx${ES_MAX_MEM}"
 
 # reduce the per-thread stack size
-JAVA_OPTS="$JAVA_OPTS -Xss128k"
+# 256k is the minimum stack size for newer versions of Elasticsearch
+# see https://groups.google.com/forum/#!topic/elasticsearch/cfihFvFg08Q
+JAVA_OPTS="$JAVA_OPTS -Xss256k"
 
 JAVA_OPTS="$JAVA_OPTS -Djline.enabled=true"
 

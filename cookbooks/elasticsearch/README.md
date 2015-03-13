@@ -9,35 +9,33 @@ So, we build a web site or an application and want to add search to it, and then
 
 [elasticsearch][2] aims to solve all these problems and more. It is an Open Source (Apache 2), Distributed, RESTful, Search Engine built on top of [Lucene][1].
 
+NOTE: This recipe installs Elasticsearch 1.4 and requires Java 7 or later. It will only work on the Gentoo 12.11 stack; the Java 7 ebuild is not available on Gentoo 2009. We do not recommend running older versions of Elasticsearch - versions prior to 1.2 have a remote code execution vulnerability, see http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3120
+
 Dependencies
 --------
 
-  * Your application should use gems(s) such as [tire][5],[rubberband][3],[elastic_searchable][6] or lastly for JRuby users there is [jruby-elasticsearch][4].
+  * Your application should use gems(s) such as [tire][4],[rubberband][3],[elastic_searchable][5].
 
 Using it
 --------
 
-  * There is two ways to run this recipe.  By default you can use the 'default' recipe and use this in an clustered configuration that requires utility instances.  Alternatively you can use the alternate recipe called 'non_util' which will configure your app_master/solo instance to have elasticsearch.  You would add to main/recipes/default.rb the following,
+There are several ways to use this recipe, depending on your environment.
 
-``include_recipe "elasticsearch::non_util"``  
+  1. On a solo environment
 
-  * Otheriwse you would do the following
+``include_recipe "elasticsearch::non_util"``
 
-``include_recipe "elasticsearch"``  
+  2. On a small cluster: run Elasticsearch on app_master
 
-  * Now you should upload the recipes to your environment,
-  
-``ey recipes upload -e <environment>`` 
+  ``include_recipe "elasticsearch::non_util"``
 
-  * If you picked the non_util recipe you can ignore naming your utility instances.  Upload the recipe, click apply and you should find the neccesary things done;otherwise name your utility instances like below.
-  
-  * Add an utility instance with the following naming scheme(s)
-      * elasticsearch_0
-      * elasticsearch_1
-      * elasticsearch_2
-      * ...
+  3. On a cluster with dedicated util instances for Elasticsearch
 
-  * Produce /data/#{appname}/shared/config/elasticsearch.yml on all instances so you can easily parse/configure elasticsearch for your usage.
+  ``include_recipe "elasticsearch"``
+
+  Name the Elasticsearch instances elasticsearch_0, elasticsearch_1, etc.
+
+In all cases, make sure you create `/data/#{appname}/shared/config/elasticsearch.yml` on all application and utility instances so that the application knows how to connect to your elasticsearch server(s).
 
 
 Verify
@@ -49,16 +47,21 @@ On your instance, run:
 
 Results should be simlar to:
 
-    {
-      "ok" : true,
-      "name" : "Charles Xavier",
-      "version" : {
-        "number" : "0.18.2",
-        "snapshot_build" : false
-      },
-      "tagline" : "You Know, for Search"
-     ...
-    }
+```
+{
+  "status" : 200,
+  "name" : "Man-Thing",
+  "cluster_name" : "YourEnvironmentName",
+  "version" : {
+    "number" : "1.4.0",
+    "build_hash" : "bc94bd81298f81c656893ab1ddddd30a99356066",
+    "build_timestamp" : "2014-11-05T14:26:12Z",
+    "build_snapshot" : false,
+    "lucene_version" : "4.10.2"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
 
 Plugins
 --------
@@ -79,7 +82,7 @@ Examples:
 Caveats
 --------
 
-plugin support is still not complete/automated.  CouchDB and Memcached plugins may be worth investigtating, pull requests to improve this.
+plugin support is still not complete/automated.  CouchDB and Memcached plugins may be worth investigating, pull requests to improve this.
 
 Backups
 --------
@@ -96,6 +99,5 @@ issue and submit a pull request.
 [1]: http://lucene.apache.org/
 [2]: http://www.elasticsearch.org/
 [3]: https://github.com/grantr/rubberband
-[4]: https://github.com/jordansissel/jruby-elasticsearch/
-[5]: https://github.com/karmi/tire
-[6]: https://github.com/wireframe/elastic_searchable/
+[4]: https://github.com/karmi/tire
+[5]: https://github.com/wireframe/elastic_searchable/
