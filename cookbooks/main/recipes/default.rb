@@ -139,10 +139,10 @@
   # postgresql9_pg_trgm "dbname"
   # postgresql9_pgcrypto "dbname"
   # postgresql9_pgrowlocks "dbname"
-  
+
   # PostGis 1.5 (use with versions 9.0, 9.1, 9.2)
   # postgresql9_postgis "dbname"
-  
+
   # PostGis 2.0 (use with versions >= 9.2)
   #postgresql9_postgis2 "dbname"
   # postgresql9_seg "dbname"
@@ -151,15 +151,16 @@
   # postgresql9_test_parser "dbname"
   # postgresql9_unaccent "dbname"
   # postgresql9_uuid_ossp "dbname"
-  
-  
+
+
   # 9.1 and 9.2 Extensions
   # postgresql9_file_fdw "dbname"
   # postgresql9_xml2 "dbname"
-  
-  #9.2 Extensions
+
+  # 9.2 Extensions
+  # Note: pg_stat_statements requires a server restart to complete installation
   # postgresql9_pg_stat_statements "dbname"
-  
+
   # Admin-Level Contribs
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"

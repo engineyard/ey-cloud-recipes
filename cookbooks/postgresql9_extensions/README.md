@@ -246,6 +246,18 @@ extension applied to.
 
 ``postgresql9_pgrowlocks "dbname""``
 
+##pg_stat_statements
+###supported versions: 9.2 - Note that pg_stat_statements requires a server restart to complete installation
+
+The pg_stat_statements module provides a means for tracking execution statistics of all SQL statements executed by a server.
+
+Enabling this extension:
+
+* Edit main/recipes/default.rb and comment out the line shown below. Replace dbname with the name of the database you want this
+extension applied to.
+
+``postgresql9_pg_stat_statements "dbname""``
+
 ##PostGIS 1.5
 ###supported versions: >= 9.0
 This extension adds support for geographic objects. PostGIS "spatially enables" the PostgreSQL server, allowing it to be used as a backend spatial database for geographic information systems (GIS).
