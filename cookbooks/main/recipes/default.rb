@@ -164,3 +164,7 @@
   # postgresql9_pg_buffercache "postgres"
   # postgresql9_pg_freespacemap "postgres"
 # end
+
+#uncomment to include the motd customization related to the environment
+#include_recipe "env_motd"
+
