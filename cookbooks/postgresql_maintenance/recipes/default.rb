@@ -7,7 +7,7 @@ if @node[:instance_role][/^db_master/]
     day     '*'
     month   '*'
     weekday '0'
-    command '/usr/bin/vacuumdb --all'
+    command '/usr/bin/vacuumdb -U postgres --all'
   end
   
   # Alternative form - vacuums a specific named database and set of tables Midnight on Saturday
@@ -17,7 +17,7 @@ if @node[:instance_role][/^db_master/]
   #   day     '*'
   #   month   '*'
   #   weekday '6'
-  #   command "/usr/bin/vacuumdb --dbname=#{dbname} --table='#{table1}' --table='#{table2}'"
+  #   command "/usr/bin/vacuumdb -U postgres --dbname=#{dbname} --table='#{table1}' --table='#{table2}'"
   # end
 
 end
