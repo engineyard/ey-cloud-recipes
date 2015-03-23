@@ -9,7 +9,7 @@ So, we build a web site or an application and want to add search to it, and then
 
 [elasticsearch][2] aims to solve all these problems and more. It is an Open Source (Apache 2), Distributed, RESTful, Search Engine built on top of [Lucene][1].
 
-NOTE: This recipe installs Elasticsearch 1.4 and requires Java 7 or later. It will only work on the Gentoo 12.11 stack; the Java 7 ebuild is not available on Gentoo 2009. We do not recommend running older versions of Elasticsearch - versions prior to 1.2 have a remote code execution vulnerability, see http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3120
+NOTE: This recipe installs Elasticsearch 1.4.4 and requires Java 7 or later. It will only work on the Gentoo 12.11 stack; the Java 7 ebuild is not available on Gentoo 2009. We do not recommend running older versions of Elasticsearch - versions prior to 1.2 have a remote code execution vulnerability, see http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3120
 
 Dependencies
 --------
