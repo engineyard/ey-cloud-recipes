@@ -1,14 +1,14 @@
-user = @node[:users].first
-mongodb_bin = "#{@node[:mongo_path]}/bin"
+user = node[:users].first
+mongodb_bin = "#{node[:mongo_path]}/bin"
 
-if ['db_master','solo'].include? @node[:instance_role]
+if ['db_master','solo'].include? node[:instance_role]
   #under /mnt because it's an arbiter. No data saved
   mongo_data = "/mnt/mongodb/data"
   mongo_log = "/mnt/mongodb/log"
 else
   #save under /data
-  mongo_data = @node[:mongo_base] + "/data"
-  mongo_log = @node[:mongo_base] + "/log"
+  mongo_data = node[:mongo_base] + "/data"
+  mongo_log = node[:mongo_base] + "/log"
 end
 
 directory mongo_data do
@@ -59,19 +59,19 @@ mongodb_options = { :exec => "#{mongodb_bin}/mongod",
                     :user => user[:username],
                     :pid_path => "/var/run/mongodb",
                     :ip => "0.0.0.0",
-                    :port => @node[:mongo_port],
+                    :port => node[:mongo_port],
                     :extra_opts => '' }
 
-if @node[:mongo_journaling]
+if node[:mongo_journaling]
   mongodb_options[:extra_opts]  << " --journal"
 end
 
-if @node[:mongo_replset]
-  mongodb_options[:extra_opts]  << " --replSet #{@node[:mongo_replset]}"
+if node[:mongo_replset]
+  mongodb_options[:extra_opts]  << " --replSet #{node[:mongo_replset]}"
 end
 
-if @node[:oplog_size]
-  mongodb_options[:extra_opts]  << " --oplogSize=#{@node[:oplog_size]}"
+if node[:oplog_size]
+  mongodb_options[:extra_opts]  << " --oplogSize=#{node[:oplog_size]}"
 end
 
 mongodb_options[:extra_opts]  << " --directoryperdb"

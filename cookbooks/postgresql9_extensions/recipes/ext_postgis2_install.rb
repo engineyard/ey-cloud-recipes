@@ -1,4 +1,4 @@
-if @node[:postgres_version] >= 9.2
+if node[:postgres_version] >= 9.2
   postgis_version = "2.1.1"
   proj_version = "4.6.1"
   geos_version = "3.4.2"

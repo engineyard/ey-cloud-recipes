@@ -11,7 +11,7 @@ SECRET_KEYS = {
   "EnvName" => ""
 }
 # setting API_KEYS and SECRET_KEYS for your environment effectively enables this recipe
-if API_KEYS.has_key? @node[:environment][:name] and SECRET_KEYS.has_key? @node[:environment][:name]
+if API_KEYS.has_key? node[:environment][:name] and SECRET_KEYS.has_key? node[:environment][:name]
   InstallDirectory = "/db/mms"
   MmsFileName = "10gen-mms-agent"
   MmsZipFile = "#{MmsFileName}.zip"
@@ -37,7 +37,7 @@ if API_KEYS.has_key? @node[:environment][:name] and SECRET_KEYS.has_key? @node[:
 
   execute "Modify settings.py" do
     cwd "#{InstallDirectory}/mms-agent"
-    command "sed -i 's/@API_KEY@/#{API_KEYS[@node[:environment][:name]]}/g' settings.py && sed -i 's/@SECRET_KEY@/#{SECRET_KEYS[@node[:environment][:name]]}/g' settings.py && sed -i 's/mms-stage/mms/g' settings.py"
+    command "sed -i 's/@API_KEY@/#{API_KEYS[node[:environment][:name]]}/g' settings.py && sed -i 's/@SECRET_KEY@/#{SECRET_KEYS[node[:environment][:name]]}/g' settings.py && sed -i 's/mms-stage/mms/g' settings.py"
   end
 
   remote_file "#{InstallDirectory}/mms.sh" do
