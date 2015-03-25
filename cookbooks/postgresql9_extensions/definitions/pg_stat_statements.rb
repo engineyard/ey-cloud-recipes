@@ -8,7 +8,7 @@ define :postgresql9_pg_stat_statements do
   end
 
   #add shared_preload_libraries and pg_stat_statements to custom pgconf
-  p = "/db/postgresql/#{@node[:postgres_version]}/custom.conf"
+  p = "/db/postgresql/#{node[:postgres_version]}/custom.conf"
   ext_name = "pg_stat_statements"
   update_file "add #{ext_name} to #{p}" do
     action :append
