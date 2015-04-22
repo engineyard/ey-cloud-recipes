@@ -69,6 +69,9 @@
 #uncomment to run the redis recipe
 #include_recipe "redis"
 
+#uncomment to run the env-yaml recipe
+#include_recipe "env-yaml"
+
 #uncomment to run the api-keys-yml recipe
 # include_recipe "api-keys-yml"
 
