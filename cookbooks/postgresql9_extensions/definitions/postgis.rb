@@ -1,8 +1,9 @@
 define :postgresql9_postgis do
   dbname_to_use = params[:name]
   
-  if @node[:postgres_version] >= 9.3
-    Chef::Log.info "Postgis 1.5 is not supported on versions 9.3 and higher; your current version is #{@node[:postgres_version]}. Please use the postgis2 extension instead."
+  if ey_release_version == '1211' or @node[:postgres_version] >= 9.3
+    Chef::Log.info "Postgis 1.5 is not supported on versions 9.3 and higher nor on 12.11/stable-v4 at all; your current version is #{@node[:postgres_version]}/#{ey_release_version}. Please use the postgis2 extension instead."
+    exit(1)
   else
     include_recipe "postgresql9_extensions::ext_postgis_install"
     
