@@ -48,7 +48,7 @@ if @ismaster == "false" #only dump non-primary nodes
       FileUtils.rm_r "/mnt/tmp/#{token}.#{@tmpname}"
       puts "successful backup: #{database}.#{@tmpname}"
     else
-      raise "Unable to dump database#{database} wtf?"
+      raise "Unable to dump database#{database}!"
     end
   end
 
