@@ -120,6 +120,8 @@
 #uncomment to include the Magento recipe
 #include_recipe "magento"
 
+include_recipe "nodejs"
+
 # uncomment to include the Postgres Maintenance recipe
 #include_recipe "postgresql_maintenance"
 
