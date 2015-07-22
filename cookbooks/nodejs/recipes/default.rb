@@ -26,9 +26,9 @@ if app_server? || util?
     message "Installing npm packages"
   end
 
-  execute "eselect-nodejs-0.10.30" do
+  execute "eselect-nodejs-0.10.38" do
     command <<-EOM
-      eselect nodejs set 0.10.30
+      eselect nodejs set 0.10.38
     EOM
     user 'root'
   end
