@@ -14,7 +14,7 @@ Design
 * 1+ utility instances
 * over-commit is enabled by default to ensure the least amount of problems saving your database.
 * 64-bit is required for storing over 2gigabytes worth of keys.
-* /etc/hosts mapping for `redis_instance` so that a hard config can be used to connect
+* /etc/hosts mapping for `redis-instance` so that a hard config can be used to connect
 
 Backups
 --------
