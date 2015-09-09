@@ -22,7 +22,6 @@ else
     include_recipe "mongodb::install"
     include_recipe "mongodb::configure"
     include_recipe "mongodb::backup"
-    include_recipe "mongodb::start"
 
     if @node[:mongo_replset]
       include_recipe "mongodb::replset"
@@ -35,7 +34,6 @@ else
     include_recipe "mongodb::install"
     include_recipe "mongodb::configure"
     include_recipe "mongodb::backup"
-    include_recipe "mongodb::start"
   end
 end
 
