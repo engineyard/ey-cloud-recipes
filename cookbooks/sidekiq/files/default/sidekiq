@@ -23,9 +23,16 @@ pid_file="${pid_dir}/${worker_ref}.pid"
 log_file="${app_root}/log/${worker_ref}.log"
 conf_file="/data/${app_name}/shared/config/${worker_ref}.yml"
 app_user=$(stat -L -c"%U" "${app_root}")
+custom_env="/data/${app_name}/shared/config/env.custom"
 
 sidekiq="${app_root}/ey_bundler_binstubs/sidekiq"
 sidekiqctl="${app_root}/ey_bundler_binstubs/sidekiqctl"
+
+# Load the custom env if it exists
+if [ -e "${custom_env}" ]
+then
+  source "${custom_env}"
+fi
 
 export HOME="/home/${app_user}"
 
@@ -55,7 +62,7 @@ start ()
   fi
 
   # start sidekiq
-  sudo -u "${app_user}" -H "${sidekiq}" -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
+  sudo -u "${app_user}" -E -H "${sidekiq}" -C "${conf_file}" -e "${rails_env}" -r "${app_root}" -P "${pid_file}" -L "${log_file}" &
   exit $?
 }
 
@@ -63,7 +70,7 @@ start ()
 stop ()
 {
   # stop using sidekiqctl
-  sudo -u "${app_user}" -H "${sidekiqctl}" stop "${pid_file}"
+  sudo -u "${app_user}" -E -H "${sidekiqctl}" stop "${pid_file}"
   exit $?
 }
 
