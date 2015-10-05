@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/local/ey_resin/ruby/bin/ruby
 
 require 'rubygems'
 require 'aws/s3'
@@ -20,7 +20,9 @@ AWS::S3::Base.establish_connection!(
   :secret_access_key => '<%= @secret_key %>'
 )
 
-@databases = `mongo --quiet --eval "for each(var db in db.runCommand('listDatabases').databases) if(db.sizeOnDisk > 1) print(db.name);" admin`.split("\n")
+@databases = JSON.parse(`mongo --quiet --eval "printjson(db.runCommand('listDatabases').databases)" admin`)
+@databases.map! { |db| db["sizeOnDisk"] >= 1 ? db["name"] : nil }.compact!
+
 @ismaster = `mongo --quiet --eval 'printjson(db.runCommand("ismaster"))' | grep ismaster | awk '{print $3}'| sed s/,//`.strip
 @environment = '<%= @env %>'
 @app_name = '<%= @app_name %>'
@@ -48,7 +50,7 @@ if @ismaster == "false" #only dump non-primary nodes
       FileUtils.rm_r "/mnt/tmp/#{token}.#{@tmpname}"
       puts "successful backup: #{database}.#{@tmpname}"
     else
-      raise "Unable to dump database#{database} wtf?"
+      raise "Unable to dump database#{database}!"
     end
   end
 
