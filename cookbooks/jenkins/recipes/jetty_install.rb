@@ -1,5 +1,5 @@
 remote_file "/tmp/jetty.tar.gz" do
-  source "http://download.eclipse.org/jetty/stable-8/dist/jetty-distribution-8.1.16.v20140903.tar.gz"
+  source "http://download.eclipse.org/jetty/8.1.17.v20150415/dist/jetty-distribution-8.1.17.v20150415.tar.gz"
   action :create_if_missing
   mode 0644
 end
