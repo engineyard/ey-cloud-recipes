@@ -12,8 +12,12 @@
 
 app_name = node[:applications].keys.first
 env = node[:environment][:framework_env]
+
+stack_version = Chef::VERSION =~ /\A0\.6\./ ? :v2 : :v4
+
 PAPERTRAIL_CONFIG = {
-  :syslog_ng_version         => '3.3.5',
+  :syslog_ng_version         => stack_version == :v2 ? '3.3.5' : '3.3.5-r1',
+  :bin_path                  => stack_version == :v2 ? '/usr/bin' : '/usr/local/bin',
   :remote_syslog_gem_version => '~>1.6',
   :port                      => 11111111111111, # YOUR PORT HERE
   :hostname                  => [app_name, node[:instance_role], `hostname`.chomp].join('_'),
@@ -81,7 +85,7 @@ end
 
 execute 'install remote_syslog gem' do
   command %{gem install remote_syslog -v '#{PAPERTRAIL_CONFIG[:remote_syslog_gem_version]}'}
-  creates '/usr/bin/remote_syslog'
+  creates "#{PAPERTRAIL_CONFIG[:bin_path]}/remote_syslog"
 end
 
 # remote_syslog config file
@@ -101,6 +105,7 @@ end
 template '/etc/init.d/remote_syslog' do
   source 'remote_syslog.initd.erb'
   mode '0755'
+  variables(PAPERTRAIL_CONFIG)
 end
 
 # start at boot
