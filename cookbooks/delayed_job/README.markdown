@@ -24,7 +24,7 @@ restart your Delayed Job workers when you ship (deploy) your application code.
 If you're running DelayedJob on a solo instance or on your app_master, add a deploy hook similar to:
 
 ```
-on app_master do
+on_app_master do
   sudo "monit -g dj_#{config.app} restart all"
 end
 ```
@@ -40,4 +40,3 @@ end
 Make sure to replace <app_name> with the name of your application. You likely want to use the after_restart hook for this.
 
 See our [Deploy Hook](https://engineyard.zendesk.com/entries/21016568-use-deploy-hooks) documentation for more information on using deploy hooks.
-
