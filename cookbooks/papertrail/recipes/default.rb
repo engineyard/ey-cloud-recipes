@@ -13,7 +13,7 @@
 app_name = node[:applications].keys.first
 env = node[:environment][:framework_env]
 PAPERTRAIL_CONFIG = {
-  :syslog_ng_version         => '3.3.5',
+  :syslog_ng_version         => '3.3.5-r1',
   :remote_syslog_gem_version => '~>1.6',
   :port                      => 11111111111111, # YOUR PORT HERE
   :hostname                  => [app_name, node[:instance_role], `hostname`.chomp].join('_'),
@@ -81,7 +81,7 @@ end
 
 execute 'install remote_syslog gem' do
   command %{gem install remote_syslog -v '#{PAPERTRAIL_CONFIG[:remote_syslog_gem_version]}'}
-  creates '/usr/bin/remote_syslog'
+  creates '/usr/local/bin/remote_syslog'
 end
 
 # remote_syslog config file
