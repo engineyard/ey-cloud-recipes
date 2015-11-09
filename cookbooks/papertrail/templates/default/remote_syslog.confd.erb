@@ -2,7 +2,7 @@
 # Distributed under the terms of the Apache License, Version 2.0
 
 NAME="remote_syslog"
-DAEMON="/usr/sbin/${NAME}"
+DAEMON="/usr/local/bin/${NAME}"
 CONFIG="/etc/log_files.yml"
 PIDFILE="/var/run/${NAME}.pid"
-DAEMON_ARGS="-c ${CONFIG} --pid-file ${PIDFILE} --tls"
+DAEMON_ARGS="-c ${CONFIG} --tls"

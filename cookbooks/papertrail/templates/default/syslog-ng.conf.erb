@@ -43,7 +43,7 @@ destination d_papertrail {
   # UDP (insecure)
   # udp("logs.papertrailapp.com" port(<%= @port %>));
   # TLS
-  tcp("logs.papertrailapp.com" port(<%= @port %>) tls(ca_dir("/etc/syslog-ng/cert.d")) );
+  tcp("<%= @destination_host %>" port(<%= @port %>) tls(ca_dir("/etc/syslog-ng/cert.d")) );
 };
 log {
   source(src); destination(d_papertrail);
