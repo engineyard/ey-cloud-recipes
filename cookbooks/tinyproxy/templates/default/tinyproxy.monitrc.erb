@@ -1,0 +1,5 @@
+check process tinyproxy
+with pidfile <%= @pid_file %>
+  start program = "/usr/sbin/tinyproxy -c <%= @config_file %>" user nobody
+  stop program = "/bin/kill <%= @pid_file %>"
+
