@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+
+@mongo_port = <%= @mongo_port %>
+@mongo_path = '<%= @mongo_path %>'
+@mongo_nodes = <%= @mongo_nodes %>
+@me = '<%= @me %>'
+@primary = nil
+
+def ask_mongo(question, host = '127.0.0.1')
+  %x{echo "#{question}" | #{@mongo_path}/bin/mongo #{host}:#{@mongo_port}/local --quiet }
+end
+
+def get_host(nodename)
+  @mongo_nodes.find{|item| item["name"]==nodename}
+end
+
+def add_me()
+  ask_mongo("rs.add('#{get_host(@me)["hostname"]}:#{@mongo_port}')", @primary)
+end
+
+def hosts()
+  @mongo_nodes.map{|host| host["hostname"]}.flatten
+end
+
+def find_primary()
+  hosts = @mongo_nodes.map{|host| host["hostname"]}.flatten
+  hosts.each do |host|
+    result = ask_mongo('db.isMaster( )', host)
+    @primary = host if result.match(/"ismaster"\s*:\s*true/)
+  end
+  @primary.nil? ? false : true
+end
+
+def forced_reset
+  puts 'The current config contains hosts that are not present in the environment; forcing a reconfig...'
+  reconfig="conf=rs.conf()
+conf.members=#{new_config}
+rs.reconfig(conf, {force: true})"
+  ask_mongo(reconfig)
+  #%x{echo "#{reconfig}" > /data/test.js}
+  puts 'Complete.'
+end
+
+def first_node
+  first_node=@mongo_nodes.sort_by{|item| item["name"]}.first["name"]
+end
+
+def new_config
+  @mongo_nodes.map{ |node| "{\"'_id'\" : #{node["name"].split("_")[2]}, \"'host'\" : \"'#{node["hostname"]}:#{@mongo_port}'\"}"}
+end
+
+# Force a reconfigure if booting cluster from a snapshot (ie. none of the hosts in this cluster are found in the rs.conf)
+if @me == first_node
+  config_members=JSON.parse(ask_mongo('rs.conf( )'))["members"].map{|host| host["host"].split(':')[0]}
+  forced_reset if (config_members & hosts).empty?
+end
+
+# Intentionally redundant to custom chef "only_if"
+exit unless ask_mongo('rs.status( )').match(/run rs.initiate/)
+
+first_node=@mongo_nodes.sort_by{|item| item["name"]}.first["name"]
+
+find_primary()
+
+# look for a master/primary, if it exists then check if this node is in that cluster (if not add it)
+if not @primary.nil?
+  puts "Primary node found '#{@primary}', requesting to be added to the set!"
+  add_me()
+  puts "Added."
+else
+  # if this is the first instance, and no master, initiate an empty replica set on the master
+  if @me == first_node
+    puts 'Cluster does not yet exist, initializing!'
+    ask_mongo('rs.initiate( )')
+    puts 'Cluster initialized.'
+  else
+    # if this is a secondary instance, wait for the first instance to initiate the set, timeout after 5 minutes
+    count=0
+    max_wait=30
+    sleep_time=10
+    initialized=false
+    while count < max_wait do
+      puts 'Waiting for cluster to initialize...' if count == 0
+      break if find_primary()
+      count+=1
+      sleep sleep_time
+    end
+    if not @primary.nil?
+      puts "Cluster has initialized on '#{@primary}', requesting to be added..."
+      add_me()
+      puts "Complete."
+    else
+      abort("Failed to attach to an initialized cluster within #{max_wait * sleep_time} seconds!")
+    end
+  end
+end
+
+
+
+
+#### might encounter the error
+# => "{\n\t\"errmsg\" : \"exception: need most members up to reconfigure, not ok : ip-10-69-22-11.ec2.internal:27017\",\n\t\"code\" : 13144,\n\t\"ok\" : 0\n}\n"
+# when building a new cluster, need to be able to handle this gracefully
+
+##### Have to handle Mongo Arbiters
