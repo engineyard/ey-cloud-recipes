@@ -4,7 +4,7 @@
 #
 
 if ['util'].include?(node[:instance_role])
-  if node[:name] == 'redis'
+  if node[:name] == node[:redis][:utility_name]
 
     sysctl "Enable Overcommit Memory" do
       variables 'vm.overcommit_memory' => 1
@@ -49,13 +49,13 @@ if ['util'].include?(node[:instance_role])
         :hz => node[:redis][:hz]
       })
     end
-    
+
     # redis-server is in /usr/bin on stable-v2, /usr/sbin for stable-v4
     if Chef::VERSION[/^0.6/]
       bin_path = "/usr/bin/redis-server"
     else
       bin_path = "/usr/sbin/redis-server"
-    end  
+    end
 
     template "/data/monit.d/redis_util.monitrc" do
       owner 'root'

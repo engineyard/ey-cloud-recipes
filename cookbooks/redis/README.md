@@ -24,7 +24,14 @@ This cookbook does not automate nor facilitate any backup method currently.  By 
 Specifics of Usage
 --------
 
-Simply add a utility instance named `redis` and the recipe will use that instance for redis.
+Simply add a utility instance named `redis` and the recipe will use that instance for redis. If the utility instance you wish to use redis on isn't called `redis`, update redis/attributes/default.rb with the correct instance name:
+
+```ruby
+default[:redis] = {
+  :utility_name => "my_custom_name", # default: redis
+  # ...
+}
+```
 
 Changing Defaults
 --------
