@@ -19,9 +19,9 @@ use_default_java = false
 java_package_name = "dev-java/icedtea-bin"
 java_version = "7.2.3.3-r1"
 java_eselect_version = "icedtea-bin-7"
-solr_dir = "solr-4.10.2"
-solr_file = "solr-4.10.2.tgz"
-solr_url = "http://apache.mirrors.pair.com/lucene/solr/4.10.2/solr-4.10.2.tgz"
+solr_dir = "solr-4.10.4"
+solr_file = "solr-4.10.4.tgz"
+solr_url = "http://apache.mirrors.pair.com/lucene/solr/4.10.4/solr-4.10.4.tgz"
 # Gentoo 12.11 - end
 
 # Install Solr
