@@ -58,6 +58,10 @@ start ()
       exit 1
     else
       rm -f "${pid_file}"
+
+      # Ensure that the pid file is definitely gone to avoid a fs race
+      # condition that causes monit to start a rogue sidekiq worker
+      sleep 10
     fi
   fi
 
