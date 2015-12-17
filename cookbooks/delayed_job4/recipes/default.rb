@@ -4,6 +4,19 @@
 #
 
 if node[:instance_role] == "solo" || (node[:instance_role] == "util" && node[:name] !~ /^(mongodb|redis|memcache)/)
+  directory "/engineyard/custom" do
+    owner "root"
+    group "root"
+    mode 0755
+  end
+
+  template "/engineyard/custom/dj" do
+    source "dj.erb"
+    owner "root"
+    group "root"
+    mode 0755
+  end
+
   node[:applications].each do |app_name,data|
   
     # determine the number of workers to run based on instance size
