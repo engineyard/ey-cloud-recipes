@@ -1,7 +1,8 @@
 #!/bin/sh
 #
 # This script starts and stops the Dj daemon
-# This script belongs in /engineyard/bin/dj
+# This script is created by the delayed_job4 recipe
+# This script belongs in /engineyard/custom/dj
 #
 # Updated for Rails 4.x
 
@@ -113,26 +114,13 @@ if [ -d $RAILS_ROOT ]; then
     start)
       lock
       cd $RAILS_ROOT
-      HAS_DJ_COMMAND="RAILS_ENV=$RAILS_ENV $BUNDLER_COMMAND $RAILS_SCRIPTS/$RUNNER -e $RAILS_ENV \"require 'delayed/command';puts defined?(Delayed::Command)\" 2>/dev/null"
-      has_dj_command=$(sudo -u $USER -H /bin/bash -c "$HAS_DJ_COMMAND")
-      if [[ $has_dj_command == "constant" ]];then
-        OPTIONS=${OPTIONS:-[]}
-        # Delayed Job takes a array of switches as options
-        # Split into array of quoted strings
-        # E.g. '--one=one --two=two' > ['--one=one', '--two=two']
-        OPTIONS_ARGS="['${OPTIONS// /', '}']"
+      OPTIONS=${OPTIONS:-[]}
+      # Delayed Job takes a array of switches as options
+      # Split into array of quoted strings
+      # E.g. '--one=one --two=two' > ['--one=one', '--two=two']
+      OPTIONS_ARGS="['${OPTIONS// /', '}']"
 
-        HAS_BEFORE_FORK="RAILS_ENV=$RAILS_ENV $BUNDLER_COMMAND $RAILS_SCRIPTS/$RUNNER -e $RAILS_ENV \"require 'delayed/worker';puts Delayed::Worker.respond_to?(:before_fork)\" 2>/dev/null"
-        has_before_fork=$(sudo -u $USER -H /bin/bash -c "$HAS_BEFORE_FORK")
-        if [[ $has_before_fork == "true" ]];then
-          RUNNER_COMMAND="require 'delayed/command';Delayed::Worker.before_fork;Delayed::Command.new($OPTIONS_ARGS).run"
-        else
-          RUNNER_COMMAND="require 'delayed/command';Delayed::Command.new($OPTIONS_ARGS).run"
-        fi
-      else
-        RUNNER_COMMAND="Delayed::Worker.new($OPTIONS_ARGS).start"
-      fi
-
+      RUNNER_COMMAND="require 'delayed/command';Delayed::Worker.before_fork;Delayed::Command.new($OPTIONS_ARGS).run"
       COMMAND="$BUNDLER_COMMAND $RAILS_SCRIPTS/$RUNNER -e $RAILS_ENV \"$RUNNER_COMMAND\""
       logger -t "monit-dj:$WORKER[$$]" "DJ Worker starting from $PPID"
       if [ -f $PID_FILE ]; then
