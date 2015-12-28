@@ -37,6 +37,10 @@ destination console_all { file("/dev/tty12"); };
 log { source(src); destination(messages); };
 log { source(src); destination(console_all); };
 
+template t_papertrail {
+template("<$PRI>$DATE <%= @hostname %> $PROGRAM: $MSG\n");
+  };
+
 # everything above this line copied verbatim from syslog-ng 3.3.5 default install on 7/20/12 by @seamusabshere
 # everything below this line added by cookbooks/papertrail/recipes/default.rb
 destination d_papertrail {
