@@ -27,19 +27,19 @@ sidekiq({
   # only be installed on to a utility instance that matches
   # the name
   :utility_name => 'sidekiq',
-  
+
   # Number of workers (not threads)
   :workers => 1,
-  
+
   # Concurrency
   :concurrency => 25,
-  
+
   # Queues
   :queues => {
     # :queue_name => priority
     :default => 1
   },
-  
+
   # Verbose
   :verbose => false
 })
@@ -51,28 +51,52 @@ If you wish to have more than one sidekiq utility instance, you can name them `s
 
 ## Deploy Hooks
 
-You will need to add a deploy hook to restart Sidekiq during deploys. Add the following to `deploy/after_restart.rb`:
+You will need to add a deploy hook to restart Sidekiq during deploys. This is needed to ensure the Sidekiq workers are running the latest version of the application.
+
+### Deploy hooks for a dedicated sidekiq instance
+
+If you're running Sidekiq on a utility instance named "sidekiq", use these deploy hooks:
+
+Stop sidekiq at the start of the deploy in `deploy/before_bundle.rb`:
 
 ```
 on_utilities("sidekiq") do
-  worker_count = 3 # please replace your own value
+  worker_count = 1 # change as needed
   (0...worker_count).each do |i|
+    sudo "monit stop all -g #{config.app}_sidekiq"
     sudo "/engineyard/bin/sidekiq #{config.app} stop #{config.framework_env} #{i}"
   end
+end
+```
+
+Then start sidekiq at the end of the deploy in `deploy/after_restart.rb`:
+
+```
+on_utilities("sidekiq") do
   sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
 
+### Deploy hooks for sidekiq running from application instances
 
+If you're running Sidekiq on application instances, you can use these deploy hooks:
 
-If Sidekiq is installed on your application instances, rather than a utility instance, you can do the following:
+Stop sidekiq at the start of the deploy in `deploy/before_bundle.rb`:
 
 ```
 on_app_servers do
-  worker_count = 3 # please replace your own value
+  worker_count = 1 # change as needed
   (0...worker_count).each do |i|
+    sudo "monit stop all -g #{config.app}_sidekiq"
     sudo "/engineyard/bin/sidekiq #{config.app} stop #{config.framework_env} #{i}"
   end
+end
+```
+
+Then start sidekiq at the end of the deploy in `deploy/after_restart.rb`:
+
+```
+on_app_servers do
   sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
