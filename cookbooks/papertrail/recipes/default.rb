@@ -70,10 +70,16 @@ bash 'extract SSL certificates' do
     EOH
 end
 
+service "syslog-ng" do
+    supports :start => true, :stop => true, :restart => true, :status => true
+    action [ :enable, :start ]
+end
+
 template '/etc/syslog-ng/syslog-ng.conf' do
   source 'syslog-ng.conf.erb'
   mode '0644'
   variables(PAPERTRAIL_CONFIG)
+  notifies :restart, resources(:service => "syslog-ng")
 end
 
 # EngineYard Gentoo instances use sysklogd by default
