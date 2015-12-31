@@ -4,4 +4,6 @@ This is an exploratory EY Cloud Cookbook to install and setup LogEntries when it
 
 Ultimately, the cookbooks/le folder will be a standalone recipe that customers will install into their environments via the `ey-recipe clone` command.
 
-Updated to use newer version of Logentries. Requires Stable V4 Stack.
+Updated to use newer version of Logentries. 
+
+#### Requires Stable V4 Stack.
