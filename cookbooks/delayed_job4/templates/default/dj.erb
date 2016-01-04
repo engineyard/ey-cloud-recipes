@@ -166,7 +166,7 @@ if [ -d $RAILS_ROOT ]; then
          let "REPORT_TIME = $SLEEP_COUNT%4"
          if(( "$SLEEP_COUNT" > $GRACE_TIME )); then
            logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Child Process $PID wait exceeded, killing it"
-           kill -9 $PID 2>/dev/null; true
+           kill -9 $PID $WORKER_PID 2>/dev/null; true
            break
          elif(( $REPORT_TIME == 0 ));then
            let "RUNTIME = $SLEEP_COUNT/4"
