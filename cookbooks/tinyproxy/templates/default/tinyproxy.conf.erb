@@ -1,0 +1,11 @@
+User nobody
+Group nobody
+Port <%= @port %>
+MaxClients 100
+MinSpareServers 5
+MaxSpareServers 20
+StartServers 10
+LogLevel Info
+LogFile "/data/<%= @app_name %>/shared/tinyproxy/tinyproxy.log"
+PidFile "/data/<%= @app_name %>/shared/tinyproxy/tinyproxy.pid"
+ViaProxyName "tinyproxy"
