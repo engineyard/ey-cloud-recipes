@@ -7,19 +7,19 @@
 
 if ['solo', 'app_master', 'app', 'util'].include?(node[:instance_role])
   # for each application
-  node.engineyard.apps.each do |app|
+  node[:applications].each do |app_name, data|
     # retrieve attributes
-    attributes = node[app.name]
+    attributes = node[app_name]
 
     # skip if there are no attributes for this app
     next if attributes.nil?
 
     ey_cloud_report "RDS" do
-      message "RDS - Replacing database.yml for #{app.name}"
+      message "RDS - Replacing database.yml for #{app_name}"
     end
 
     # create new database.yml with attributes
-    template "/data/#{app.name}/shared/config/database.yml" do
+    template "/data/#{app_name}/shared/config/database.yml" do
       owner node[:owner_name]
       group node[:owner_name]
       backup false
