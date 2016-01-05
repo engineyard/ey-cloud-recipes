@@ -112,6 +112,16 @@ if ('solo' == node[:instance_role])  ||
      command "chown #{node[:owner_name]}:#{node[:owner_name]} -R /data/solr"
    end
 
+  # Installs log rotation config
+  cookbook_file "/etc/logrotate.d/solr" do
+    owner "root"
+    group "root"
+    mode 0644
+    source "solr.logrotate"
+    backup false
+    action :create
+  end
+
    execute "monit-reload" do
      command "monit quit && telinit q"
    end
