@@ -9,6 +9,10 @@ execute "le register --account-key" do
   not_if { File.exists?('/etc/le/config') }
 end
 
+execute "le reinit --pull-server-side-config=False" do
+  command "/usr/bin/le reinit --pull-server-side-config=False"
+  action :run
+
 follow_paths = [
   "/var/log/syslog",
   "/var/log/auth.log",
