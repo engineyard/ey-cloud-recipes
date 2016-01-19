@@ -12,6 +12,7 @@ end
 execute "le reinit --pull-server-side-config=False" do
   command "/usr/bin/le reinit --pull-server-side-config=False"
   action :run
+end
 
 follow_paths = [
   "/var/log/syslog",
