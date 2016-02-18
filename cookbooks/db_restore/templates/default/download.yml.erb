@@ -1,0 +1,11 @@
+---
+:keep: <%= @node[:engineyard][:environment][:backup_window] %>
+:aws_secret_id: <%= @node[:aws_secret_id] %>
+:aws_secret_key: <%= @node[:aws_secret_key] %>
+:region: <%= @node[:engineyard][:environment][:region] %>
+:backup_bucket: <%= @node[:db_restore][:backup_bucket] %>
+:dbuser: DO_NOT_USE
+:dbpass: DO_NOT_USE
+:env: <%= @node[:db_restore][:source_environment_name] %>
+:databases:
+- <%= @app_name %>
