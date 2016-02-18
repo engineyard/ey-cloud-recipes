@@ -176,5 +176,7 @@
 #uncomment to include the motd customization related to the environment
 #include_recipe "env_motd"
 
+#include_recipe "db_restore"
+
 #uncomment to install PHP 5.5.x
 #include_recipe "php55"
