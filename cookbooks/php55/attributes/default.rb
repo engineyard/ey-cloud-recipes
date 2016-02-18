@@ -1,0 +1,5 @@
+default['php']['binary_files_url'] = 'https://s3.amazonaws.com/ey-cloud-recipes-php55'
+default['php']['version'] = '5.5.32'
+default['php']['short_version'] = '5.5'
+default['php']['eselect_php_version'] = '0.7.0'
+default['php']['pcre_version'] = '8.32'
