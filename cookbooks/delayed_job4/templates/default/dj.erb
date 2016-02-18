@@ -1,0 +1,189 @@
+#!/bin/sh
+#
+# This script starts and stops the Dj daemon
+# This script is created by the delayed_job4 recipe
+# This script belongs in /engineyard/custom/dj
+#
+# Updated for Rails 4.x
+
+PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:$PATH
+CURDIR=`pwd`
+export NEW_RELIC_DISPATCHER=delayed_job
+
+usage() {
+  echo "Usage: $0 <appname> {start|stop} enviroment [name maximum-priority minimum-priority]"
+  exit 1
+}
+
+if [ $# -lt 3 ]; then usage; fi
+
+if [ $4 ]; then
+  NAME="_$4"
+
+  if [ $5 ]; then
+    OPTIONS="--max-priority=$5"
+    if [ $6 ]; then
+      OPTIONS="$OPTIONS --min-priority=$6"
+    fi
+  fi
+fi
+
+# QUEUES passed as comma seperated list
+# E.G. QUEUES=one,two,three
+if [ $QUEUES ]; then
+  OPTIONS="$OPTIONS --queues=${QUEUES}"
+fi
+
+if [ "`whoami`" != "root" ]; then
+  logger -t `basename $0` -s "Must be run as root"
+  exit 1
+fi
+## Function definitions - casual readers encouraged to skip this ##
+rm_lockfile(){
+  if [ -e $LOCK_FILE ]; then
+   logger -t "monit_dj:$WORKER[$$]" "removing $LOCK_FILE for `cat $LOCK_FILE`"
+   rm $LOCK_FILE
+  fi
+}
+
+lock(){
+  RESULT=0
+  if [ -e $LOCK_FILE ]; then
+    LAST_LOCK_PID=`cat $LOCK_FILE`
+    if [ -n $LAST_LOCK_PID -a -z "`ps axo pid|grep $LAST_LOCK_PID`" -a -f $LOCK_FILE ];then
+      sleep 1
+      logger -t "monit-dj:$WORKER[$$]" "Removing stale lock file for $WORKER ($LAST_LOCK_PID)"
+      rm $LOCK_FILE 2>&1
+    else
+      logger -t "monit-dj:$WORKER[$$]" "Monit already messing with $WORKER ($LAST_LOCK_PID)"
+      RESULT=1
+      exit_cleanly
+    fi
+  fi
+  echo $$ > $LOCK_FILE
+}
+
+exit_cleanly() {
+  cd $CURDIR
+  logger -t "mont-dj:$WORKER[$$]" "exiting wrapper cleanly with $RESULT"
+  exit $RESULT
+}
+
+unlock_and_exit_cleanly(){
+  rm_lockfile
+  exit_cleanly
+}
+
+## End function definitions ##
+#set -x
+WORKER=$1$NAME
+LOCK_FILE="/tmp/$WORKER.monit-lock"
+BUNDLER_COMMAND="ruby"
+RAILS_ROOT=/data/$1/current
+if [ -d $RAILS_ROOT ]; then
+  if [ -f $RAILS_ROOT/Gemfile ]; then
+    BUNDLER_COMMAND="bundle exec ruby"
+    if [ -d $RAILS_ROOT/ey_bundler_binstubs ]; then
+      PATH=$RAILS_ROOT/ey_bundler_binstubs:$PATH
+    fi
+  fi
+
+  RAILS_ENV=$3
+  export $RAILS_ENV
+
+  # Rails 2.x uses $RAILS_ROOT/script/runner
+  # Rails 3.x uses $RAILS_ROOT/script rails runner
+  # Rails 4.x uses $RAILS_ROOT/bin/rails runner
+  RAILS_SCRIPTS="$RAILS_ROOT/script"
+  RUNNER='runner' # 2.x
+
+  [ -f $RAILS_ROOT/script/rails ] && chmod a+x $RAILS_SCRIPTS/rails && RUNNER="rails runner" # 3.x
+  [ -f $RAILS_ROOT/bin/rails ] && RAILS_SCRIPTS="$RAILS_ROOT/bin" && chmod a+x $RAILS_SCRIPTS/rails && RUNNER="rails runner" # 4.x
+
+  cd $RAILS_ROOT
+  PID_FILE=/var/run/engineyard/dj/$1/dj$NAME.pid
+  USER=`stat -c"%U" /data/$1/current/`
+  HOME="/home/$USER" ; export HOME
+  RESULT=0
+  GRACE_TIME=${GRACE_TIME:-60}
+  let "GRACE_TIME=$GRACE_TIME*4"
+
+  mkdir -p /var/run/engineyard/dj/$1
+
+  case "$2" in
+    start)
+      lock
+      cd $RAILS_ROOT
+      OPTIONS=${OPTIONS:-[]}
+      # Delayed Job takes a array of switches as options
+      # Split into array of quoted strings
+      # E.g. '--one=one --two=two' > ['--one=one', '--two=two']
+      OPTIONS_ARGS="['${OPTIONS// /', '}']"
+
+      RUNNER_COMMAND="require 'delayed/command';Delayed::Worker.before_fork;Delayed::Command.new($OPTIONS_ARGS).run"
+      COMMAND="$BUNDLER_COMMAND $RAILS_SCRIPTS/$RUNNER -e $RAILS_ENV \"$RUNNER_COMMAND\""
+      logger -t "monit-dj:$WORKER[$$]" "DJ Worker starting from $PPID"
+      if [ -f $PID_FILE ]; then
+        PID=`cat $PID_FILE`
+        if [ -n "$PID" ];then
+          logger -t "monit-dj:$WORKER[$$]" "There is already a  PID file for delayed Job [$PID]"
+          if [ -d /proc/$PID ]; then
+            logger -t "monit-dj:$WORKER[$$]" "Dj worker is already running with PID of $PID"
+            RESULT=1
+          else
+            logger -t "monit-dj:$WORKER[$$]" "Removing stale pid file for $WORKER"
+            rm -f $PID_FILE
+          fi
+        fi
+      fi
+
+      if [ $RESULT -eq 0 ]; then
+        logger -t "monit-dj:$WORKER[$$]" "issuing command $COMMAND in $PWD for $USER"
+        sudo -u $USER -H /bin/bash -c "$COMMAND"  &
+        NEW_PID=$!
+        RESULT=$?
+        logger -t "monit-dj:$WORKER[$$]" "$WORKER started as  $NEW_PID : $RESULT"
+        echo $NEW_PID > $PID_FILE
+      fi
+      unlock_and_exit_cleanly
+    ;;
+   stop)
+     lock
+     logger -t "monit_dj:$WORKER[$$]" "Stopping  DJ worker:"
+     if [ -f $PID_FILE ]; then
+       PID=$(cat $PID_FILE)
+
+       # Find children
+       WORKER_PID=$(ps axo pid,ppid,command|awk '$2=='$PID' {print $1}')
+
+       kill -15 $PID $PPID; # kill worker and any child that it may have at this very moment
+       logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Process $PID $PPID"
+
+       SLEEP_COUNT=0
+       while [ -e /proc/$PID ]; do
+         sleep .25
+         let "SLEEP_COUNT+=1"
+         let "REPORT_TIME = $SLEEP_COUNT%4"
+         if(( "$SLEEP_COUNT" > $GRACE_TIME )); then
+           logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Child Process $PID wait exceeded, killing it"
+           kill -9 $PID $WORKER_PID 2>/dev/null; true
+           break
+         elif(( $REPORT_TIME == 0 ));then
+           let "RUNTIME = $SLEEP_COUNT/4"
+           logger -t "monit-dj:$WORKER[$$]" "Waiting for $PID to die ( for $RUNTIME seconds now)"
+         fi
+       done
+     fi
+
+     [ -e "$PID_FILE" ] && rm -f $PID_FILE
+     unlock_and_exit_cleanly
+     ;;
+   *)
+     usage
+    ;;
+   esac
+else
+  echo "/data/$1/current doesn't exist."
+  usage
+fi
+
