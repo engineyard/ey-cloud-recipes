@@ -213,6 +213,8 @@ extension applied to.
 
 ``postgresql9_pg_stat_statements "dbname""``
 
+This module requires additional shared memory when used. As a result, a restart of Postgres (`/etc/init.d/postgresql-#{major_version} restart`) is required for these settings to go into effect.
+
 ##pg_trgm
 ###supported versions: >= 9.0
 The pg_trgm module provides GiST and GIN index operator classes that allow you to create an index over a text column for the purpose of very fast similarity searches. These index types support the above-described similarity operators, and additionally support trigram-based index searches for LIKE and ILIKE queries. (These indexes do not support equality nor simple comparison operators, so you may need a regular B-tree index too.).
