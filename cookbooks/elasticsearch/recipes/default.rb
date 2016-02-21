@@ -102,11 +102,15 @@ if ['util'].include?(node[:instance_role])
       recursive true
     end
 
-    mount "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
-      device "#{node[:elasticsearch_home]}"
-      fstype "none"
-      options "bind,rw"
-      action :mount
+    if File.foreach("/proc/mounts").any?{|line| line['/usr/lib[0-9]*/elasticsearch-#{node[:elasticsearch_version]}/data']}
+      Chef::Log.info("Elastic search bind already complete")
+    else
+      mount "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
+        device "#{node[:elasticsearch_home]}"
+        fstype "none"
+        options "bind,rw"
+        action :mount
+      end
     end
 
     template "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/config/logging.yml" do
