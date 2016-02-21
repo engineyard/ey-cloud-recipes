@@ -16,6 +16,10 @@ rescue
   "#{dbtype}"
 end
 %>
+    RUBY
+    dbtype = '<%= determine_adapter %>'
+  end
+  
   template "/data/#{app.name}/shared/config/database.yml" do
     owner node.ssh_username
     group node.ssh_username
