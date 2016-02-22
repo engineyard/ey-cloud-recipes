@@ -1,5 +1,6 @@
-node.apps.each do |app|
-  dbtype = node.environment.db_adapter(app.app_type)
+dbtype = node[:engineyard][:environment][:db_stack_name]
+
+node[:engineyard][:environment][:apps].each do |app|
   Chef::Log.info "--- Dropping db.yml file for db #{dbtype}"
   
   # check if we need to add the determine_adapter erb to template
@@ -20,7 +21,7 @@ end
     dbtype = '<%= determine_adapter %>'
   end
   
-  template "/data/#{app.name}/shared/config/database.yml" do
+  template "/data/#{app[:name]}/shared/config/database.yml" do
     owner node.ssh_username
     group node.ssh_username
     mode 0600
@@ -39,6 +40,6 @@ end
   end
 
   execute "create keep.database.yml" do
-    command "touch /data/#{app.name}/shared/config/keep.database.yml"
+    command "touch /data/#{app[:name]}/shared/config/keep.database.yml"
   end
 end
