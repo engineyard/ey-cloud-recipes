@@ -102,7 +102,7 @@ if ['util'].include?(node[:instance_role])
       recursive true
     end
 
-    if File.foreach("/proc/mounts").any?{|line| line['/usr/lib[0-9]*/elasticsearch-#{node[:elasticsearch_version]}/data']}
+    if File.new("/proc/mounts").readlines.join.match(/\/usr\/lib[0-9]*\/elasticsearch-#{node[:elasticsearch_version]}\/data/)
       Chef::Log.info("Elastic search bind already complete")
     else
       mount "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
