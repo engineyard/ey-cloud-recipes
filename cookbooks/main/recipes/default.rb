@@ -1,3 +1,6 @@
+# uncomment to use a custom database.yml configuration
+# include_recipe "database_yml_custom"
+
 #execute "testing" do
 #  command %Q{
 #    echo "i ran at #{Time.now}" >> /root/cheftime
