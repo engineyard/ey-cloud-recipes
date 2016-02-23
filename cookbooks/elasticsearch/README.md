@@ -11,6 +11,10 @@ So, we build a web site or an application and want to add search to it, and then
 
 NOTE: This recipe installs Elasticsearch 1.4.4 and requires Java 7 or later. It will only work on the Gentoo 12.11 stack; the Java 7 ebuild is not available on Gentoo 2009. We do not recommend running older versions of Elasticsearch - versions prior to 1.2 have a remote code execution vulnerability, see http://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-3120
 
+Known Issues
+--------
+- A prior version of this recipe would create duplicate bind mounts under `/proc/mounts`. These weren't known to create any specific problems so this was added as a cleanup rather than a bugfix. In order to remove the extra mounts you need to run `sudo umount /usr/lib64/elasticsearch-#{version}/data` for each extra mount.
+
 Dependencies
 --------
 
