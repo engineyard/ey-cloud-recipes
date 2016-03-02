@@ -23,10 +23,12 @@ include_recipe "datadog::daemonize"
 # comment out if you want to use the standard config
 include_recipe "datadog::config"
 
+#uncomment this for the nginx integrations to work
+
 # on app servers and staging install the nginx integrations
-if ['app_master','app','solo'].include? node[:instance_role]
-  include_recipe "datadog::nginx"
-end
+#if ['app_master','app','solo'].include? node[:instance_role]
+#  include_recipe "datadog::nginx"
+#end
 
 # finish up
 include_recipe "datadog::finish"
