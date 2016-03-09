@@ -1,0 +1,5 @@
+check process datadog_wrapper
+  with pidfile /var/run/datadog_wrapper.pid
+  start program = "/bin/datadog_wrapper start"
+  stop program = "/bin/datadog_wrapper stop"
+  group datadog
