@@ -1,0 +1,5 @@
+#required by dev-db/mongodb-2.6.10
+=app-arch/snappy-1.0.4 ~amd64
+=dev-libs/boost-1.52.0-r4 ~amd64
+=dev-cpp/yaml-cpp-0.5.1 ~amd64
+=dev-db/mongodb-2.6.10 ~amd64

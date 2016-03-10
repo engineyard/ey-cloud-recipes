@@ -1,4 +1,4 @@
-default[:mongo_version] = "2.4.6"
+default[:mongo_version] = "2.6.10"
 default[:mongo_path] = "/usr"
 default[:mongo_base] = "/data/mongodb"
 default[:mongo_port] = "27017"
