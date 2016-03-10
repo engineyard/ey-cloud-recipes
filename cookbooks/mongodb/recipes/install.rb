@@ -1,10 +1,11 @@
 mongodb_version = node[:mongo_version]
+mongodb_package = node[:mongo_package]
 
 ey_cloud_report "MongoDB" do
   message "installing mongodb #{mongodb_version}"
 end
 
-enable_package "dev-db/mongodb" do
+enable_package "#{mongodb_package}" do
   version mongodb_version
 end
 
@@ -16,7 +17,12 @@ remote_file "/etc/portage/package.keywords/mongodb" do
   group "root"
 end
 
-package "dev-db/mongodb" do
+package_remove = mongodb_package == "dev-db/mongodb"? 'dev-db/mongodb-bin' : 'dev-db/mongodb'
+package "#{package_remove}" do
+  action :remove
+end
+
+package "#{mongodb_package}" do
   version mongodb_version
   action :install
 end
