@@ -123,6 +123,9 @@
 #uncomment to include the Magento recipe
 #include_recipe "magento"
 
+# nginx keep files
+# include_recipe "nginx_keep"
+
 # uncomment to include the Postgres Maintenance recipe
 #include_recipe "postgresql_maintenance"
 
