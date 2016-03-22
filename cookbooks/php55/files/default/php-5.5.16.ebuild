@@ -595,9 +595,6 @@ src_install() {
 
 	# Create the directory where we'll put version-specific php scripts
 	keepdir /usr/share/php${PHP_MV}
-	
-	# Create extension_dir
-	keepdir $extension_dir
 
 	local sapi="", file=""
 	local sapi_list=""
