@@ -224,11 +224,8 @@ php_install_ini() {
 
 	# Set the extension dir
 	sed -e "s|^extension_dir .*$|extension_dir = ${extension_dir}|g" -i "${phpinisrc}"
-<<<<<<< HEAD
 	# Create extension dir
 	keepdir $extension_dir
-=======
->>>>>>> master
 
 	# Set the include path to point to where we want to find PEAR packages
 	sed -e 's|^;include_path = ".:/php/includes".*|include_path = ".:'"${EPREFIX}"'/usr/share/php'${PHP_MV}':'"${EPREFIX}"'/usr/share/php"|' -i "${phpinisrc}"
@@ -600,7 +597,7 @@ src_install() {
 
 	# Create the directory where we'll put version-specific php scripts
 	keepdir /usr/share/php${PHP_MV}
-
+	
 	# Create extension_dir
 	keepdir $extension_dir
 
