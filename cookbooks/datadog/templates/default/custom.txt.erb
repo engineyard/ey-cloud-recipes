@@ -1,0 +1,8 @@
+
+location /nginx_status {
+   stub_status on;
+
+   access_log off;
+   allow <%= @internal_ip %>;
+   deny all;
+}

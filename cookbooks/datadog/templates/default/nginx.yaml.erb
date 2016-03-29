@@ -1,0 +1,9 @@
+init_config:
+
+instances:
+    # For every instance, you have an `nginx_status_url` and (optionally)
+    # a list of tags.
+
+    -   nginx_status_url: http://<%= @public_hostname %>/nginx_status
+        tags:
+            -   env_name:<%= @env_name %>
