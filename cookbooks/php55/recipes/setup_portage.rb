@@ -23,6 +23,18 @@ binary_files = [
   "/engineyard/portage/packages/dev-libs/libpcre-#{node[:php][:pcre_version]}.tbz2"
 ]
 
+extension_files = [
+  "/etc/php/cgi-php5.5/ext/redis.ini",
+  "/etc/php/cli-php5.5/ext/redis.ini",
+  "/etc/php/fpm-php5.5/ext/redis.ini",
+  "/etc/php/cgi-php5.5/ext/mongo.ini",
+  "/etc/php/cli-php5.5/ext/mongo.ini",
+  "/etc/php/fpm-php5.5/ext/mongo.ini",
+  "/etc/php/cgi-php5.5/ext/memcache.ini",
+  "/etc/php/cli-php5.5/ext/memcache.ini",
+  "/etc/php/fpm-php5.5/ext/memcache.ini"
+]
+
 directory "/engineyard/portage/packages/dev-libs" do
   recursive true
   action :create
@@ -60,6 +72,19 @@ binary_files.each do |binary_file|
   end
 end
 
+extension_files.each do |extension_file|
+  remote_file extension_file do
+    source File.basename(extension_file)
+    backup 0
+    owner "root"
+    group "root"
+    mode 0644
+  end
+  execute "setup symlinks" do
+    command "ln -nfs #{extension_file} #{File.dirname(extension_file)}-active/#{File.basename(extension_file)}"
+  end
+end
+
 execute "ebuild-libpcre" do
   cwd "/engineyard/portage/dev-libs/libpcre/"
   command "ebuild libpcre-8.32.ebuild manifest"
@@ -93,3 +118,9 @@ remote_file '/usr/share/php/Archive/Tar.php' do
   mode 0644
   action :nothing
 end.run_action(:create)
+
+execute "install php modules" do
+  command "pecl install -f redis"
+  command "/usr/bin/yes '' | pecl install -f memcache"
+  command "/usr/bin/no '' | pecl install -f mongo"
+end
