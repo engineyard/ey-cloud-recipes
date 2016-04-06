@@ -119,8 +119,14 @@ remote_file '/usr/share/php/Archive/Tar.php' do
   action :nothing
 end.run_action(:create)
 
-execute "install php modules" do
+execute "install php module redis" do
   command "pecl install -f redis"
+end
+
+execute "install php module memcache" do
   command "/usr/bin/yes '' | pecl install -f memcache"
+end
+
+execute "install php module mongo" do
   command "/usr/bin/no '' | pecl install -f mongo"
 end
