@@ -72,19 +72,6 @@ binary_files.each do |binary_file|
   end
 end
 
-extension_files.each do |extension_file|
-  remote_file extension_file do
-    source File.basename(extension_file)
-    backup 0
-    owner "root"
-    group "root"
-    mode 0644
-  end
-  execute "setup symlinks" do
-    command "ln -nfs #{extension_file} #{File.dirname(extension_file)}-active/#{File.basename(extension_file)}"
-  end
-end
-
 execute "ebuild-libpcre" do
   cwd "/engineyard/portage/dev-libs/libpcre/"
   command "ebuild libpcre-8.32.ebuild manifest"
@@ -118,6 +105,27 @@ remote_file '/usr/share/php/Archive/Tar.php' do
   mode 0644
   action :nothing
 end.run_action(:create)
+
+execute "eselect-php55" do
+  command <<-EOM
+    eselect php set cli php#{node[:php][:short_version]}
+    eselect php set cgi php#{node[:php][:short_version]}
+    eselect php set fpm php#{node[:php][:short_version]}
+  EOM
+end
+
+extension_files.each do |extension_file|
+  remote_file extension_file do
+    source File.basename(extension_file)
+    backup 0
+    owner "root"
+    group "root"
+    mode 0644
+  end
+  execute "setup symlinks" do
+    command "ln -nfs #{extension_file} #{File.dirname(extension_file)}-active/#{File.basename(extension_file)}"
+  end
+end
 
 execute "install php module redis" do
   command "pecl install -f redis"
