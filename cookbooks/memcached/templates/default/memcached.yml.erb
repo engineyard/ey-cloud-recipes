@@ -1,29 +1,25 @@
 defaults:
-  ttl: 1800
-  readonly: false
-  urlencode: false
-  c_threshold: 10000
-  compression: true
-  debug: false
+  ttl: <%= @node[:memcached_custom][:ttl] %>
+  readonly: <%= @node[:memcached_custom][:readonly] %>
+  urlencode: <%= @node[:memcached_custom][:urlencode] %>
+  c_threshold: <%= @node[:memcached_custom][:c_threshold] %>
+  compression: <%= @node[:memcached_custom][:compression] %>
+  debug: <%= @node[:memcached_custom][:debug] %>
   namespace: <%= @app_name %>
-  sessions: false
-  session_servers: false
-  fragments: true
-  memory: 64
+  sessions: <%= @node[:memcached_custom][:sessions] %>
+  session_servers: <%= @node[:memcached_custom][:session_servers] %>
+  fragments: <%= @node[:memcached_custom][:fragments] %>
+  memory: <%= @node[:memcached_custom][:memory] %>
   servers: localhost:11211
-  benchmarking: true
-  raise_errors: true
-  fast_hash: false
-  fastest_hash: false
+  benchmarking: <%= @node[:memcached_custom][:benchmarking] %>
+  raise_errors: <%= @node[:memcached_custom][:raise_errors] %>
+  fast_hash: <%= @node[:memcached_custom][:fast_hash] %>
+  fastest_hash: <%= @node[:memcached_custom][:fastest_hash] %>
 
 <%= @node[:environment][:framework_env] %>:
-  memory: 64
-  benchmarking: false
-  sessions: false
-  fragments: true
-  <% if !@server_names.nil? && !@server_names.empty? %>
+  <% if !@memcached_instances.nil? && !@memcached_instances.empty? %>
   servers:
-  <% @server_names.each do |server_name| %>
-  - <%= server_name %>:11211
+  <% @memcached_instances.each do |memcached_instance| %>
+  - <%= memcached_instance[:private_hostname] %>:<%= @node[:memcached_custom][:port] %>
   <% end %>
   <% end %>
