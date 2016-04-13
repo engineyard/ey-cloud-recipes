@@ -21,7 +21,7 @@ link "dd-link" do
 end
 
 execute 'monit-reload' do
-  command 'monit reload'
+  command 'monit reload; sleep 30'
   action :nothing
 end
 
