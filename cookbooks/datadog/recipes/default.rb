@@ -7,11 +7,13 @@
 # raise if node['datadog']['api_key'].nil? || node['datadog']['api_key'].empty?
 
 # stop the agent before the install if it is already on there
+
+
 execute "monit-stop-dd" do
  user "root"
  cwd "/"
- command "monit stop datadog_wrapper"
- only_if { File.exists?( '/var/run/datadog_wrapper.pid') }
+ command "monit stop datadog_wrapper; sleep 30"
+ only_if " pgrep 'datadog_wrapper' > /dev/null"
 end
 
 # the dd setup script installs the agent
@@ -23,12 +25,8 @@ include_recipe "datadog::daemonize"
 # comment out if you want to use the standard config
 include_recipe "datadog::config"
 
-#uncomment this for the nginx integrations to work
-
-# on app servers and staging install the nginx integrations
-#if ['app_master','app','solo'].include? node[:instance_role]
-#  include_recipe "datadog::nginx"
-#end
+# uncomment for the postgres extension
+# include_recipe "datadog::postgres"
 
 # finish up
 include_recipe "datadog::finish"
