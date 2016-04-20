@@ -114,7 +114,7 @@ def configure_php_rpm
 
   execute "restart newrelic-daemon" do
     action :nothing
-    command "sleep 10s && monit restart newrelic-daemon || true"
+    command "/etc/init.d/newrelic-daemon restart && sleep 5s && monit reload"
   end
 end
 
