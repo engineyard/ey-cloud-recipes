@@ -183,3 +183,6 @@
 
 #uncomment to install PHP 5.5.x
 #include_recipe "php55"
+
+#unncomment to install clamav
+#include_recipe "clamav"
