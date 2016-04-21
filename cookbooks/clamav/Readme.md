@@ -8,8 +8,8 @@ There currently is no on-demand scanning schedule setup but if one is desired, p
 Example
 
 
-```59 23 * * * /usr/local/bin/scan.sh
-```
+    59 23 * * * /usr/local/bin/scan.sh
+
 
 
 Contents of scan.sh
