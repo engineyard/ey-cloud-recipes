@@ -1,4 +1,4 @@
-ClamAV installer for Stable v4
+#ClamAV installer for Stable v4
 
 
 This is a standard gentoo package install. 
@@ -7,13 +7,15 @@ There currently is no on-demand scanning schedule setup but if one is desired, p
 
 Example
 
-59 23 * * * /usr/local/bin/scan.sh
+
+```59 23 * * * /usr/local/bin/scan.sh
+```
 
 
-scan.sh
+Contents of scan.sh
 
 
-#!/bin/bash
+```#!/bin/bash
 LOGFILE="/var/log/clamav/clamscan.$(date +%m%d%y).log";
 EMAIL_TO="custom@email.com";
 EMAIL_SUBJECT="ClamAV Scan Results host $(hostname) Malware Found";
@@ -28,7 +30,7 @@ if [ "$MALWARE" -ne "0" ];then
  fi
 
 exit 0
-
+```
 
 
 
