@@ -25,6 +25,7 @@ if @node[:name] == mongo_nodes.last[:name]
         :database => db_name,
         :secret_key => node[:aws_secret_key],
         :id_key => node[:aws_secret_id],
+        :s3_region => node[:engineyard][:environment][:region],
         :env => node[:environment][:name],
         :app_name => app_name
       })

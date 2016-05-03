@@ -7,18 +7,31 @@ require 'digest'
 require 'net/http'
 require 'fileutils'
 require 'json'
+require 'fog'
 
-module AWS::S3
-  class S3Object
-    def <=>(other)
-      DateTime.parse(self.about['last-modified']) <=> DateTime.parse(other.about['last-modified'])
-    end
+# Human Readable Filesizes
+class Integer
+  def to_filesize
+    {
+      'B'  => 1024,
+      'KB' => 1024 * 1024,
+      'MB' => 1024 * 1024 * 1024,
+      'GB' => 1024 * 1024 * 1024 * 1024,
+      'TB' => 1024 * 1024 * 1024 * 1024 * 1024
+    }.each_pair { |e, s| return "#{(self.to_f / (s / 1024)).round(2)}#{e}" if self < s }
   end
 end
 
-AWS::S3::Base.establish_connection!(
-  :access_key_id     => '<%= @id_key %>',
-  :secret_access_key => '<%= @secret_key %>'
+key = '<%= @id_key %>'
+secret = '<% @secret_key %>'
+region = '<% @s3_region %>'
+
+conn = Fog::Storage.new(
+  :provider => 'AWS',
+  :aws_access_key_id => key,
+  :aws_secret_access_key => secret,
+  :region => region,
+  :aws_signature_version => 2
 )
 
 @databases = JSON.parse(`mongo --quiet --eval "printjson(db.runCommand('listDatabases').databases)" admin`)
@@ -28,38 +41,100 @@ AWS::S3::Base.establish_connection!(
 @environment = '<%= @env %>'
 @app_name = '<%= @app_name %>'
 @keep = 10 * @databases.length
-@bucket = "ey-backup-#{Digest::SHA1.hexdigest('<%= @id_key %>')[0..11]}-mongo"
+@bucket = "ey-backup-#{Digest::SHA1.hexdigest(key)[0..11]}-mongo-rs"
 @tmpname = "#{Time.now.strftime("%Y-%m-%dT%H:%M:%S").gsub(/:/, '-')}"
 FileUtils.mkdir_p '/mnt/tmp'
+
 begin
-  AWS::S3::Bucket.create @bucket
-rescue AWS::S3::BucketAlreadyExists
+  conn.directories.create( :key => @bucket, :public => false )
+rescue Excon::Errors::Conflict
+rescue => e
+  puts e
+  puts e.inspect
+  exit
 end
+
+backup_success = false
 
 if @ismaster == "false" #only dump non-primary nodes
   @databases.each do |database|
+    next if database == 'local'
     token = "#{database}"
-    mongocmd = "mongodump -h 127.0.0.1 -d #{database} -o /mnt/tmp/#{token}.#{@tmpname} && tar cjf \"/mnt/tmp/#{token}.#{@tmpname}.tar.bz\" \"/mnt/tmp/#{token}.#{@tmpname}\""
+    
+    object_to_upload = "/mnt/tmp/#{@app_name}-#{token}.#{@tmpname}.bson.tar.gz"
+    object_key = "#{@environment}.#{@app_name}/#{@app_name}-#{token}.#{@tmpname}.bson.tar.gz"
+    workdir = "/mnt/tmp/#{File.basename(object_to_upload, ".bson.tar.gz")}"
+    
+    mongocmd = "mongodump -h 127.0.0.1 -d #{database} -o #{workdir} && tar cjf \"#{object_to_upload}\" \"#{workdir}\""
     if system(mongocmd)
-      AWS::S3::S3Object.store(
-        "/#{@environment}.#{@app_name}/#{@app_name}-#{token}.#{@tmpname}.bson.tar.bz",
-        open("/mnt/tmp/#{token}.#{@tmpname}.tar.bz"),
-        @bucket,
-        :access => :private
-      )
-      FileUtils.rm "/mnt/tmp/#{token}.#{@tmpname}.tar.bz"
-      FileUtils.rm_r "/mnt/tmp/#{token}.#{@tmpname}"
-      puts "successful backup: #{database}.#{@tmpname}"
+      FileUtils.rm_rf "#{workdir}/"
+      FileUtils.mkdir_p "#{workdir}"
+      `split -C 100M -a 6 -d #{object_to_upload} #{workdir}/#{File.basename(object_to_upload)}.`
+      
+      # Map of the parts
+      parts = {}
+      
+      # Base64 encoded checksum
+      Dir.entries(workdir).each do |file|
+        next if file == '..' or file == '.'
+        md5 = Base64.encode64(Digest::MD5.file("#{workdir}/#{file}").digest).chomp!
+        full_path = "#{workdir}/#{file}"
+      
+    	  parts[full_path] = md5
+      end
+      
+      # Refresh the connection
+      conn.reload
+      
+      # Initialize the multi-part uplaod
+      multi_part_up = conn.initiate_multipart_upload(@bucket, object_key, { 'x-amz-acl' => 'private' })
+      upload_id = multi_part_up.body['UploadId']
+      
+      tags = []
+      
+      # order the files
+      sorted_parts = parts.sort_by do |d|
+        d[0].split('.').last.to_i
+      end
+
+      sorted_parts.each_with_index do |entry, idx|
+        part_number = idx + 1
+	      conn.reload
+      
+      	# print "DEGUB: Starting on File: #{entry[0]} with MD5: #{entry[1]} - this is part #{part_number}\n"
+      	File.open(entry[0]) do |file_part|
+      	  begin
+      	    part_upload = conn.upload_part(@bucket, object_key, upload_id, part_number, file_part, {'Content-MD5' => entry[1]})
+      	    tags[idx] = part_upload.headers["ETag"]
+      	    raise if part_upload.status != 200
+      	    # print "DEBUG: #{part_upload.inspect} \n"
+      	  rescue => e
+      	    puts e
+      	    # could add a retry here
+      	    exit
+      	  end
+      	end
+    	end
+      
+      completed_upload = conn.complete_multipart_upload(@bucket, object_key, upload_id, tags)
+      # print "DEBUG: #{completed_upload.inspect} \n"
+      if completed_upload.status == 200
+        backup_success = true
+        object_size = conn.head_object(@bucket, object_key, options = {}).headers["Content-Length"].to_i
+        print "Backup completed at #{Time.now()}, successfully uploaded #{object_to_upload} to #{@bucket}: filesize in S3 is #{object_size.to_filesize}\n"
+        FileUtils.rm "#{object_to_upload}"
+        FileUtils.rm_rf "#{workdir}"
+      end
     else
       raise "Unable to dump database#{database}!"
     end
   end
-
+      
   backups = []
-  backups << AWS::S3::Bucket.objects(@bucket).sort
-  backups = backups.flatten.sort
+  conn.reload
+  conn.directories.get(@bucket, prefix: "#{@environment}.#{@app_name}/").files.sort_by{ |hsh| hsh.last_modified }.map { |file| backups << file }
   backups[0...-@keep].each do |object|
     puts "deleting: #{object.key}"
-    object.delete
+    object.destroy
   end
 end
