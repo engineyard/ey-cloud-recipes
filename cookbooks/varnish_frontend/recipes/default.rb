@@ -11,16 +11,13 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
   # This makes sure that it is.
 
   enable_package "www-servers/varnish" do
-    version '2.0.6'
+    version '3.0.3'
   end
 
   package "www-servers/varnish" do
-    version '2.0.6'
+    version '3.0.3'
     action :install
   end
-
-  ## Edit interface if needed
-  INTERFACE="eth0"
 
   #####
   #
@@ -35,47 +32,47 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
   when /m1.small/ # 1.7G RAM, 1 ECU, 32-bit, 1 core
     THREAD_POOLS=1
     THREAD_POOL_MAX=1000
-    OVERFLOW_MAX=2000
+    QUEUE_MAX=2000
     CACHE="malloc,1GB"
   when /m1.large/ # 7.5G RAM, 4 ECU, 64-bit, 2 cores
     THREAD_POOLS=2
     THREAD_POOL_MAX=2000
-    OVERFLOW_MAX=4000
+    QUEUE_MAX=4000
     CACHE="malloc,1GB"
   when /m1.xlarge/ # 15G RAM, 8 ECU, 64-bit, 4 cores
     THREAD_POOLS=4
     THREAD_POOL_MAX=4000
-    OVERFLOW_MAX=8000
+    QUEUE_MAX=8000
     CACHE="malloc,1GB"
   when /c1.medium/ # 1.7G RAM, 5 ECU, 32-bit, 2 cores
     THREAD_POOLS=2
     THREAD_POOL_MAX=2000
-    OVERFLOW_MAX=4000
+    QUEUE_MAX=4000
     CACHE="malloc,1GB"
   when /c1.xlarge/ # 7G RAM, 20 ECU, 64-bit, 8 cores
     THREAD_POOLS=8
     THREAD_POOL_MAX=8000 # This might be too much.
-    OVERFLOW_MAX=16000
+    QUEUE_MAX=16000
     CACHE="malloc,1GB"
   when /m2.xlarge/ # 17.1G RAM, 6.5 ECU, 64-bit, 2 cores
     THREAD_POOLS=2
     THREAD_POOL_MAX=2000
-    OVERFLOW_MAX=4000
+    QUEUE_MAX=4000
     CACHE="malloc,1GB"
   when /m2.2xlarge/ # 34.2G RAM, 13 ECU, 64-bit, 4 cores
     THREAD_POOLS=4
     THREAD_POOL_MAX=4000
-    OVERFLOW_MAX=8000
+    QUEUE_MAX=8000
     CACHE="malloc,1GB"
   when /m2.4xlarge/ # 68.4G RAM, 26 ECU, 64-bit, 8 cores
     THREAD_POOLS=8
     THREAD_POOL_MAX=8000 # This might be too much.
-    OVERFLOW_MAX=16000
+    QUEUE_MAX=16000
     CACHE="malloc,1GB"
   else # This shouldn't happen, but do something rational if it does.
     THREAD_POOLS=1
     THREAD_POOL_MAX=2000
-    OVERFLOW_MAX=2000
+    QUEUE_MAX=2000
     CACHE="malloc,1GB"
   end
 
@@ -86,9 +83,9 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
     variables({
       :thread_pools => THREAD_POOLS,
       :thread_pool_max => THREAD_POOL_MAX,
-      :overflow_max => OVERFLOW_MAX,
+      :queue_max => QUEUE_MAX,
       :cache => CACHE,
-      :varnish_port => 882
+      :varnish_port => 81
     })
   end
 
@@ -96,7 +93,6 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
   template '/etc/motd' do
     mode 655
     source 'motd.erb'
-    variables({ :interface => INTERFACE })
   end
 
   template '/etc/monit.d/varnishd.monitrc' do
@@ -119,13 +115,18 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
     File.chown(user.uid,user.gid,CACHE_DIR)
   end
 
-  # Configure IPTables to redirect incomming traffic 
-  # Start/restart varnish
-
-  execute "Configure iptables" do
-   command %Q{
-     iptables -t nat -F && iptables -t nat -A PREROUTING -p tcp --dport 80 -i #{INTERFACE} -j REDIRECT --to-ports 882 && /etc/init.d/iptables save
-   }
+  # Move Nginx to port 82 via a keep file, and restart it.
+  # this should happen only once at installation time
+  execute "Move Nginx to listen to port 82" do
+    node[:applications].each do |app, data|
+      command %Q{
+        sed -i 's/listen 81/listen 82/' /etc/nginx/servers/#{app}.conf
+        mv /etc/nginx/servers/#{app}.conf /etc/nginx/servers/keep.#{app}.conf
+        ln -s /etc/nginx/servers/keep.#{app}.conf /etc/nginx/servers/#{app}.conf
+        /etc/init.d/nginx restart
+      } 
+      not_if "test -f /etc/nginx/servers/keep.#{app}.conf"
+    end
   end
 
   execute "Stop Varnish and bounce monit" do
