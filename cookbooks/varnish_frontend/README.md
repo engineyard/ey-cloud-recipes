@@ -13,23 +13,11 @@ Design
 
 The recipe will setup the following path for incoming traffic:
 
-client -> HAproxy:80 (on app_master) -> [Varnish:81 -> Nginx:82] (on every app instance)
+client -> HAproxy:80 (on app_master) -> |Varnish:81 -> Nginx:82| (on every app instance)
 
 For achieving this Nginx's listening port is moved from the EYCloud standard port 81 to port 82 using [keep files][3].  This recipe sets up the keep files for every application on the environment, but if you're already using them then review the recipe before applying.
 
 While the overall concept of the path will work for SSL traffic, it hasn't been tested and as far as I know depends on where SSL is terminated.  Again this is a reference implementation.
-
-Specifics of Usage
---------
-
-Simply add a utility instance named `redis` and the recipe will use that instance for redis. If the utility instance you wish to use redis on isn't called `redis`, update redis/attributes/default.rb with the correct instance name:
-
-```ruby
-default[:redis] = {
-  :utility_name => "my_custom_name", # default: redis
-  # ...
-}
-```
 
 Changing Defaults
 --------
