@@ -3,11 +3,10 @@
 
 backend default {
    .host = "127.0.0.1";
-   .port = "80"; 
+   .port = "82"; 
 } 
 
 sub vcl_recv {
-  set req.grace = 120s; 
 
 ##### Exclude specific urls
 #
@@ -62,7 +61,7 @@ sub vcl_fetch {
 # eliminate this value as needed.
 #
 #####
-  set obj.grace = 120s;
+  set beresp.grace = 120s;
   
 ##### Force caching
 #
