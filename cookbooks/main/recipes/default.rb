@@ -186,3 +186,6 @@
 
 #unncomment to install clamav
 #include_recipe "clamav"
+
+#uncomment to add imagemagick security update
+#include_recipe "imagemagick"
