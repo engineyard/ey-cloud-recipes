@@ -37,6 +37,4 @@ on_utilities :delayed_job do
 end
 ```
 
-Make sure to replace <app_name> with the name of your application. You likely want to use the after_restart hook for this.
-
 See our [Deploy Hook](https://engineyard.zendesk.com/entries/21016568-use-deploy-hooks) documentation for more information on using deploy hooks.
