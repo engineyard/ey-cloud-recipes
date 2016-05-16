@@ -1,4 +1,4 @@
-Redis Cookbook for EngineYard EYCloud
+Varnish Cookbook for EngineYard EYCloud
 =========
 
 [Varnish][1] Varnish Cache is a web application accelerator also known as a caching HTTP reverse proxy. You install it in front of any server that speaks HTTP and configure it to cache the contents.  There is a [cool video][2] that shows what Varnish is good at. 
