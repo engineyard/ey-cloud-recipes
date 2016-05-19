@@ -1,4 +1,4 @@
 check process varnish_80
-  with pidfile /var/run/varnish.882.pid
+  with pidfile /var/run/varnish.81.pid
   start program = "/usr/local/bin/varnishd_wrapper"
-  stop program = "/usr/bin/killall varnish"
+  stop program = "/bin/bash -c '/bin/kill `cat /var/run/varnish.81.pid`'"
