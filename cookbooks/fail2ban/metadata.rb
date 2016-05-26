@@ -1,3 +1,4 @@
+name 'fail2ban'
 description 'Configuration & deployment of fail2Ban on Engine Yard'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 maintainer 'Grummfy'

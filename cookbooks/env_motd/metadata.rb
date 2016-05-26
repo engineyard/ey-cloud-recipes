@@ -1,3 +1,4 @@
+name 'env_motd'
 description 'Some customisation of motd for Engine Yard'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 maintainer 'Grummfy'
