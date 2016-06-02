@@ -12,12 +12,12 @@ depend() {
 
 start() {
 	ebegin "Starting Logentries Agent"
-	start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --exec $EXEC
-	eend $? 
+	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $EXEC
+	eend $?
 }
 
 stop() {
 	ebegin "Stopping Logentries Agent"
-	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+	start-stop-daemon --stop --quiet --pidfile $PIDFILE
 	eend $?
 }
