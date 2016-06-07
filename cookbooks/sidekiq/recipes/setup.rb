@@ -10,7 +10,7 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
   end
 
   # bin script
-  remote_file "/engineyard/bin/sidekiq" do
+  cookbook_file "/engineyard/bin/sidekiq" do
     mode 0755
     source "sidekiq"
     backup false
