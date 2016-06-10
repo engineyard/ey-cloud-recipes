@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-remote_file "/etc/logrotate.d/nginx" do
+cookbook_file "/etc/logrotate.d/nginx" do
   source "nginx.logrotate"
   owner "root"
   group "root"
