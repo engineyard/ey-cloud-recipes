@@ -4,7 +4,7 @@
 
 In some cases third parties will allow only whitelisted IPs to connect to their services. This is usually the case with payment gateways, but may be applicable other cases as well.
 
-Attaching EIPs to the instances that need to be whitelisted is an option but may not always be feasible if there are many instances need to connect and the third party has limited the whitelist to only a few IPs.
+Attaching EIPs to the instances that need to be whitelisted is an option but may not be feasible if many instances need to connect and the third party has limited the whitelist to only a few IPs.
 
 If you connect to the third party via HTTP then you can run tinyproxy on one instance (usually app_master, but can also be any util instance with an EIP), then proxy the HTTP requests through tinyproxy. This custom chef recipe will let you install tinyproxy on app_master. It can also be easily modified to run tinyproxy from a named utility instance instead.
 
@@ -13,7 +13,7 @@ If you connect to the third party via HTTP then you can run tinyproxy on one ins
 1. Add the following to your `main/recipes/default.rb`:
 
   ```
-  include_recipe "redis"
+  include_recipe "tinyproxy"
   ```
 
 2. Specify the application name and port by modifying lines 2-3 of `tinyproxy/recipes/default.rb`:
