@@ -89,7 +89,7 @@ else
           mode 0755
         end
 
-        remote_file "/etc/logrotate.d/sphinx" do
+        cookbook_file "/etc/logrotate.d/sphinx" do
           owner "root"
           group "root"
           mode 0755
@@ -196,7 +196,7 @@ else
           mode 0755
         end
 
-        remote_file "/etc/logrotate.d/sphinx" do
+        cookbook_file "/etc/logrotate.d/sphinx" do
           owner "root"
           group "root"
           mode 0755
