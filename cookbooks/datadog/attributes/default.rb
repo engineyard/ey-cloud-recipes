@@ -9,7 +9,7 @@
 
 
 # Throw your DataDog API key here
-default['datadog']['api_key'] = API_KEY_GOES_HERE
+default['datadog']['api_key'] = 'API_KEY_GOES_HERE'
 
 # Where do you install you extra monits?
 default['monit']['directory'] = "/etc/monit.d"
@@ -19,4 +19,4 @@ default['wrapper']['directory'] = "/opt"
 
 # postgres data
 default['postgres']['dd-user'] = "datadog"
-default['postgres']['dd-password'] = DATA_PG_USER_PASSWORD
+default['postgres']['dd-password'] = 'DATA_PG_USER_PASSWORD'
