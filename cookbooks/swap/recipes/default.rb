@@ -1,10 +1,9 @@
 # Configuration options
-mount_device = '/dev/xvdb'
-swapfile_path = '/mnt/swapfile'
+mount_device = '/dev/xvdb'          # for ephemeral use /dev/xvdd
+swapfile_path = '/mnt/swapfile'     # for ephemeral use /tmp/eph1/swapfile
+builtin_swap = '/dev/xvdc1'         # for c1.medium and m1.small use /dev/xvda3 instead
 swapfile_size = 8 * 1024 # 8GB
-builtin_swap = '/dev/xvdc1'
-# for c1.medium and m1.small use /dev/xvda3 instead
-#builtin_swap = '/dev/xvda3'
+
 
 blockdev = Mixlib::ShellOut.new "blockdev --getsize64 #{mount_device}"
 blockdev.run_command
