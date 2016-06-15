@@ -1,7 +1,7 @@
 # Configuration Options
   # recommended versions as of June 8, 2016
   #  - Postgres: 9.2.7, 9.3.9, 9.4.4
-  #  - MySQL: 5.6.27
+  #  - MySQL: 5.6.27.75.0
   #  - Available versions under:
   #    - Postgres: /engineyard/portage/engineyard/dev-db/postgresql-server/*.ebuild
   #    - MySQL: /engineyard/portage/engineyard/dev-db/percona-server/*.ebuild
@@ -16,9 +16,11 @@ install_packages=[
 if ['app', 'app_master', 'util'].include?(node['instance_role'])
   install_packages.each do |package|
     
-    ey_cloud_report "Installing db_client_lib #{package[:server]}"
+    ey_cloud_report "Installing db_client_lib #{package[:server]}" do
       message "installing #{package[:server]}-#{package[:version]}"
     end
+    
+    major = "#{package[:version].split('.')[0]}.#{package[:version].split('.')[1]}"
     
     if package[:server] == 'postgresql-server'
       
@@ -44,28 +46,27 @@ if ['app', 'app_master', 'util'].include?(node['instance_role'])
         action :install
       end
       
-      execute "activate_postgres_#{package[:version]}" do
-        command "eselect postgresql set #{package[:version]}"
+      major = 
+      execute "activate_postgres_#{major}" do
+        command "eselect postgresql set #{major}"
         action :run
         only_if { package[:default_slot] }
       end
       
     elsif package[:server] == 'percona-server'
       
-      virtual = "#{package[:version].split('.')[0]}.#{package[:version].split('.')[1]}"
+      unmask_path = "/etc/portage/package.unmask/mysql"
+      unmask_body = "=virtual/mysql-5.6\n=dev-db/#{package[:server]}-#{package[:version]}"
       
-      unmask_package "virtual/mysql" do
-        version virtual
-        unmaskfile "mysql"
+      update_file "unmasking #{package[:server]} #{package[:version]}" do
+        action :append
+        path unmask_path
+        body unmask_body
+        not_if "grep '#{unmask_body}' #{unmask_path}"
       end
       
       enable_package "virtual/mysql" do
-        version virtual
-      end
-      
-      unmask_package "dev-db/#{package[:server]}" do
-        version package[:version]
-        unmaskfile "mysql"
+        version major
       end
       
       enable_package "dev-db/#{package[:server]}" do
@@ -82,14 +83,14 @@ if ['app', 'app_master', 'util'].include?(node['instance_role'])
       end
     
     else
-      ey_cloud_report "Installation of #{package[:server]}-#{package[:version]} failed:"
+      ey_cloud_report "Installation of #{package[:server]}-#{package[:version]} failed:" do
         message "this server and version is unknown."
       end
     end
     
   end
   
-  ey_cloud_report "Installation of db_client_libs"
+  ey_cloud_report "Installation of db_client_libs" do
     message "complete!"
   end
 end
