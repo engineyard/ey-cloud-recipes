@@ -1,0 +1,5 @@
+check process newrelic-daemon
+  with pidfile /var/run/newrelic-daemon.pid
+  start program = "/etc/init.d/newrelic-daemon restart"
+  stop program = "/etc/init.d/newrelic-daemon stop"
+  group newrelic-daemon
