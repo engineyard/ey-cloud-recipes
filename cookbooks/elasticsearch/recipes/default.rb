@@ -21,7 +21,7 @@ if ['util'].include?(node[:instance_role])
   if node['name'].include?("elasticsearch_")
     Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
     remote_file "/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip" do
-      source "http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
+      source "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
       mode "0644"
       checksum node[:elasticsearch_checksum]
       not_if { File.exists?("/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip") }
@@ -40,9 +40,11 @@ if ['util'].include?(node[:instance_role])
       unmask true
     end
 
+    # Forcing 'install' because if lower version packages are installed
+    # then 'upgrade' installs the desired version every time it runs.
     package node[:elastic_search_java_package_name] do
       version node[:elasticsearch_java_version]
-      action :upgrade
+      action :install
     end
 
     execute "Set the default Java version to #{node[:elasticsearch_java_version]}" do
