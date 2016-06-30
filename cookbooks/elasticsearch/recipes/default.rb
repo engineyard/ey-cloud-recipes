@@ -53,36 +53,36 @@ if ['util'].include?(node[:instance_role])
     end
 
     directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}" do
-      owner "root"
-      group "root"
+      owner "elasticsearch"
+      group "nogroup"
       mode 0755
     end
 
     ["/var/log/elasticsearch", "/var/lib/elasticsearch", "/var/run/elasticsearch"].each do |dir|
       directory dir do
-        owner "root"
-        group "root"
+        owner "elasticsearch"
+        group "nogroup"
         mode 0755
       end
     end
 
     bash "unzip elasticsearch" do
-      user "root"
+      user "elasticsearch"
       cwd "/tmp"
       code %(unzip /tmp/elasticsearch-#{node[:elasticsearch_version]}.zip)
       not_if { File.exists? "/tmp/elasticsearch-#{node[:elasticsearch_version]}" }
     end
 
     bash "copy elasticsearch root" do
-      user "root"
+      user "elasticsearch"
       cwd "/tmp"
       code %(cp -r /tmp/elasticsearch-#{node[:elasticsearch_version]}/* /usr/lib/elasticsearch-#{node[:elasticsearch_version]})
       not_if { File.exists? "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/lib" }
     end
 
     directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/plugins" do
-      owner "root"
-      group "root"
+      owner "elasticsearch"
+      group "nogroup"
       mode 0755
     end
 
@@ -97,8 +97,8 @@ if ['util'].include?(node[:instance_role])
     end
 
     directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
-      owner "root"
-      group "root"
+      owner "elasticsearch"
+      group "nogroup"
       mode 0755
       action :create
       recursive true

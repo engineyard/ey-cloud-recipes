@@ -4,13 +4,15 @@
 #
 # Credit goes to GoTime for their original recipe ( http://cookbooks.opscode.com/cookbooks/elasticsearch )
 
+version = node[:elasticsearch_version]
+download_url = "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/#{version}/elasticsearch-#{version}.zip"
 if ['solo','app_master'].include?(node[:instance_role])
   Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
-  remote_file "/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip" do
-    source "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-#{node[:elasticsearch_version]}.zip"
+  remote_file "/tmp/elasticsearch-#{version}.zip" do
+    source download_url
     mode "0644"
     checksum node[:elasticsearch_checksum]
-    not_if { File.exists?("/tmp/elasticsearch-#{node[:elasticsearch_version]}.zip") }
+    not_if { File.exists?("/tmp/elasticsearch-#{version}.zip") }
   end
 
   user "elasticsearch" do
@@ -39,41 +41,42 @@ if ['solo','app_master'].include?(node[:instance_role])
   end
 
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}" do
-    owner "root"
-    group "root"
+    owner "elasticsearch"
+    group "nogroup"
     mode 0755
   end
 
   ["/var/log/elasticsearch", "/var/lib/elasticsearch", "/var/run/elasticsearch"].each do |dir|
     directory dir do
-      owner "root"
-      group "root"
+      owner "elasticsearch"
+      group "nogroup"
       mode 0755
     end
   end
 
   bash "unzip elasticsearch" do
-    user "root"
+    user "elasticsearch"
     cwd "/tmp"
     code %(unzip /tmp/elasticsearch-#{node[:elasticsearch_version]}.zip)
     not_if { File.exists? "/tmp/elasticsearch-#{node[:elasticsearch_version]}" }
   end
 
   bash "copy elasticsearch root" do
-    user "root"
+    user "elasticsearch"
     cwd "/tmp"
     code %(cp -r /tmp/elasticsearch-#{node[:elasticsearch_version]}/* /usr/lib/elasticsearch-#{node[:elasticsearch_version]})
     not_if { File.exists? "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/lib" }
   end
 
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/plugins" do
-    owner "root"
-    group "root"
+    owner "elasticsearch"
+    group "nogroup"
     mode 0755
   end
 
   link "/usr/lib/elasticsearch" do
     to "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}"
+    owner "elasticsearch"
   end
 
   directory "#{node[:elasticsearch_home]}" do
@@ -83,8 +86,8 @@ if ['solo','app_master'].include?(node[:instance_role])
   end
 
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
-    owner "root"
-    group "root"
+    owner "elasticsearch"
+    group "nogroup"
     mode 0755
     action :create
     recursive true
@@ -129,6 +132,7 @@ if ['solo','app_master'].include?(node[:instance_role])
     group "nogroup"
     backup 0
     mode 0644
+    variables(:owner => "elasticsearch")
   end
 
   # Tell monit to just reload, if elasticsearch is not running start it.  If it is monit will do nothing.
