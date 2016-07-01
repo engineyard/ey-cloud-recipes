@@ -1,13 +1,13 @@
 #!/usr/local/ey_resin/ruby/bin/ruby
 
+gem 'fog-aws', gem '>= 0.3.0'
+require 'fog/aws'
 require 'rubygems'
-require 'aws/s3'
 require 'date'
 require 'digest'
 require 'net/http'
 require 'fileutils'
 require 'json'
-require 'fog'
 
 # Human Readable Filesizes
 class Integer
@@ -46,7 +46,7 @@ conn = Fog::Storage.new(
 FileUtils.mkdir_p '/mnt/tmp'
 
 begin
-  conn.directories.create( :key => @bucket, :public => false )
+  aws_directory = conn.directories.create( :key => @bucket, :public => false )
 rescue Excon::Errors::Conflict
 rescue => e
   puts e
@@ -69,56 +69,15 @@ if @ismaster == "false" #only dump non-primary nodes
     if system(mongocmd)
       FileUtils.rm_rf "#{workdir}/"
       FileUtils.mkdir_p "#{workdir}"
-      `split -C 100M -a 6 -d #{object_to_upload} #{workdir}/#{File.basename(object_to_upload)}.`
       
-      # Map of the parts
-      parts = {}
+      file = aws_directory.files.create(
+        :key => object_key,
+        :body => File.open(object_to_upload),
+        :public => false,
+        :multipart_chunk_size => 10*1024*1024 # 10 MB
+      )
       
-      # Base64 encoded checksum
-      Dir.entries(workdir).each do |file|
-        next if file == '..' or file == '.'
-        md5 = Base64.encode64(Digest::MD5.file("#{workdir}/#{file}").digest).chomp!
-        full_path = "#{workdir}/#{file}"
-      
-    	  parts[full_path] = md5
-      end
-      
-      # Refresh the connection
-      conn.reload
-      
-      # Initialize the multi-part uplaod
-      multi_part_up = conn.initiate_multipart_upload(@bucket, object_key, { 'x-amz-acl' => 'private' })
-      upload_id = multi_part_up.body['UploadId']
-      
-      tags = []
-      
-      # order the files
-      sorted_parts = parts.sort_by do |d|
-        d[0].split('.').last.to_i
-      end
-
-      sorted_parts.each_with_index do |entry, idx|
-        part_number = idx + 1
-	      conn.reload
-      
-      	# print "DEGUB: Starting on File: #{entry[0]} with MD5: #{entry[1]} - this is part #{part_number}\n"
-      	File.open(entry[0]) do |file_part|
-      	  begin
-      	    part_upload = conn.upload_part(@bucket, object_key, upload_id, part_number, file_part, {'Content-MD5' => entry[1]})
-      	    tags[idx] = part_upload.headers["ETag"]
-      	    raise if part_upload.status != 200
-      	    # print "DEBUG: #{part_upload.inspect} \n"
-      	  rescue => e
-      	    puts e
-      	    # could add a retry here
-      	    exit
-      	  end
-      	end
-    	end
-      
-      completed_upload = conn.complete_multipart_upload(@bucket, object_key, upload_id, tags)
-      # print "DEBUG: #{completed_upload.inspect} \n"
-      if completed_upload.status == 200
+      if file.status == 200
         backup_success = true
         object_size = conn.head_object(@bucket, object_key, options = {}).headers["Content-Length"].to_i
         print "Backup completed at #{Time.now()}, successfully uploaded #{object_to_upload} to #{@bucket}: filesize in S3 is #{object_size.to_filesize}\n"
