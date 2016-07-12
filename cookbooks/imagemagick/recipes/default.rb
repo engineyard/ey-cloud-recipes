@@ -20,7 +20,7 @@ portage_files.each do |portage_file|
   end
 end
 
-if Chef::VERSION == '10.34.6' 
+if Chef::VERSION == '10.34.6'
   enable_package "media-libs/openjpeg" do
     version "2.1.0"
   end
@@ -37,11 +37,11 @@ end
 
 
 enable_package "media-gfx/imagemagick" do
-  version "6.9.0.3"
+  version "6.9.0.3-r1"
 end
 
 package "media-gfx/imagemagick" do
-  version "6.9.0.3"
+  version "6.9.0.3-r1"
   action :install
 end
 
@@ -52,4 +52,3 @@ remote_file "/etc/ImageMagick-6/policy.xml" do
   mode 0644
   backup 0
 end
-
