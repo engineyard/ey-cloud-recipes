@@ -1,7 +1,9 @@
+NOTE: Rails 4.1 introduced [secrets.yml](http://guides.rubyonrails.org/4_1_release_notes.html#config-secrets-yml). If your application is built on Rails 4.1 or later, please use the [rails-secrets](https://github.com/engineyard/ey-cloud-recipes/tree/master/cookbooks/rails-secrets) recipe instead. That recipe includes instructions specific to the Rails secrets file.
+
 Don't want to check API keys into version control? No problem!
 --------------------------------------------------------------
 
-This Chef recipe will write api-keys.yml to your Rails app's config/ directory on Engine Yard Cloud.
+This Chef recipe will write api-keys.yml to your app's config/ directory on Engine Yard Cloud.
 
 # Instructions:
 
