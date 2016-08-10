@@ -2,10 +2,10 @@ ey_cloud_report "datadog" do
  message "DataDog::Custom Config Start"
 end
 
-template '/root/.datadog-agent/agent/datadog.conf' do
+template '/home/deploy/datadog/.datadog-agent/agent/datadog.conf' do
   source 'datadog.conf.erb'
-  owner 'root'
-  group 'root'
+  owner 'deploy'
+  group 'deploy'
   mode '640'
   variables({
     :hostname => node[:hostname],

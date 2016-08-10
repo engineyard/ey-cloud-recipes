@@ -198,15 +198,7 @@ else
 fi
 
 # create home base for the Agent
-if [ $dd_home ]; then
-  dd_base=$dd_home
-else
-  if [ "$unamestr" = "SunOS" ]; then
-      dd_base="/opt/local/datadog"
-  else
-      dd_base=$HOME/.datadog-agent
-  fi
-fi
+dd_base=/home/deploy/datadog/.datadog-agent
 
 
 printf "Creating Agent directory $dd_base....."
