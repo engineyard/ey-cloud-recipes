@@ -13,15 +13,18 @@
 # solr_url = "http://archive.apache.org/dist/lucene/solr/1.4.1/apache-solr-1.4.1.tgz"
 # Gentoo 2009 - end
 
-# For customers in Gentoo 12.11 who want to use the latest Solr, uncomment these lines below:
+# For customers in Gentoo 12.11 who want to use the latest Solr for Java 7, uncomment these lines below:
 # Gentoo 12.11 - start
 use_default_java = false
 java_package_name = "dev-java/icedtea-bin"
-java_version = "7.2.3.3-r1"
-java_eselect_version = "icedtea-bin-7"
-solr_dir = "solr-4.10.4"
-solr_file = "solr-4.10.4.tgz"
-solr_url = "http://archive.apache.org/dist/lucene/solr/4.10.4/solr-4.10.4.tgz"
+java_version = node['solr']['java_version']
+java_eselect_version = node['solr']['java_eselect_version']
+solr_version = node['solr']['solr_version']
+solr_dir = "solr-#{solr_version}"
+solr_file = "solr-#{solr_version}.tgz"
+solr_url = "http://archive.apache.org/dist/lucene/solr/#{solr_version}/#{solr_file}"
+core_name = node['solr']['core_name']
+write_sunspot_yml = node['solr']['write_sunspot_yml']
 # Gentoo 12.11 - end
 
 # Install Solr
@@ -96,21 +99,21 @@ if ('solo' == node[:instance_role])  ||
     not_if { FileTest.directory?("/data/#{solr_dir}") }
   end
 
-  execute "install solr example package" do
-    command "cd /data/#{solr_dir} && mv example /data/solr"
-    not_if { FileTest.exists?("/data/solr/start.jar") }
+  execute "rename /data/solr-#{solr_version} to /data/solr" do
+    command "mv /data/solr-#{solr_version} /data/solr"
+    not_if { FileTest.directory?("/data/solr") }
   end
 
-   directory "/data/solr" do
+  directory "/data/solr" do
     action :create
     owner node[:owner_name]
     group node[:owner_name]
     mode 0755
   end
 
-   execute "chown_solr" do
-     command "chown #{node[:owner_name]}:#{node[:owner_name]} -R /data/solr"
-   end
+  execute "chown_solr" do
+    command "chown #{node[:owner_name]}:#{node[:owner_name]} -R /data/solr"
+  end
 
   # Installs log rotation config
   cookbook_file "/etc/logrotate.d/solr" do
@@ -127,11 +130,17 @@ if ('solo' == node[:instance_role])  ||
    end
 
    execute "start-solr" do
-     command "sleep 3 && monit start solr_9080"
+     command "sleep 3 && monit start solr"
+   end
+
+   execute "create default solr core" do
+     command "sleep 30 && /data/solr/bin/solr create_core -c #{core_name}"
+     user "deploy"
+     not_if { FileTest.directory?("/data/solr/server/solr/#{core_name}") }
    end
 end
 
-# Create /data/appname/shared/config/solr.yml in solo, app and util instances
+# Create the solr configuration files on solo, app and util instances
 solr_instance = if ('solo' == node[:instance_role])
   node
 else
@@ -150,6 +159,21 @@ if solr_instance && ['app_master', 'app', 'solo', 'util'].include?(node[:instanc
         :environment => node[:environment][:framework_env],
         :hostname => solr_instance[:hostname]
       })
+    end
+
+    if write_sunspot_yml
+      template "/data/#{app}/shared/config/sunspot.yml" do
+        source 'sunspot.yml.erb'
+        owner node[:owner_name]
+        group node[:owner_name]
+        mode 0655
+        backup 0
+        variables({
+          :environment => node[:environment][:framework_env],
+          :hostname => solr_instance[:hostname],
+          :core_name => core_name
+        })
+      end
     end
   end
 end
