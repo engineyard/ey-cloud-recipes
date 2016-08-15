@@ -10,6 +10,12 @@
 #                                                  #
 #        ALEX - EZCATER, INC - @alexmoreale        #
 ####################################################
+# Reference script: https://raw.githubusercontent.com/DataDog/dd-agent/master/packaging/datadog-agent/source/setup_agent.sh
+# Modified by Engine Yard Support
+#
+# Changes:
+# - run datadog and supervisor as the deploy user instead of root
+# - disable installation of optional packages
 
 # figure out where to pull from
 tag="5.6.3"
@@ -241,14 +247,17 @@ $dd_base/venv/bin/pip install -r $dd_base/requirements.txt >> $logfile 2>&1
 rm $dd_base/requirements.txt
 print_done
 
-printf "Trying to install optional dependencies using pip....." | tee -a $logfile
-$dl_cmd $dd_base/requirements.txt https://raw.githubusercontent.com/DataDog/dd-agent/$tag/requirements-opt.txt  >> $logfile 2>&1
-while read DEPENDENCY
-do
-    ($dd_base/venv/bin/pip install $DEPENDENCY || printf "Cannot install $DEPENDENCY. There is probably no Compiler on the system.") >> $logfile 2>&1
-done < $dd_base/requirements.txt
-rm $dd_base/requirements.txt
-print_done
+# Skip the step to install optional dependencies
+# Some of these modules are for Windows and so are irrelevant anyway
+# And many require compilation with native modules
+#printf "Trying to install optional dependencies using pip....." | tee -a $logfile
+#$dl_cmd $dd_base/requirements.txt https://raw.githubusercontent.com/DataDog/dd-agent/$tag/requirements-opt.txt  >> $logfile 2>&1
+#while read DEPENDENCY
+#do
+#    ($dd_base/venv/bin/pip install $DEPENDENCY || printf "Cannot install $DEPENDENCY. There is probably no Compiler on the system.") >> $logfile 2>&1
+#done < $dd_base/requirements.txt
+#rm $dd_base/requirements.txt
+#print_done
 
 # set up the Agent
 mkdir -p $dd_base/agent >> $logfile 2>&1
