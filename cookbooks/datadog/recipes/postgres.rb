@@ -14,10 +14,10 @@ if ['solo', 'db_master', 'db_slave'].include?(node[:instance_role])
     not_if %{psql -U postgres postgres -c "SELECT has_table_privilege('datadog', 'pg_stat_database', 'SELECT')" | grep "t"}
   end
 
-  template '/root/.datadog-agent/agent/conf.d/postgres.yaml' do
+  template '/home/deploy/datadog/.datadog-agent/agent/conf.d/postgres.yaml' do
     source 'postgres.yaml.erb'
-    owner 'root'
-    group 'root'
+    owner 'deploy'
+    group 'deploy'
     mode 00764
     variables({
       :dd_pg_user => node["postgres"]["dd-user"],

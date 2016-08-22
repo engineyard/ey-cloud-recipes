@@ -8,14 +8,14 @@ end
 cookbook_file "copy in the wrapper script" do
 	path "#{node['wrapper']['directory']}/datadog_wrapper.sh"
   source "datadog_wrapper.sh"
-  owner "root"
-  group "root"
+  owner "deploy"
+  group "deploy"
   mode "744"
   not_if "test -f #{node['wrapper']['directory']}/datadog_wrapper.sh"
 end
 
 link "dd-link" do
-  owner "root"
+  owner "deploy"
   target_file "/bin/datadog_wrapper"
 	to "#{node['wrapper']['directory']}/datadog_wrapper.sh"
 end
@@ -28,8 +28,8 @@ end
 cookbook_file "copy in the datadog monit" do
 	path "#{node['monit']['directory']}/datadog.monitrc"
   source "datadog.monitrc"
-  owner "root"
-  group "root"
+  owner "deploy"
+  group "deploy"
   mode "644"
 	not_if "test -f #{node['monit']['directory']}/datadog.monitrc"
   notifies :run, 'execute[monit-reload]', :immediately

@@ -10,7 +10,7 @@
 
 
 execute "monit-stop-dd" do
- user "root"
+ user "deploy"
  cwd "/"
  command "monit stop datadog_wrapper; sleep 30"
  only_if " pgrep 'datadog_wrapper' > /dev/null"
