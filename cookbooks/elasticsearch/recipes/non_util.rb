@@ -139,15 +139,15 @@ end
 
 solo = node[:instance_role] == 'solo'
 if ['solo','app_master','app','util'].include?(node[:instance_role])
-  node.engineyard.apps.each do |app|
-    template "/data/#{app.name}/shared/config/elasticsearch.yml" do
+  node[:applications].each do |app_name, data|
+    template "/data/#{app_name}/shared/config/elasticsearch.yml" do
       owner node[:owner_name]
       group node[:owner_name]
       mode 0660
       source "es.yml.erb"
       backup 0
       variables(:yaml_file => {
-        node.engineyard.environment.framework_env => {
+        node[:environment][:framework_env] => {
         :hosts => solo ? "127.0.0.1:9200" : "#{node[:master_app_server][:public_ip]}:9200" }})
     end
   end

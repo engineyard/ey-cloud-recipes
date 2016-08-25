@@ -4,8 +4,8 @@ ruby_block "create_bucket" do
 
   connection = Fog::Storage.new(
   :provider => 'AWS',
-  :aws_secret_access_key =>  node.engineyard.environment.aws_secret_key,
-  :aws_access_key_id => node.engineyard.environment.aws_secret_id
+  :aws_secret_access_key =>  node[:aws_secret_key],
+  :aws_access_key_id => node[:aws_secret_id]
   )
 
   bucket = connection.directories.create(
