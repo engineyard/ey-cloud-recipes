@@ -8,6 +8,14 @@ It makes a few assumptions:
   * You will be running MongoDB on a utility instance(s).
   * You will be using Replica sets.
 
+
+License and Source
+--------
+The source code for MongoDB itself is available at https://github.com/mongodb/mongo
+
+This cookbook installs MongoDB under the GNU-AGPL-3.0 license.
+
+
 MMS support
 --------
 The recipe will also install Mongo Monitoring Service (MMS) on a solo or db_master. You will need to provide your api & secret keys. 
