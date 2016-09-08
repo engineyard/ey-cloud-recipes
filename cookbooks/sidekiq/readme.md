@@ -73,7 +73,7 @@ Then start sidekiq at the end of the deploy in `deploy/after_restart.rb`:
 
 ```
 on_utilities("sidekiq") do
-  sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
+  sudo "sleep 40s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
 
@@ -97,7 +97,7 @@ Then start sidekiq at the end of the deploy in `deploy/after_restart.rb`:
 
 ```
 on_app_servers do
-  sudo "sleep 20s ; monit start all -g #{config.app}_sidekiq"
+  sudo "sleep 40s ; monit start all -g #{config.app}_sidekiq"
 end
 ```
 
