@@ -1,6 +1,6 @@
-check process solr_9080
-with pidfile /var/run/solr/solr.pid
-  start program = "/engineyard/bin/solr start" as uid <%= @user %> and gid <%= @group %>
-  stop program = "/engineyard/bin/solr stop" as uid <%= @user %> and gid <%= @group %>
+check process solr
+with pidfile /var/run/solr/solr-8983.pid
+  start program = "/engineyard/bin/solr start"
+  stop program = "/engineyard/bin/solr stop"
   if totalmem is greater than 512 MB for 2 cycles then restart # eating up memory?
   group solr
