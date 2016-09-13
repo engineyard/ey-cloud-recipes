@@ -32,6 +32,8 @@ This recipe does not support multiple instances of Solr, or configuration of the
 
 This recipe is designed for Solr 5 (and 6, on V5 where Java 8 is available). Significant changes were done on the recipe to make it work with the newer Solr version. If you _really_ want to run Solr 4, simply changing the version numbers in the recipe will not work. You can find the Solr 4 version of this recipe here: https://github.com/engineyard/ey-cloud-recipes/tree/solr4/cookbooks/solr
 
+If you're currently running Solr 4 and wish to upgrade, you will need to manually uninstall Solr 4 first. You will need to stop Solr, remove the solr .monitrc file, and remove the solr directory (usually `/data/solr`). If you need help with this, please open a Support ticket as the actual steps may vary especially if you've customized your Solr recipe.
+
 ### Additional Notes For Sunspot Users
 
 This recipe has been updated to support the latest version of Sunspot, 2.2.5. Please use this recipe instead of the Sunspot recipe which has been deprecated.
