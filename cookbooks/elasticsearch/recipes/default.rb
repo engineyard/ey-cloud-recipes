@@ -58,6 +58,7 @@ if ['util'].include?(node[:instance_role])
       mode 0755
     end
 
+
     ["/var/log/elasticsearch", "/var/lib/elasticsearch", "/var/run/elasticsearch"].each do |dir|
       directory dir do
         owner "elasticsearch"
@@ -96,6 +97,24 @@ if ['util'].include?(node[:instance_role])
       mode 0755
     end
 
+    # Fix file permissions on data dir in case we're upgrading from ES 1.x
+    execute "set-permissions-data-dir" do
+      command "chown -R elasticsearch:nogroup #{node[:elasticsearch_home]}/*"
+      user "root"
+      action :run
+      only_if "[[ -f #{node[:elasticsearch_home]}/* ]]"
+      not_if "stat -c %U #{node[:elasticsearch_home]}/* |grep elasticsearch"
+    end
+
+    # Fix file permissions on log dir in case we're upgrading from ES 1.x
+    execute "set-permissions-log-dir" do
+      command "chown -R elasticsearch:nogroup /var/log/elasticsearch/*"
+      user "root"
+      action :run
+      only_if "ls -1 /var/log/elasticsearch/ | wc -l"
+      only_if "stat -c %U /var/log/elasticsearch/*log* |grep -v elasticsearch"
+    end
+    
     directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
       owner "elasticsearch"
       group "nogroup"
@@ -150,7 +169,8 @@ if ['util'].include?(node[:instance_role])
         :elasticsearch_defaultreplicas => node[:elasticsearch_defaultreplicas],
         :elasticsearch_expected => elasticsearch_expected,
         :elasticsearch_defaultshards => node[:elasticsearch_defaultshards],
-        :elasticsearch_clustername => node[:elasticsearch_clustername]
+        :elasticsearch_clustername => node[:elasticsearch_clustername],
+        :elasticsearch_host => node['fqdn']
       )
       mode 0600
       backup 0
@@ -162,6 +182,7 @@ if ['util'].include?(node[:instance_role])
       group "nogroup"
       backup 0
       mode 0644
+      variables(:owner => "elasticsearch")
     end
 
     # Tell monit to just reload, if elasticsearch is not running start it.  If it is monit will do nothing.

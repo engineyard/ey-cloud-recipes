@@ -6,5 +6,5 @@ with pidfile /var/run/elasticsearch/elasticsearch.pid
   if failed
     port 9200
     protocol http
-    request "/"
+    request "/_cat/health"
   then restart

@@ -85,6 +85,24 @@ if ['solo','app_master'].include?(node[:instance_role])
     mode 0755
   end
 
+  # Fix permissions in case we're upgrading from ES 1.x
+  execute "set-permissions-data-dir" do
+    command "chown -R elasticsearch:nogroup #{node[:elasticsearch_home]}/*"
+    user "root"
+    action :run
+    only_if "[[ -f #{node[:elasticsearch_home]}/* ]]"
+    not_if "stat -c %U #{node[:elasticsearch_home]}/* |grep elasticsearch"
+  end
+
+  # Fix file permissions on log dir in case we're upgrading from ES 1.x
+  execute "set-permissions-log-dir" do
+    command "chown -R elasticsearch:nogroup /var/log/elasticsearch/*"
+    user "root"
+    action :run
+    only_if "ls -1 /var/log/elasticsearch/ | wc -l"
+    only_if "stat -c %U /var/log/elasticsearch/*log* |grep -v elasticsearch"
+  end
+  
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
     owner "elasticsearch"
     group "nogroup"
@@ -142,6 +160,11 @@ if ['solo','app_master'].include?(node[:instance_role])
 end
 
 solo = node[:instance_role] == 'solo'
+# if node[:instance_role] == 'solo'
+#   es_host = "127.0.0.1:9200"
+# elsif node
+# end
+
 if ['solo','app_master','app','util'].include?(node[:instance_role])
   node.engineyard.apps.each do |app|
     template "/data/#{app.name}/shared/config/elasticsearch.yml" do
