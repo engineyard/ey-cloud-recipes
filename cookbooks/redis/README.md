@@ -46,6 +46,11 @@ Add the following to your main/recipes/default.rb
 
 ``include_recipe "redis"``
 
+Upgrading from a previous Redis version
+---
+
+Before upgrading, please review the Redis release notes for the version you're upgrading to, to ensure compatibility with your current Redis data. After upgrading, Redis server will be installed to `/usr/local/bin/redis-server`. However, the old version of Redis will still be running. Please run `sudo monit restart redis-1` to restart Redis.
+
 Choosing a different Redis version
 --------
 This recipe installs Redis 2.8.13-r1 by default. We do not recommend earlier versions of Redis 2.8.x or 2.6.x as these versions have a known vulnerability: http://benmmurphy.github.io/blog/2015/06/04/redis-eval-lua-sandbox-escape/
