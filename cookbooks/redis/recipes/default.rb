@@ -3,6 +3,11 @@
 # Recipe:: default
 #
 
+redis_version = '3.2.3'
+redis_url = "http://download.redis.io/releases/redis-#{redis_version}.tar.gz"
+redis_source_directory = 'redis-source'
+bin_path = '/usr/local/bin'
+
 if ['util'].include?(node[:instance_role])
   if node[:name] == node[:redis][:utility_name]
 
@@ -10,15 +15,28 @@ if ['util'].include?(node[:instance_role])
       variables 'vm.overcommit_memory' => 1
     end
 
-    enable_package "dev-db/redis" do
-      version node[:redis][:version]
-      override_hardmask true
-      unmask :true
+    # Download Redis, if hasn't been downloaded yet
+    remote_file "/data/redis-#{redis_version}.tar.gz" do
+      source "#{redis_url}"
+      owner node[:owner_name]
+      group node[:owner_name]
+      mode 0644
+      backup 0
+      not_if { FileTest.exists?("/data/#{redis_source_directory}") }
     end
 
-    package "dev-db/redis" do
-      version node[:redis][:version]
-      action :upgrade
+    execute "unarchive Redis source" do
+      command "cd /data && tar zxf redis-#{redis_version}.tar.gz && sync"
+      not_if { FileTest.directory?("/data/#{redis_source_directory}") }
+    end
+
+    execute "rename /data/redis-#{redis_version} to /data/redis-source" do
+      command "mv /data/redis-#{redis_version} /data/redis-source"
+      not_if { FileTest.directory?("/data/redis-source") }
+    end
+
+    execute "run redis-source/make install" do
+      command "cd /data/redis-source && make install"
     end
 
     directory "#{node[:redis][:basedir]}" do
@@ -48,13 +66,6 @@ if ['util'].include?(node[:instance_role])
         :rdbcompression => node[:redis][:rdbcompression],
         :hz => node[:redis][:hz]
       })
-    end
-
-    # redis-server is in /usr/bin on stable-v2, /usr/sbin for stable-v4
-    if Chef::VERSION[/^0.6/]
-      bin_path = "/usr/bin/redis-server"
-    else
-      bin_path = "/usr/sbin/redis-server"
     end
 
     template "/data/monit.d/redis_util.monitrc" do
