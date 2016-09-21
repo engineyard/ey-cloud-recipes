@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-redis_version = '3.2.3'
+redis_version = node[:redis][:version]
 redis_url = "http://download.redis.io/releases/redis-#{redis_version}.tar.gz"
 redis_source_directory = 'redis-source'
 bin_path = '/usr/local/bin'

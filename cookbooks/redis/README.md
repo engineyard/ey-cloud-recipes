@@ -53,11 +53,11 @@ Before upgrading, please review the Redis release notes for the version you're u
 
 Choosing a different Redis version
 --------
-This recipe installs Redis 2.8.13-r1 by default. We do not recommend earlier versions of Redis 2.8.x or 2.6.x as these versions have a known vulnerability: http://benmmurphy.github.io/blog/2015/06/04/redis-eval-lua-sandbox-escape/
+This recipe installs Redis 3.2.3 by default. For Redis 2.x we do not recommend versions earlier than Redis 2.8.21, and for Redis 3.x we do not recommend versions earlier than 3.0.2. These versions have a known vulnerability: http://benmmurphy.github.io/blog/2015/06/04/redis-eval-lua-sandbox-escape/
 
 To install a different version of Redis:
 
-1. Change the `:version => "2.8.13-r1",` line in `attributes/default.rb` to the version you want to install
+1. Change the `:version => "3.2.3",` line in `attributes/default.rb` to the version you want to install
 2. Copy over the corresponding `redis-?.?.conf.erb` file to `templates/default/redis.conf.erb`
 
 
