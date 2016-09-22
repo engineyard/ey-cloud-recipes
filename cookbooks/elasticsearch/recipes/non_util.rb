@@ -160,10 +160,10 @@ if ['solo','app_master'].include?(node[:instance_role])
 end
 
 solo = node[:instance_role] == 'solo'
-# if node[:instance_role] == 'solo'
-#   es_host = "127.0.0.1:9200"
-# elsif node
-# end
+unless solo
+  app_master_instance = node[:engineyard][:environment][:instances].find { |instance| instance[:role] == 'app_master' }
+  app_master_host = app_master_instance[:public_hostname] if app_master_instance
+end
 
 if ['solo','app_master','app','util'].include?(node[:instance_role])
   node.engineyard.apps.each do |app|
@@ -175,7 +175,7 @@ if ['solo','app_master','app','util'].include?(node[:instance_role])
       backup 0
       variables(:yaml_file => {
         node.engineyard.environment.framework_env => {
-        :hosts => solo ? "127.0.0.1:9200" : "#{node[:master_app_server][:public_ip]}:9200" }})
+        :hosts => solo ? "127.0.0.1:9200" : "#{app_master_host}:9200" }})
     end
   end
 end
