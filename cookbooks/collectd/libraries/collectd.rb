@@ -6,7 +6,7 @@ require 'chef/log'
 class Chef
   class Resource
     class Collectd < Chef::Resource      
-      if Chef::VERSION == '0.6.0.2'
+      if Chef::VERSION =~ /0\.6\.0/
         def initialize(name, collection = nil, node = nil)
           super(name, collection, node)
           init(name)
