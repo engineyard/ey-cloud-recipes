@@ -1,11 +1,11 @@
 # uncomment to use a custom database.yml configuration
 # include_recipe "database_yml_custom"
 
-#execute "testing" do
-#  command %Q{
-#    echo "i ran at #{Time.now}" >> /root/cheftime
-#  }
-#end
+# execute "testing" do
+#   command %Q{
+#     echo "i ran at #{Time.now}" >> /root/cheftime
+#   }
+# end
 
 # uncomment to deny access to /log, /config, and .git directories as well as any .yml files
 # include_recipe "deny-directories"
@@ -25,106 +25,105 @@
 # uncomment to use the sidekiq recipe. See cookbooks/sidekiq/readme.md for documentation.
 # include_recipe "sidekiq"
 
-#uncomment to turn on memcached
+# uncomment to turn on memcached
 # include_recipe "memcached"
 
-#uncomment ot run the riak recipe
+# uncomment to run the riak recipe
 # include_recipe "riak"
 
-#uncomment to run the authorized_keys recipe
-#include_recipe "authorized_keys"
+# uncomment to run the authorized_keys recipe
+# include_recipe "authorized_keys"
 
-#uncomment to run the eybackup_slave recipe
+# uncomment to run the eybackup_slave recipe
 # include_recipe "eybackup_slave"
 
-#uncomment to run the ssmtp recipe
-#include_recipe "ssmtp"
+# uncomment to run the ssmtp recipe
+# include_recipe "ssmtp"
 
-#uncomment to run the sunspot recipe
+# uncomment to run the sunspot recipe
 # include_recipe "sunspot"
 
-#uncomment to run the exim recipe
-#exim_auth "auth" do
-#  my_hostname "my_hostname.com"
-#  smtp_host "smtp.sendgrid.net"
-#  username "username"
-#  password "password"
-#end
+# uncomment to run the exim recipe
+# exim_auth "auth" do
+#   my_hostname "my_hostname.com"
+#   smtp_host "smtp.sendgrid.net"
+#   username "username"
+#   password "password"
+# end
 
-#uncomment to install specified packages
+# uncomment to install specified packages
 # You must add your packages to packages/attributes/packages.rb
-#require_recipe "packages"
+# require_recipe "packages"
 
-#uncomment to add specified cron jobs for application user (deploy)
+# uncomment to add specified cron jobs for application user (deploy)
 # You must add your cron jobs to cron/attributes/cron.rb
-#require_recipe "cron"
+# require_recipe "cron"
 
-#uncomment to run the exim::auth recipe
-#include_recipe "exim::auth"
-#include_recipe "mongodb"
+# uncomment to run the exim::auth recipe
+# include_recipe "exim::auth"
+# include_recipe "mongodb"
 
-#uncomment to run the resque recipe
+# uncomment to run the resque recipe
 # include_recipe "resque"
 
-#uncomment to run redis.yml recipe
+# uncomment to run redis.yml recipe
 # include_recipe "redis-yml"
 
-#uncomment to run the resque-scheduler recipe
+# uncomment to run the resque-scheduler recipe
 # include_recipe "resque-scheduler"
 
-#uncomment to run the redis recipe
-#include_recipe "redis"
+# uncomment to run the redis recipe
+# include_recipe "redis"
 
-#uncomment to run the env-yaml recipe
-#include_recipe "env-yaml"
+# uncomment to run the env-yaml recipe
+# include_recipe "env-yaml"
 
-#uncomment to run the api-keys-yml recipe
+# uncomment to run the api-keys-yml recipe
 # include_recipe "api-keys-yml"
 
-#include_recipe "logrotate"
+# include_recipe "logrotate"
 #
-#uncomment to use the solr recipe
-#include_recipe "solr"
+# uncomment to use the solr recipe
+# include_recipe "solr"
 
-#include_recipe "varnish_frontend"
+# include_recipe "varnish_frontend"
 
-#uncomment to set environment variables in passenger or unicorn
+# uncomment to set environment variables in passenger or unicorn
 # Set environment variables as specified in cookbooks/env_vars/attributes/env_vars.rb
-#include_recipe "env_vars"
+# include_recipe "env_vars"
 
+# uncomment to include the mysql_replication_check recipe
+# include_recipe "mysql_replication_check"
 
-#uncomment to include the mysql_replication_check recipe
-#include_recipe "mysql_replication_check"
-
-#uncomment to include the mysql_administrative_tools recipe
+# uncomment to include the mysql_administrative_tools recipe
 # additional configuration of this recipe is required
-#include_recipe "mysql_administrative_tools"
+# include_recipe "mysql_administrative_tools"
 
-#uncomment to include the Elasticsearch recipe
-#include_recipe "elasticsearch"
+# uncomment to include the Elasticsearch recipe
+# include_recipe "elasticsearch"
 
-#uncomment to include the Elasticsearch recipe on solos and app masters
-#include_recipe "elasticsearch::non_util"
+# uncomment to include the Elasticsearch recipe on solos and app masters
+# include_recipe "elasticsearch::non_util"
 
 # To install specific plugins to Elasticsearch see below as an example
-#es_plugin "cloud-aws" do
-#  action :install
-#end
+# es_plugin "cloud-aws" do
+#   action :install
+# end
 
-#es_plugin "transport-memcached" do
-#  action :install
-#end
+# es_plugin "transport-memcached" do
+#   action :install
+# end
 
 # To install a Jenkins environment, uncomment below
 # include_recipe "jenkins"
 
 # include_recipe "eventmachine"
 
-#uncomment to include the Magento recipe
-#include_recipe "magento"
+# uncomment to include the Magento recipe
+# include_recipe "magento"
 
 # uncomment to include the Postgres Maintenance recipe
-#include_recipe "postgresql_maintenance"
+# include_recipe "postgresql_maintenance"
 
 #enable Extension modules for a given Postgresql database
 # if ['solo','db_master', 'db_slave'].include?(node[:instance_role])
@@ -176,16 +175,22 @@
   # postgresql9_pg_freespacemap "postgres"
 # end
 
-#uncomment to include the motd customization related to the environment
-#include_recipe "env_motd"
+# uncomment to include the motd customization related to the environment
+# include_recipe "env_motd"
 
-#include_recipe "db_restore"
+# include_recipe "db_restore"
 
-#uncomment to install PHP 5.5.x
-#include_recipe "php55"
+# uncomment to install PHP 5.5.x
+# include_recipe "php55"
 
-#uncomment to install PHP 5.6.x
-#include_recipe "php56"
+# uncomment to install PHP 5.6.x
+# include_recipe "php56"
 
-#unncomment to install clamav
-#include_recipe "clamav"
+# uncomment to install clamav
+# include_recipe "clamav"
+
+# uncomment to install PhantomJS
+# include_recipe "phantomjs"
+
+# uncomment to install CasperJS
+# include_recipe "casperjs"
