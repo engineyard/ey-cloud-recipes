@@ -36,30 +36,27 @@ default[:redis] = {
 Changing Defaults
 --------
 
-A large portion of the defaults of this recipe have been moved to a attribute file; if you need to change how often you save; review the attribute file and modify.
+A large portion of the defaults of this recipe have been moved to the `attributes/default.rb` file. If you need to change how often you save, review the attribute file and modify.
 
 Installation
 --------
 
-Ensure you have the Dependencies installed in your local cookbooks repository ...
 Add the following to your main/recipes/default.rb
 
 ``include_recipe "redis"``
 
-Upgrading from a previous Redis version
----
-
-Before upgrading, please review the Redis release notes for the version you're upgrading to, to ensure compatibility with your current Redis data. After upgrading, Redis server will be installed to `/usr/local/bin/redis-server`. However, the old version of Redis will still be running. Please run `sudo monit restart redis-1` to restart Redis.
-
 Choosing a different Redis version
 --------
-This recipe installs Redis 2.8.13-r1 by default. We do not recommend earlier versions of Redis 2.8.x or 2.6.x as these versions have a known vulnerability: http://benmmurphy.github.io/blog/2015/06/04/redis-eval-lua-sandbox-escape/
+This recipe installs Redis 3.2.3 by default. For Redis 2.x we do not recommend versions earlier than Redis 2.8.21, and for Redis 3.x we do not recommend versions earlier than 3.0.2. These versions have a known vulnerability: http://benmmurphy.github.io/blog/2015/06/04/redis-eval-lua-sandbox-escape/
 
-To install a different version of Redis:
+To install a different version of Redis, change the `:version => "3.2.3",` line in `attributes/default.rb` to the version you want to install. If you're upgrading to a newer version, please see the "Upgrading" section below.
 
-1. Change the `:version => "2.8.13-r1",` line in `attributes/default.rb` to the version you want to install
-2. Copy over the corresponding `redis-?.?.conf.erb` file to `templates/default/redis.conf.erb`
+Upgrading from a previous Redis version
+--------
 
+Before upgrading, please review the Redis release notes for the version you're upgrading to, to ensure compatibility with your current Redis data. Also ensure that you remove the `/data/redis-source` directory - the recipe skips downloading and installing a new version if this directory is present.
+
+After upgrading, Redis server will be installed to `/usr/local/bin/redis-server`. However, the old version of Redis will still be running. Please run `sudo monit restart redis-1` to restart Redis.
 
 Notes
 ------

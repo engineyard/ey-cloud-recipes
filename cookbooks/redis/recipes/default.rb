@@ -3,7 +3,8 @@
 # Recipe:: default
 #
 
-redis_version = '3.2.3'
+redis_version = node[:redis][:version]
+redis_config_file_version = redis_version.split('.')[0..1].join('.')
 redis_url = "http://download.redis.io/releases/redis-#{redis_version}.tar.gz"
 redis_source_directory = 'redis-source'
 bin_path = '/usr/local/bin'
@@ -51,7 +52,7 @@ if ['util'].include?(node[:instance_role])
       owner 'root'
       group 'root'
       mode 0644
-      source "redis.conf.erb"
+      source "redis-#{redis_config_file_version}.conf.erb"
       variables({
         :pidfile => node[:redis][:pidfile],
         :basedir => node[:redis][:basedir],
