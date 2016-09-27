@@ -6,7 +6,7 @@
 redis_version = node[:redis][:version]
 redis_config_file_version = redis_version.split('.')[0..1].join('.')
 redis_url = "http://download.redis.io/releases/redis-#{redis_version}.tar.gz"
-redis_source_directory = 'redis-source'
+redis_installer_directory = '/opt/redis-source'
 bin_path = '/usr/local/bin'
 
 if ['util'].include?(node[:instance_role])
@@ -17,27 +17,27 @@ if ['util'].include?(node[:instance_role])
     end
 
     # Download Redis, if hasn't been downloaded yet
-    remote_file "/data/redis-#{redis_version}.tar.gz" do
+    remote_file "/opt/redis-#{redis_version}.tar.gz" do
       source "#{redis_url}"
       owner node[:owner_name]
       group node[:owner_name]
       mode 0644
       backup 0
-      not_if { FileTest.exists?("/data/#{redis_source_directory}") }
+      not_if { FileTest.exists?(redis_installer_directory) }
     end
 
-    execute "unarchive Redis source" do
-      command "cd /data && tar zxf redis-#{redis_version}.tar.gz && sync"
-      not_if { FileTest.directory?("/data/#{redis_source_directory}") }
+    execute "unarchive Redis installer" do
+      command "cd /opt && tar zxf redis-#{redis_version}.tar.gz && sync"
+      not_if { FileTest.directory?(redis_installer_directory) }
     end
 
-    execute "rename /data/redis-#{redis_version} to /data/redis-source" do
-      command "mv /data/redis-#{redis_version} /data/redis-source"
-      not_if { FileTest.directory?("/data/redis-source") }
+    execute "rename /opt/redis-#{redis_version} to /opt/redis-source" do
+      command "mv /opt/redis-#{redis_version} #{redis_installer_directory}"
+      not_if { FileTest.directory?(redis_installer_directory) }
     end
 
     execute "run redis-source/make install" do
-      command "cd /data/redis-source && make install"
+      command "cd #{redis_installer_directory} && make install"
     end
 
     directory "#{node[:redis][:basedir]}" do
