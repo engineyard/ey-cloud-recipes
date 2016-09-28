@@ -16,7 +16,7 @@ if ['util'].include?(node[:instance_role])
       variables 'vm.overcommit_memory' => 1
     end
 
-    # Download Redis, if hasn't been downloaded yet
+    # Download Redis, if it hasn't been downloaded yet
     remote_file "/opt/redis-#{redis_version}.tar.gz" do
       source "#{redis_url}"
       owner node[:owner_name]
@@ -27,7 +27,8 @@ if ['util'].include?(node[:instance_role])
     end
 
     execute "unarchive Redis installer" do
-      command "cd /opt && tar zxf redis-#{redis_version}.tar.gz && sync"
+      cwd "/opt"
+      command "tar zxf redis-#{redis_version}.tar.gz && sync"
       not_if { FileTest.directory?(redis_installer_directory) }
     end
 
@@ -37,7 +38,8 @@ if ['util'].include?(node[:instance_role])
     end
 
     execute "run redis-source/make install" do
-      command "cd #{redis_installer_directory} && make install"
+      cwd redis_installer_directory
+      command "make install"
     end
 
     directory "#{node[:redis][:basedir]}" do
