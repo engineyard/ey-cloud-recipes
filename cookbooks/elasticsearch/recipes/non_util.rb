@@ -77,6 +77,8 @@ if ['solo','app_master'].include?(node[:instance_role])
   link "/usr/lib/elasticsearch" do
     to "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}"
     owner "elasticsearch"
+    group "nogroup"
+    mode 0755
   end
 
   directory "#{node[:elasticsearch_home]}" do
@@ -102,7 +104,7 @@ if ['solo','app_master'].include?(node[:instance_role])
     only_if "ls -1 /var/log/elasticsearch/ | wc -l"
     only_if "stat -c %U /var/log/elasticsearch/*log* |grep -v elasticsearch"
   end
-  
+
   directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
     owner "elasticsearch"
     group "nogroup"
@@ -144,6 +146,15 @@ if ['solo','app_master'].include?(node[:instance_role])
     )
   end
 
+  # Add log rotation for the elasticsearch logs
+  remote_file "/etc/logrotate.d/elasticsearch" do
+    source "elasticsearch.logrotate"
+    owner "root"
+    group "root"
+    mode "0644"
+    backup 0
+  end
+
   template "/etc/monit.d/elasticsearch_#{node[:elasticsearch_clustername]}.monitrc" do
     source "elasticsearch.monitrc.erb"
     owner "elasticsearch"
@@ -160,9 +171,15 @@ if ['solo','app_master'].include?(node[:instance_role])
 end
 
 solo = node[:instance_role] == 'solo'
-unless solo
+host_port = if solo
+  "127.0.0.1:9200"
+else
   app_master_instance = node[:engineyard][:environment][:instances].find { |instance| instance[:role] == 'app_master' }
-  app_master_host = app_master_instance[:public_hostname] if app_master_instance
+  if app_master_instance
+    app_master_host = app_master_instance[:public_hostname]
+  else
+    "127.0.0.1:9200"
+  end
 end
 
 if ['solo','app_master','app','util'].include?(node[:instance_role])
@@ -173,9 +190,13 @@ if ['solo','app_master','app','util'].include?(node[:instance_role])
       mode 0660
       source "es.yml.erb"
       backup 0
-      variables(:yaml_file => {
-        node[:environment][:framework_env] => {
-        :hosts => solo ? "127.0.0.1:9200" : "#{node[:master_app_server][:public_ip]}:9200" }})
+      variables(
+        :yaml_file => {
+          node[:environment][:framework_env] => {
+            :hosts => host_port
+          }
+        }
+      )
     end
   end
 end

@@ -89,6 +89,9 @@ if ['util'].include?(node[:instance_role])
 
     link "/usr/lib/elasticsearch" do
       to "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}"
+      owner "elasticsearch"
+      group "nogroup"
+      mode 0755
     end
 
     directory "#{node[:elasticsearch_home]}" do
@@ -173,6 +176,15 @@ if ['util'].include?(node[:instance_role])
         :elasticsearch_host => node['fqdn']
       )
       mode 0600
+      backup 0
+    end
+
+    # Add log rotation for the elasticsearch logs
+    remote_file "/etc/logrotate.d/elasticsearch" do
+      source "elasticsearch.logrotate"
+      owner "root"
+      group "root"
+      mode "0644"
       backup 0
     end
 
