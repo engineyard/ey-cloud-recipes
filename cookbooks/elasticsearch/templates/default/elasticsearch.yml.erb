@@ -7,6 +7,10 @@ path:
 cluster:
   name: <%= @elasticsearch_clustername %>
 
+network:
+  bind_host: [127.0.0.1, <%= @elasticsearch_host %>]
+  publish_host: <%= @elasticsearch_host %>
+
 discovery:
   zen:
     minimum_master_nodes: 1

@@ -1,0 +1,12 @@
+/var/log/elasticsearch/*.log {
+    rotate 30
+    size 100M
+    compress
+    missingok
+    notifempty
+    sharedscripts
+    extension gz
+    postrotate
+      [ ! -f /var/run/elasticsearch/elasticsearch.pid ] || kill -USR1 `cat /var/run/elasticsearch/elasticsearch.pid`
+    endscript
+}
