@@ -189,3 +189,6 @@
 
 #unncomment to install clamav
 #include_recipe "clamav"
+
+#uncomment to include the classiclink recipe
+#include_recipe "classiclink"
