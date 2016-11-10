@@ -27,12 +27,8 @@ if db_slave
 
     # check for encryption
     if node[:encrypted_backups]
-      # gnupg package - install on stable-v2 but not stable-v4, this version does not exist on v4 and gnupg is already installed by default
-      if Chef::VERSION[/^0.6/]
-        package "app-crypt/gnupg" do
-          version '2.0.9'
-          action :install
-        end
+      package "app-crypt/gnupg" do
+        action :install
       end
 
       # public key
