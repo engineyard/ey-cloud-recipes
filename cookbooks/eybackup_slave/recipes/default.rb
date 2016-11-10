@@ -27,9 +27,7 @@ if db_slave
 
     # check for encryption
     if node[:encrypted_backups]
-      # gnupg package
       package "app-crypt/gnupg" do
-        version '2.0.9'
         action :install
       end
 
