@@ -34,7 +34,6 @@ end
         :dbpass => node['users'].first['password'],
         :dbname => app[:database_name],
         :dbhost => node['db_host'],
-        :pool => 25,
         :dbtype => dbtype,
         :slaves => node[:engineyard][:environment][:instances].select{|i| i["role"] =="db_slave"}
       })
