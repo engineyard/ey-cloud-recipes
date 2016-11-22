@@ -1,7 +1,7 @@
-dbtype = node[:engineyard][:environment][:db_stack_name]
 
 if ['app', 'app_master', 'util', 'solo'].include?(node[:instance_role])
   node[:engineyard][:environment][:apps].each do |app|
+    dbtype = db_adapter(app['type'])
     Chef::Log.info "--- Dropping db.yml file for db #{dbtype}"
   
     # check if we need to add the determine_adapter erb to template
