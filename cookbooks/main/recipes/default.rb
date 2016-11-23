@@ -1,6 +1,9 @@
 # uncomment to use a custom database.yml configuration
 # include_recipe "database_yml_custom"
 
+# uncomment to use the db_client_lib cookbook -- requires additional configuration
+# include_recipe "db_client_libs"
+
 #execute "testing" do
 #  command %Q{
 #    echo "i ran at #{Time.now}" >> /root/cheftime
