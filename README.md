@@ -6,7 +6,7 @@
 
 The ey-cloud-recipes repository is a collection of [chef](http://wiki.opscode.com/display/chef/Home) cookbooks that setup and configure commonly used tools for ruby applications, as well as cookbooks that can be used to modify parts of the EY Cloud environment.
 
-**Note: These cookbooks are for reference, and do not indicate a supported status.**
+**Note: These cookbooks are for reference, and do not indicate a supported status. For Gentoo 2016 or v5 stack, please see documentation for [Migrating Custom Chef Recipes from V4 to V5](https://support.cloud.engineyard.com/hc/en-us/articles/226690247-Migrating-Custom-Chef-Recipes-from-V4-to-V5).**
 
 ## Quick Start Guide
 
