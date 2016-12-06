@@ -1,0 +1,15 @@
+agent.sources = source<%= @agent_id %>
+agent.sinks = sink<%= @agent_id %>
+agent.channels = channel<%= @agent_id %>
+
+agent.sources.source<%= @agent_id %>.type = exec
+agent.sources.source<%= @agent_id %>.command = tail -F /data/<%= @app_name %>/shared/log/<%= @app_logfile %>
+
+agent.sinks.sink<%= @agent_id %>.type = avro
+agent.sinks.sink<%= @agent_id %>.hostname = <%= @hostname %>
+agent.sinks.sink<%= @agent_id %>.port = <%= @port %>
+
+agent.channels.channel<%= @agent_id %>.type = memory
+
+agent.sources.source<%= @agent_id %>.channels = channel<%= @agent_id %>
+agent.sinks.sink<%= @agent_id %>.channel= channel<%= @agent_id %>
