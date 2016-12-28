@@ -1,0 +1,9 @@
+---
+  retention: <%= @retention %>
+<% unless @gpgkey.nil? or @gpgkey == '' %>
+  gpgkey: <%= @gpgkey %>
+<% end %>
+  aws_key: <%= @aws_key %>
+  aws_secret_key: <%= @aws_secret_key %>
+  source: <%= @source %>
+  bucket: <%= @bucket %>
