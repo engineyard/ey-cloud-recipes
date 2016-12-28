@@ -10,7 +10,7 @@ blockdev.run_command
 
 bash "move swap to #{swapfile_path}" do
   code <<-EOH
-    dd of=#{swapfile_path} if=/dev/zero bs=#{swapfile_size} count=1048576
+    dd of=#{swapfile_path} if=/dev/zero bs=1048576 count=#{swapfile_size}
     mkswap #{swapfile_path}
     swapon #{swapfile_path}
     swapoff #{builtin_swap}
