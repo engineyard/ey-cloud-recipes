@@ -15,6 +15,19 @@ To install this, you will need to add the following to cookbooks/main/recipes/de
 Make sure this and any customizations to the recipe are committed to your own fork of this
 repository.
 
+## Customizations
+
+Some common customizations can be made in `attributes/default.rb`.
+
+### Set the worker memory limit
+
+Monit keeps track of your DJ workers and by default, it restarts workers exceeding 300MB of memory.
+
+```ruby
+# specify custom memory limit
+default['delayed_job4']['worker_memory'] = 400
+```
+
 ## Restarting your workers
 
 This recipe does NOT restart your workers. The reason for this is that shipping your application and
