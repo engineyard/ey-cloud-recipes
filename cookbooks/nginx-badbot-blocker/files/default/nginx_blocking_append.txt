@@ -1,0 +1,18 @@
+#---BOT-IP_BLOCKING-START
+# By default the config below will only block bad bots
+# Uncomment the other "if's" to block referers and/or snoopers
+
+# Block Bad Bots
+# Send 403 Forbidden or 444 Drop Connection
+if ($bad_bot) { return 444; }
+# Block Bad Referers
+# Send 403 Forbidden  or 444 Drop Connection
+# if ($bad_referer) { return 403; }
+# if ($bad_urls1) { return 403; }
+# if ($bad_urls2) { return 403; }
+# if ($bad_urls3) { return 403; }
+# if ($bad_urls4) { return 403; }
+# Block Snoopers
+# Send 444 Connection Closed Without Response
+# if ($validate_client)   { return 444;}
+#---BOT-IP_BLOCKING-END
