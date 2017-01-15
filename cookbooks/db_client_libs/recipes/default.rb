@@ -2,7 +2,7 @@
   # recommended versions as of June 8, 2016
   #  - Postgres: 9.2.7, 9.3.9, 9.4.4
   #  - Postgres: 9.5.5     # !review warnings! in the Readme
-  #  - MySQL: 5.6.27.75.0
+  #  - MySQL: 5.6.32.78.1
   #  - Available versions under:
   #    - Postgres: /engineyard/portage/engineyard/dev-db/postgresql-server/*.ebuild
   #    - MySQL: /engineyard/portage/engineyard/dev-db/percona-server/*.ebuild
