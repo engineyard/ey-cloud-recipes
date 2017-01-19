@@ -1,0 +1,2 @@
+# flume-start.sh:
+/usr/bin/nohup <%= @bin_dir %>/flume-ng agent --conf <%= @conf_dir %> --conf-file <%= @conf_file %> --name <%= @agent_name %> -Dflume.root.logger=INFO,console -Dlog4j.configuration=file:<%= @conf_dir %>/log4j.properties >> <%= @log_file %> 2>&1 &
