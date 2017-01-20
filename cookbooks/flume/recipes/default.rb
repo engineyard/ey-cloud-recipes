@@ -103,6 +103,7 @@ if ( ['app_master', 'app', 'solo'].include?(node[:instance_role]) )
     group node[:owner_name]
     mode 0644
     variables({
+      :instance_id => instance_id,
       :agent_id => unique_agent_id,
       :app_name => app_name,
       :app_logfile => app_logfile,
