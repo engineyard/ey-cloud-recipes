@@ -32,7 +32,7 @@ default['delayed_job4']['worker_memory'] = 400
 
 This recipe does NOT restart your workers. The reason for this is that shipping your application and
 rebuilding your instances (i.e. running chef) are not always done at the same time. It is best to
-restart your Delayed Job workers when you ship (deploy) your application code.
+restart your Delayed Job workers when you ship (deploy) your application code. You likely want to use the after_restart hook for this.
 
 If you're running DelayedJob on a solo instance or on your app_master, add a deploy hook similar to:
 
@@ -42,14 +42,14 @@ on_app_master do
 end
 ```
 
-On the other hand, if you'r running DelayedJob on a dedicated utility instance, the deploy hook should be like:
+On the other hand, if you're running DelayedJob on a dedicated utility instance, the deploy hook should be like:
 
 ```
-on_utilities :delayed_job do
+on_utilities("delayed_job") do
   sudo "monit -g dj_#{config.app} restart all"
 end
 ```
 
-Make sure to replace <app_name> with the name of your application. You likely want to use the after_restart hook for this.
+Replace "delayed_job" with the name of your Utility server (default is "delayed_job")
 
 See our [Deploy Hook](https://engineyard.zendesk.com/entries/21016568-use-deploy-hooks) documentation for more information on using deploy hooks.
