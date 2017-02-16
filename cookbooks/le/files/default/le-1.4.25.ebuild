@@ -13,7 +13,7 @@ AUTHOR=logentries
 
 SRC_URI="https://github.com/logentries/le/tarball/v${PV} -> $P.tar.gz"
 REVISION="b4cb54d"
-S="${WORKDIR}/logentries-le-${REVISION}"
+S="${WORKDIR}/rapid7-le-${REVISION}"
 BUILD_DIR="${S}"
 KEYWORDS="x86 amd64 mips ~ppc ~ppc-macos -ia64"
 USE=""
