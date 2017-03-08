@@ -74,7 +74,7 @@ start ()
 stop ()
 {
   # stop using sidekiqctl
-  sudo -u "${app_user}" -E -H "${sidekiqctl}" stop "${pid_file}"
+  sudo -u "${app_user}" -E -H "${sidekiqctl}" stop "${pid_file}" <%= @timeout %>
   exit $?
 }
 
