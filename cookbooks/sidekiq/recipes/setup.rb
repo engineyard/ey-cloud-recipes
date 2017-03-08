@@ -10,10 +10,13 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
   end
 
   # bin script
-  remote_file "/engineyard/bin/sidekiq" do
+  template "/engineyard/bin/sidekiq" do
     mode 0755
-    source "sidekiq"
+    source "sidekiq.erb"
     backup false
+    variables({
+      :timeout => node[:sidekiq][:timeout]
+    })
   end
 
   # loop through applications
