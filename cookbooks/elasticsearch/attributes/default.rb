@@ -9,5 +9,5 @@ default[:elasticsearch_defaultreplicas] = 1 # replicas are in addition to the or
 default[:elasticsearch_defaultshards] = 6 # 6*2 shards per index distributes evenly across 3, 4, or 6 nodes
 
 default[:elastic_search_java_package_name] = "dev-java/icedtea-bin"
-default[:elasticsearch_java_version] = "7.2.3.3-r1"
+default[:elasticsearch_java_version] = "7.2.6.8"
 default[:elasticsearch_java_eselect_version] = "icedtea-bin-7"
