@@ -1,4 +1,4 @@
-default['flume']['java_version'] = '7.2.3.3-r1'
+default['flume']['java_version'] = '7.2.6.8'
 default['flume']['java_eselect_version'] = 'icedtea-bin-7'
 default['flume']['flume_version'] = '1.7.0'
 default['flume']['app_name'] = 'myapp'
