@@ -64,10 +64,10 @@ clean_exit() {
   exit $RESULT
 }
 
-WORKER_REF="resque_scheduler"
-LOG_FILE="/data/$APP/current/log/$WORKER_REF.log"
+WORKER_REF="resque_scheduler_$APP"
+LOG_FILE="/data/$APP/current/log/resque_scheduler.log"
 LOCK_FILE="/tmp/$WORKER_REF.monit-lock"
-PID_FILE="/var/run/engineyard/resque-scheduler/$APP/$WORKER_REF.pid"
+PID_FILE="/var/run/engineyard/resque-scheduler_$APP.pid"
 GEMFILE="$APP_ROOT/Gemfile"
 RAKE="rake"
 
@@ -85,10 +85,6 @@ if [ -d $APP_ROOT ]; then
 
   # Older versions of sudo need us to call env for the env vars to be set correctly
   COMMAND="/usr/bin/env $V $VV APP_ROOT=${APP_ROOT} RACK_ENV=${RACK_ENV} RAILS_ENV=${RACK_ENV} MERB_ENV=${RACK_ENV} $RAKE -f ${APP_ROOT}/Rakefile resque:scheduler"
-
-  if [ ! -d /var/run/engineyard/resque-scheduler/$APP ]; then
-    mkdir -p /var/run/engineyard/resque-scheduler/$APP
-  fi
 
   # handle the second param, don't start if already existing
   if [ -f $LOCK_FILE ]; then
