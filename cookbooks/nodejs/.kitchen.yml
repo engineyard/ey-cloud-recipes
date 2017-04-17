@@ -1,0 +1,74 @@
+---
+driver_plugin: vagrant
+driver_config:
+  require_chef_omnibus: true
+  customize:
+    memory: 512
+    cpus: 4
+
+platforms:
+- name: ubuntu-14.04
+  run_list:
+  - recipe[apt]
+- name: ubuntu-12.04
+  run_list:
+  - recipe[apt]
+- name: ubuntu-10.04
+  run_list:
+  - recipe[apt]
+- name: centos-6.5
+- name: centos-5.10
+
+suites:
+- name: default
+  run_list:
+  - recipe[nodejs]
+- name: package
+  run_list:
+  - recipe[nodejs]
+  attributes:
+    nodejs:
+      install_method: package
+- name: binary
+  run_list:
+  - recipe[nodejs]
+  attributes:
+    nodejs:
+      install_method: binary
+- name: source
+  run_list:
+  - recipe[nodejs]
+  attributes:
+    nodejs:
+      install_method: source
+- name: npm
+  run_list:
+  - recipe[nodejs::npm]
+  - recipe[nodejs_test::npm]
+- name: npm_embedded
+  run_list:
+  - recipe[nodejs::npm]
+  - recipe[nodejs_test::npm]
+  attributes:
+    nodejs:
+      npm:
+        install_method: embedded
+- name: npm_source
+  run_list:
+  - recipe[nodejs::npm]
+  - recipe[nodejs_test::npm]
+  attributes:
+    nodejs:
+      npm:
+        install_method: source
+- name: npm_packages
+  run_list: recipe[nodejs]
+  attributes:
+    nodejs:
+      npm_packages:
+        - name: express
+        - name: socket.io
+          version: 1.0.4
+        - name: express
+          action: uninstall
+

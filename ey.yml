@@ -1,0 +1,178 @@
+# Engine Yard Cloud Deploy Options
+#
+####################################################################
+#                           IMPORTANT
+#            Commit this file into your git repository.
+#       These options are loaded on the server during deploy.
+####################################################################
+#
+# Valid locations:
+# * REPOSITORY_ROOT/config/ey.yml.
+# * REPOSITORY_ROOT/ey.yml
+#
+# Further information available here:
+# https://support.cloud.engineyard.com/entries/20996661-customize-your-deployment-on-engine-yard-cloud
+#
+# For advanced usage, see the source that loads this configuration:
+# https://github.com/engineyard/engineyard-serverside/blob/master/lib/engineyard-serverside/configuration.rb
+#
+defaults:
+  # Run migrations during deploy by default.
+  #
+  # When set to true, runs the migration_command (below) during deploy.
+  #
+  # This setting can be overridden for individual deployments using
+  # the command line options --migrate or --no-migrate.
+  #
+  migrate: false
+
+  # Default migration command to run when migrations are enabled.
+  #
+  #migration_command: rake db:migrate --trace
+
+  # Enables rails assets precompilation always and halts when the task fails.
+  #
+  # By default, assets are detected using app/assets and config/application.rb.
+  #
+  # If you use rails assets and you want Engine Yard to compile your assets
+  # during deploy, set this to true. If you want to compile assets locally
+  # before deploy, set this to false. Make sure you add `public/assets` to
+  # `.gitignore` if you want Engine Yard to precompile your assets.
+  #
+  # For more control over assets, set precompile_assets: false and
+  # run your precompile task in the deploy/before_compile_assets.rb deploy hook.
+  #
+  precompile_assets: false
+
+  # Override the assets:precompile rake task. This option will be used instead
+  # of assets:precompile in the `rake assets:precompile` command.
+  #
+  #precompile_assets_task: assets:precompile
+
+  # Asset strategies affect the way assets are stored on the server.
+  #
+  # * private
+  #   Store assets directly in public/assets for each deployment.
+  #   Previous assets are symlinked for continuity.
+  #   When assets are reused, they are copied using rsync.
+  #
+  # * shifting
+  #   Assets are kept in a shared directory on each server.
+  #   When new assets are compiled, old assets are shifted to a shared
+  #   last_assets directory. This has always been the default behavior.
+  #
+  # * shared
+  #   Assets are kept in a shared directory on each server.
+  #   When new assets are compiled, the same directory is used.
+  #   Assets will accumulate in this mode if a cleaning script is not run.
+  #   Use this strategy if you want to write your own asset cleaning script.
+  #
+  # * cleaning
+  #   Like shared, but a cleaning script is run before each new compile.
+  #   The script attempts to remove all files not mentioned by the old
+  #   manifest.yml, before it is replaced by the new manifest (leaving 2
+  #   deployments worth of assets in the directory)
+  #
+  # "private" is recommended because it is the least error prone.
+  # If you prefer faster compilation, "shared" can be quicker, but will require
+  # custom scripting and will cause problems when rollbacks are used.
+  # "shifting" is the default behavior.
+  #
+  #asset_strategy: private
+
+  # This list of repository relative paths is checked for changes during
+  # each deployment (when change detection is not disabled). If `git diff`
+  # detects changes since the last deployment, fresh assets will be compiled.
+  #
+  # This option overrides the default list, so include the following
+  # defaults if you need them.
+  #
+  #asset_dependencies:
+  #- app/assets            # default
+  #- lib/assets            # default
+  #- vendor/assets         # default
+  #- Gemfile.lock          # default
+  #- config/application.rb # default
+  #- config/routes.rb      # default
+  #- config/requirejs.yml  # example of a custom asset dependency
+
+  # When true, precompiles assets even if no changes would be detected by
+  # running git diff with the asset_dependencies above.
+  #
+  # Default is false (always check git diff before asset compilation)
+  #
+  #precompile_unchanged_assets: false
+
+  # Choose which servers should compile assets.
+  #
+  # Default behavior is to exclude util instances.
+  # Specify :all to compile on all servers including util servers.
+  #
+  #asset_roles: :all
+
+  # Bundle without different bundler groups:
+  # Ex: bundle install --without '[bundle_without]'
+  #
+  # Default is "".
+  # Leave blank to remove --without from the bundle install command.
+  #
+  #bundle_without: 
+
+  # Add extra options to the bundle install command line.
+  # Does not override bundle_without, if specified.
+  #
+  # If the application's gems are vendored in the
+  # repository, setting --local can speed up bundle.
+  #
+  #bundle_options: 
+
+  # Enable maintenance page during migrate action (default)
+  # Setting this to false, disables maintenance page during migrations.
+  #
+  # CAUTION! No-downtime migrations requires careful migration
+  # planning. Migrations must be non-destructive. The *previous*
+  # deployment might serve pages during a partially migrated state.
+  # For example, if you rename a column, all traffic served during
+  # that migration will be broken until the new code is deployed.
+  #
+  #maintenance_on_migrate: true
+
+  # Enable maintanence page during every deploy.
+  # Unicorn and Passenger support no-downtime deploys, so the default
+  # for these servers is false. Mongrel and some other servers default
+  # to true to avoid downtime during server restarting.
+  #
+  #maintenance_on_restart: 
+
+  # If true, always run deployments in verbose mode.
+  #
+  #verbose: false
+
+  # Hide the warning shown when the Gemfile does not contain a recognized
+  # database adapter (mongodb for example)
+  #
+  # This warning is here to help new customers that accidentally have no adapter.
+  # You may safely set this to true if you aren't using a common database.
+  #
+  #ignore_database_adapter_warning: false
+
+  # You can add custom keys that will be available in your deploy hooks.
+  # Custom keys will be available using config.key or config[:key]
+  #
+  #your_own_custom_key: custom info
+
+
+####################################################################
+# Environment specific options.
+#
+# The options you specify here will only apply to a single environment
+# that exactly matches the environment name key.
+#
+# Environment options will override the default options above.
+#
+environments:
+
+  # These options will only apply to the EXAMPLE_ENVIRONMENT environment.
+  #EXAMPLE_ENVIRONMENT:
+    #precompile_unchanged_assets: true
+
