@@ -1,5 +1,6 @@
 default[:redis] = {
   :utility_name => "redis",
+  :slave_name => "redis_slave",
   :version => "3.2.3",
   :bindport => "6379",
   :unixsocket => "/tmp/redis.sock",
@@ -14,3 +15,7 @@ default[:redis] = {
   :rdbcompression => "yes",
   :hz => 10
 }
+default[:redis][:is_redis_instance] = (
+  (node[:instance_role] == 'util') &&
+  [default[:redis][:utility_name], default[:redis][:slave_name]].include?(node[:name])
+)
