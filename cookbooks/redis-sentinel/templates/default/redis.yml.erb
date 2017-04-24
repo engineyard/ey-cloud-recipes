@@ -1,0 +1,7 @@
+<%= @environment %>:
+  url: <%= @redis_url %>
+  sentinels:
+  <% @sentinels.each do |sentinel| -%>
+    - <%= sentinel['host'] %>
+      <%= sentinel['port'] %>
+  <% end -%>
