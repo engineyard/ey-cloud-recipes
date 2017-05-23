@@ -26,7 +26,7 @@
 # include_recipe "collectd"
 
 # uncomment to use the block recipe. See cookbooks/block/readme.md for documentation.
-# include_recipe "ban"
+ include_recipe "ban"
 
 # uncomment to use the sidekiq recipe. See cookbooks/sidekiq/readme.md for documentation.
 # include_recipe "sidekiq"
