@@ -9,9 +9,7 @@ redis_url = "http://download.redis.io/releases/redis-#{redis_version}.tar.gz"
 redis_installer_directory = '/opt/redis-source'
 bin_path = '/usr/local/bin'
 
-if ['util'].include?(node[:instance_role])
-  if node[:name] == node[:redis][:utility_name]
-
+if node[:redis][:is_redis_instance]
     sysctl "Enable Overcommit Memory" do
       variables 'vm.overcommit_memory' => 1
     end
@@ -50,25 +48,34 @@ if ['util'].include?(node[:instance_role])
       action :create
     end
 
+    redis_config_variables = {
+      :pidfile => node[:redis][:pidfile],
+      :basedir => node[:redis][:basedir],
+      :basename => node[:redis][:basename],
+      :logfile => node[:redis][:logfile],
+      :loglevel => node[:redis][:loglevel],
+      :port  => node[:redis][:bindport],
+      :unixsocket => node[:redis][:unixsocket],
+      :saveperiod => node[:redis][:saveperiod],
+      :timeout => node[:redis][:timeout],
+      :databases => node[:redis][:databases],
+      :rdbcompression => node[:redis][:rdbcompression],
+      :hz => node[:redis][:hz]
+    }
+    if node[:name] == node[:redis][:slave_name]
+      redis_config_template = "redis-#{redis_config_file_version}-slave.conf.erb"
+      instances = node[:engineyard][:environment][:instances]
+      redis_master_instance = instances.find { |i| i[:name] == node[:redis][:utility_name] }
+      redis_config_variables[:master_ip] = redis_master_instance[:private_hostname]
+    else
+      redis_config_template = "redis-#{redis_config_file_version}.conf.erb"
+    end
     template "/etc/redis_util.conf" do
       owner 'root'
       group 'root'
       mode 0644
-      source "redis-#{redis_config_file_version}.conf.erb"
-      variables({
-        :pidfile => node[:redis][:pidfile],
-        :basedir => node[:redis][:basedir],
-        :basename => node[:redis][:basename],
-        :logfile => node[:redis][:logfile],
-        :loglevel => node[:redis][:loglevel],
-        :port  => node[:redis][:bindport],
-        :unixsocket => node[:redis][:unixsocket],
-        :saveperiod => node[:redis][:saveperiod],
-        :timeout => node[:redis][:timeout],
-        :databases => node[:redis][:databases],
-        :rdbcompression => node[:redis][:rdbcompression],
-        :hz => node[:redis][:hz]
-      })
+      source redis_config_template
+      variables redis_config_variables
     end
 
     template "/data/monit.d/redis_util.monitrc" do
@@ -89,7 +96,6 @@ if ['util'].include?(node[:instance_role])
     execute "monit reload" do
       action :run
     end
-  end
 end
 
 if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
