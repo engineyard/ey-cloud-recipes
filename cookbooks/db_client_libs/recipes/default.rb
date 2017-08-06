@@ -1,6 +1,6 @@
 # Configuration Options
   # recommended versions as of June 8, 2016
-  #  - Postgres: 9.2.7, 9.3.9, 9.4.4
+  #  - Postgres: 9.2.21, 9.3.17, 9.4.12, 9.5.7
   #  - Postgres: 9.5.5     # !review warnings! in the Readme
   #  - MySQL: 5.6.32.78.1
   #  - Available versions under:
@@ -109,7 +109,6 @@ if ['app', 'app_master', 'util'].include?(node['instance_role'])
 
       remote_file "#{srcdir}/#{package_version}.tar.bz2" do
         source "https://ftp.postgresql.org/pub/source/v#{package[:version]}/#{package_version}.tar.bz2"
-        notifies :run, "bash[install_#{package[:server]}]", :immediately
       end
 
       bash "install_#{package[:server]}" do
@@ -130,7 +129,8 @@ if ['app', 'app_master', 'util'].include?(node['instance_role'])
           make -C doc install
 
         EOH
-        action :nothing
+        action :run
+        not_if "psql --version|awk '{print $3}' | grep #{package[:version]}"
       end
 
       execute "activate_postgres_#{major}" do
