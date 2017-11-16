@@ -10,10 +10,13 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
   end
 
   # bin script
-  remote_file "/engineyard/bin/sidekiq" do
+  template "/engineyard/bin/sidekiq" do
     mode 0755
-    source "sidekiq"
+    source "sidekiq.erb"
     backup false
+    variables({
+      :timeout => node[:sidekiq][:timeout]
+    })
   end
 
   # loop through applications
@@ -33,7 +36,7 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
         :app_name => app_name, 
         :workers => node[:sidekiq][:workers],
         :rails_env => node[:environment][:framework_env],
-        :memory_limit => 400 # MB
+        :memory_limit => node[:sidekiq][:worker_memory] # MB
       })
       notifies :run, resources(:execute => "restart-sidekiq-for-#{app_name}")
     end

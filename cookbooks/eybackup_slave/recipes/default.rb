@@ -27,9 +27,7 @@ if db_slave
 
     # check for encryption
     if node[:encrypted_backups]
-      # gnupg package
       package "app-crypt/gnupg" do
-        version '2.0.9'
         action :install
       end
 
@@ -53,7 +51,7 @@ if db_slave
       backup_command << " -k #{key}".rstrip unless key.empty?
     end
 
-    backup_command << " >> /var/log/eybackup.log"
+    backup_command << " >> /var/log/eybackup.log 2>&1"
 
     # setup cronjob on db slave
     cron stack do

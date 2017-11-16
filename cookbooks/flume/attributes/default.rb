@@ -1,0 +1,7 @@
+default['flume']['java_version'] = '7.2.6.8'
+default['flume']['java_eselect_version'] = 'icedtea-bin-7'
+default['flume']['flume_version'] = '1.7.0'
+default['flume']['app_name'] = 'myapp'
+default['flume']['app_logfile'] = 'production.log'
+default['flume']['sink_hostname'] = 'sink.host.name'
+default['flume']['sink_port'] = '9001'

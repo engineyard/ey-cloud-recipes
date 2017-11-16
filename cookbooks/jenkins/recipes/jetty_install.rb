@@ -11,12 +11,12 @@ remote_file "/etc/monit.d/jetty.monitrc" do
 end
 
 execute "Install Jetty" do
-  command "tar -zxvf /tmp/jetty.tar.gz jetty-distribution-8.1.16.v20140903/"
+  command "tar -zxvf /tmp/jetty.tar.gz jetty-distribution-8.1.17.v20150415/"
   cwd "/data/"
 end
 
 execute "symlink Jetty" do
-  command "sudo ln -fs /data/jetty-distribution-8.1.16.v20140903 /opt/jetty"
+  command "sudo ln -fs /data/jetty-distribution-8.1.17.v20150415 /opt/jetty"
 end
 
 execute "symlink initscript" do

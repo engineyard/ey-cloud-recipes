@@ -1,11 +1,17 @@
-# uncomment to use a custom database.yml configuration
-# include_recipe "database_yml_custom"
-
 # execute "testing" do
 #   command %Q{
 #     echo "i ran at #{Time.now}" >> /root/cheftime
 #   }
 # end
+
+# uncomment to use a custom database.yml configuration
+# include_recipe "database_yml_custom"
+
+# uncomment to use the db_client_lib cookbook -- requires additional configuration
+# include_recipe "db_client_libs"
+
+# uncomment to install aws-cli tools
+#include_recipe "aws_cli"
 
 # uncomment to deny access to /log, /config, and .git directories as well as any .yml files
 # include_recipe "deny-directories"
@@ -194,3 +200,9 @@
 
 # uncomment to install CasperJS
 # include_recipe "casperjs"
+
+# unncomment to install clamav
+# include_recipe "clamav"
+
+# uncomment to include the classiclink recipe
+# include_recipe "classiclink"

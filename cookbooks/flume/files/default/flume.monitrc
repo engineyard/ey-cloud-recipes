@@ -1,0 +1,3 @@
+check process flume matching flume
+  start program = "/bin/bash -c '/engineyard/bin/flume-start.sh'" as uid deploy gid deploy
+  stop program = "/bin/bash -c '/engineyard/bin/flume-stop.sh'"

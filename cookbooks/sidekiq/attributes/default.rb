@@ -21,7 +21,14 @@ default[:sidekiq] = {
     # :queue_name => priority
     :default => 1
   },
-  
+
+  # Memory limit
+  :worker_memory => 400, # MB
+
   # Verbose
-  :verbose => false
+  :verbose => false,
+
+  # Timeout (in seconds) to use when terminating a bloated process
+  # this is passed as a parameter to sidekiqctl, invoked inside /engineyard/bin/sidekiq
+  :timeout => 115
 }
