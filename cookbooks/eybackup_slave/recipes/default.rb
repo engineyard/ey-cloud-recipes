@@ -11,7 +11,7 @@ end
 
 # database is mysql? (EY Cloud already sets up eybackup on the slave for postgres)
 env = node[:engineyard][:environment]
-stack = env[:db_stack_name][/mysql|postgresql/]
+stack = env[:db_stack_name][/postgres[_0-9]*/] ? 'postgresql' : env[:db_stack_name][/mysql|postgresql/]
 
 # find database slave node
 db_slave = env[:instances].find{|i| i[:role][/db_slave/]}
