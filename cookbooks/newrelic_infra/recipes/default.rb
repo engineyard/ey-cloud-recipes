@@ -62,6 +62,7 @@ end
 license_key = node['newrelic_infra']['license_key']
 # Use newrelic_license_key helper method if you are using the New Relic add-on. Uncomment line below:
 # license_key = newrelic_license_key
+display_name = node['newrelic_infra']['display_name']
 
 template "/etc/newrelic-infra.yml" do
   source "newrelic-infra.yml.erb"
@@ -70,7 +71,8 @@ template "/etc/newrelic-infra.yml" do
   mode 0600
   backup false
   variables({
-    :license_key => license_key
+    :license_key => license_key,
+    :display_name => display_name
   })
 end
 
