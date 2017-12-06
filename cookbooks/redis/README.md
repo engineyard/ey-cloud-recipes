@@ -58,6 +58,40 @@ Before upgrading, please review the Redis release notes for the version you're u
 
 After upgrading, Redis server will be installed to `/usr/local/bin/redis-server`. However, the old version of Redis will still be running. Please run `sudo monit restart redis-1` to restart Redis.
 
+Master-Slave Replication
+--------
+
+Master-Slave replication can be used for redundancy, or to minimize the downtime when upgrading the Redis instance.
+
+#### Setup
+
+To setup master-slave replication:
+
+1. Specify the instance name for the redis slave in `attributes/default.rb`:
+
+  ```
+  default[:redis] = {
+    :utility_name => "redis",
+    :slave_name => "redis_slave",
+  ...
+  ```
+
+2. Boot a utility instance named 'redis_slave'.
+3. Upload and run chef.
+
+After the chef run, the new utility instance 'redis_slave' will be replicating from the redis instance.
+
+#### Promotion
+
+As of now, the dashboard does not provide an automated promotion for the Redis slave instance. To promote the slave instance, follow these steps:
+
+1. Stop all processes connected to Redis. You can do this by putting the application in maintenance mode and stopping all background workers.
+2. Change the name of the redis slave instance (default: 'redis_slave') into the name of the redis master instance (default: 'redis')
+3. Terminate the old redis master instance
+4. Click Apply on the environment
+5. Restart the application and all processes that use Redis (e.g. background workers like Resque and Sidekiq). If you have deploy hooks for restarting background workers in place, then performing a deploy should do the restart for you.
+6. From the new redis master instance, run `redis-cli -h localhost "slaveof no one"`
+
 Notes
 ------
 Please be aware these are default config files and will likely need to be updated :)
