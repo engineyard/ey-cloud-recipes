@@ -1,0 +1,34 @@
+#!/sbin/runscript
+#
+# Engine Yard sample init script for newrelic-infra
+# This script is created by the newrelic_infra recipe
+# This overwrites the original newrelic-infra init script from New Relic
+
+NAME=newrelic-infra
+PIDFILE="/var/run/$NAME.pid"
+DAEMON=/usr/bin/$NAME
+LOGFILE=<%= @logfile %>
+
+depend() {
+    use net
+}
+
+start() {
+    ebegin "Starting newrelic-infra"
+    start-stop-daemon --start \
+        --nicelevel 0 \
+        --quiet \
+        --background \
+        --exec $DAEMON \
+        --make-pidfile \
+        --pidfile $PIDFILE \
+        --stdout $LOGFILE \
+        --stderr $LOGFILE
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping newrelic-infra"
+    start-stop-daemon --stop --pidfile $PIDFILE
+    eend $?
+}
