@@ -50,9 +50,15 @@ lock(){
   RESULT=0
   if [ -e $LOCK_FILE ]; then
     LAST_LOCK_PID=`cat $LOCK_FILE`
+    # Test if the lock file does not match a running process
     if [ -n $LAST_LOCK_PID -a -z "`ps axo pid|grep $LAST_LOCK_PID`" -a -f $LOCK_FILE ];then
       sleep 1
       logger -t "monit-dj:$WORKER[$$]" "Removing stale lock file for $WORKER ($LAST_LOCK_PID)"
+      rm $LOCK_FILE 2>&1
+    # Test if the lock file matches a running process, but it's a zombie
+    elif [ -n $LAST_LOCK_PID ] && [ ! -z "`ps aux | grep $LAST_LOCK_PID | awk '{print $8}' | grep Z`" ];then
+      sleep 1
+      logger -t "monit-dj:$WORKER[$$]" "Removing stale lock file for zombie $WORKER ($LAST_LOCK_PID)"
       rm $LOCK_FILE 2>&1
     else
       logger -t "monit-dj:$WORKER[$$]" "Monit already messing with $WORKER ($LAST_LOCK_PID)"
@@ -139,11 +145,9 @@ if [ -d $RAILS_ROOT ]; then
 
       if [ $RESULT -eq 0 ]; then
         logger -t "monit-dj:$WORKER[$$]" "issuing command $COMMAND in $PWD for $USER"
-        sudo -u $USER -H /bin/bash -c "$COMMAND"  &
-        NEW_PID=$!
+        start-stop-daemon --start -b -m -u $USER -d $RAILS_ROOT -p $PID_FILE --exec /bin/bash -- -c "$COMMAND"
         RESULT=$?
-        logger -t "monit-dj:$WORKER[$$]" "$WORKER started as  $NEW_PID : $RESULT"
-        echo $NEW_PID > $PID_FILE
+        logger -t "monit-dj:$WORKER[$$]" "$WORKER started as  `cat $PID_FILE` : $RESULT"
       fi
       unlock_and_exit_cleanly
     ;;
@@ -156,17 +160,34 @@ if [ -d $RAILS_ROOT ]; then
        # Find children
        WORKER_PID=$(ps axo pid,ppid,command|awk '$2=='$PID' {print $1}')
 
-       kill -15 $PID $PPID; # kill worker and any child that it may have at this very moment
+       kill -15 $PID $WORKER_PID; # kill worker and any child that it may have at this very moment
        logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Process $PID $PPID"
 
+       # In case the worker stubbornly ignored the kill -15 signal
+       SLEEP_COUNT=0
+       while [ -e /proc/$WORKER_PID ]; do
+         sleep .25
+         let "SLEEP_COUNT+=1"
+         let "REPORT_TIME = $SLEEP_COUNT%4"
+         if(( "$SLEEP_COUNT" > $GRACE_TIME )); then
+           logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Child Process $WORKER_PID wait exceeded, killing it"
+           kill -9 $WORKER_PID 2>/dev/null; true
+           break
+         elif(( $REPORT_TIME == 0 ));then
+           let "RUNTIME = $SLEEP_COUNT/4"
+           logger -t "monit-dj:$WORKER[$$]" "Waiting for $WORKER_PID to die ( for $RUNTIME seconds now)"
+         fi
+       done
+
+       # In case the bash process that started the dj worker is still around
        SLEEP_COUNT=0
        while [ -e /proc/$PID ]; do
          sleep .25
          let "SLEEP_COUNT+=1"
          let "REPORT_TIME = $SLEEP_COUNT%4"
          if(( "$SLEEP_COUNT" > $GRACE_TIME )); then
-           logger -t "monit-dj:$WORKER[$$]" "Stopping DJ Worker Child Process $PID wait exceeded, killing it"
-           kill -9 $PID $WORKER_PID 2>/dev/null; true
+           logger -t "monit-dj:$WORKER[$$]" "Stopping DJ bash process $PID wait exceeded, killing it"
+           kill -9 $PID 2>/dev/null; true
            break
          elif(( $REPORT_TIME == 0 ));then
            let "RUNTIME = $SLEEP_COUNT/4"
@@ -186,4 +207,3 @@ else
   echo "/data/$1/current doesn't exist."
   usage
 fi
-
