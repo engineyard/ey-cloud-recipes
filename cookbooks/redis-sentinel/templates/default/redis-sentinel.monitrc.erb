@@ -1,0 +1,5 @@
+check process redis-sentinel
+with pidfile /var/run/redis-sentinel.pid
+  start program = "/engineyard/bin/redis-sentinel"
+  stop program = "/usr/bin/redis-cli -p <%= @port %> shutdown"
+  group redis-util
