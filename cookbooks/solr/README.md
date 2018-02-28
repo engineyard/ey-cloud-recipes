@@ -34,11 +34,13 @@ This recipe is designed for Solr 5 (and 6, on V5 where Java 8 is available). Sig
 
 If you're currently running Solr 4 and wish to upgrade, you will need to manually uninstall Solr 4 first. You will need to stop Solr, remove the solr .monitrc file, and remove the solr directory (usually `/data/solr`). If you need help with this, please open a Support ticket as the actual steps may vary especially if you've customized your Solr recipe.
 
+If for some reason the recipe fails to create a default core, you can manually create one by running `/data/solr/bin/solr create -c default`.
+
 ### Additional Notes For Sunspot Users
 
 This recipe has been updated to support the latest version of Sunspot, 2.2.5. Please use this recipe instead of the Sunspot recipe which has been deprecated.
 
-Running `bundle exec rake sunspot:reindex` on an empty index fails. After installing, seed the index first by updating some data from the Rails console. 
+Running `bundle exec rake sunspot:reindex` on an empty index fails. After installing, seed the index first by updating some data from the Rails console. If seeding the index from the Rails console does not work for you, please copy the `schema.xml` and `solrconfig.xml` from sunspot to `/data/solr/server/solr/default/conf/` and then reindex. 
 
 ## CREDITS
 
