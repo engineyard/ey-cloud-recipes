@@ -54,7 +54,7 @@ To install a different version of Redis, change the `:version => "3.2.3",` line 
 Upgrading from a previous Redis version
 --------
 
-Before upgrading, please review the Redis release notes for the version you're upgrading to, to ensure compatibility with your current Redis data. Also ensure that you remove the `/data/redis-source` directory - the recipe skips downloading and installing a new version if this directory is present.
+Before upgrading, please review the Redis release notes for the version you're upgrading to, to ensure compatibility with your current Redis data. Also ensure that you remove the `/opt/redis-source` directory - the recipe skips downloading and installing a new version if this directory is present.
 
 After upgrading, Redis server will be installed to `/usr/local/bin/redis-server`. However, the old version of Redis will still be running. Please run `sudo monit restart redis-1` to restart Redis.
 
