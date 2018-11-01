@@ -16,5 +16,5 @@ repository.
 
 ## Customizations
 
-The version of Node.js to be install can be set in `attributes/default.rb`. You can check the available versions [here](https://nodejs.org/en/download/releases/). 
+The version of Node.js to be install can be set in `attributes/default.rb`. Please avoid installing the same versions already existing in portage (check via `eix nodejs`). You can check the available versions [here](https://nodejs.org/en/download/releases/). 
 
