@@ -3,7 +3,7 @@
 This cookbook can serve as a good starting point for upgrading Node.js in your instances.
 Specifically, it gives you the tools in order to install versions of nodejs that are not present in the portage tree.
 
-** Please Note ** This recipe will setup the selected version of Node.js (the version specified in attributes) in all instances by default. If you need custom_nodejs to run only in app/util, you will need to modify the recipe.
+** Please Note ** This recipe will setup the selected version of Node.js (the version specified in attributes) in all instances by default. If you need custom_nodejs to run only in app/util, you will need to modify the recipe. Also, since this recipe is practically installing node versions not officially supported by portage, integration is not guaranteed.  
 
 ## Installation
 
