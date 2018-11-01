@@ -198,3 +198,6 @@
 
 #uncomment to include the classiclink recipe
 #include_recipe "classiclink"
+
+#uncomment to include the custom_nodejs recipe
+#include_recipe "custom_nodejs"
