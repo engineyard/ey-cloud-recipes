@@ -210,7 +210,8 @@ default['fail2ban']['jails'] = {
 				'logpath'   => '/var/log/nginx/*access.log',
 				'maxretry'  => '240',
 				'findtime'  => 60,
-				'bantime'   => 172800
+				'bantime'   => 172800,
+				'action'    => 'iptables-multiport[name=NoDos, port="http,https"]'
 			}
 		},
         'postfix'  => {
