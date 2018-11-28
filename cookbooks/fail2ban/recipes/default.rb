@@ -37,7 +37,7 @@ fail2ban_replace_line "fail2ban conf socket" do
     path     "/etc/fail2ban/fail2ban.conf"
 end
 
-file_replace_line "fail2ban conf pidfile" do
+fail2ban_replace_line "fail2ban conf pidfile" do
     replace  "pidfile="
     with     "pidfile=#{node['fail2ban']['pidfile']}"
     path     "/etc/fail2ban/fail2ban.conf"
