@@ -7,8 +7,11 @@
 appname = "myapp"
 
 # Uncomment the flavor of sphinx you want to use
+# Set this to "ts" if you are using thinking-sphinx v3
 flavor = "thinking_sphinx"
 #flavor = "ultrasphinx"
+
+template_file_name = flavor == 'ts' ? flavor : 'sphinx'
 
 # If you want to install on a specific utility instance rather than
 # all application instances, uncomment and set the utility instance
@@ -29,6 +32,28 @@ utility_name = nil
 
 cron_interval = nil #If this is not set your data will NOT be indexed
 
+if flavor == 'ts'
+  # thinking-sphinx v3 recommends v 2.0.5+ so we need to install it
+  sphinx_version = '2.0.6'
+ 
+  enable_package "app-misc/sphinx" do
+    version sphinx_version
+  end
+ 
+  package "app-misc/sphinx" do
+    version sphinx_version
+    action :install
+  end
+
+  remote_file "/engineyard/bin/ts_searchd" do
+    owner "root"
+    group "root"
+    mode 0755
+    source "ts_searchd"
+    action :create
+  end
+  
+end
 
 if ! File.exists?("/data/#{appname}/current")
   Chef::Log.info "Sphinx was not configured because the app must be deployed first.  Please deploy it then re-run custom recipes."
@@ -38,7 +63,7 @@ else
     if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       run_for_app(appname) do |app_name, data|
         ey_cloud_report "Sphinx" do
-          message "configuring #{flavor}"
+          message "configuring #{flavor == 'ts' ? 'thinking_sphinx' : flavor}"
         end
 
         directory "/data/#{app_name}/shared/config/sphinx" do
@@ -52,7 +77,7 @@ else
           owner node[:owner_name]
           group node[:owner_name]
           mode 0644
-          source "sphinx.yml.erb"
+          source "#{template_file_name}.yml.erb"
           variables({
             :app_name => app_name,
             :address => sphinx_host,
@@ -66,7 +91,7 @@ else
     if node[:name] == utility_name
       run_for_app(appname) do |app_name, data|
         ey_cloud_report "Sphinx" do
-          message "configuring #{flavor}"
+          message "configuring #{flavor == 'ts' ? 'thinking_sphinx' : flavor}"
         end
 
         directory "/var/run/sphinx" do
@@ -114,7 +139,7 @@ else
           owner node[:owner_name]
           group node[:owner_name]
           mode 0644
-          source "sphinx.yml.erb"
+          source "#{template_file_name}.yml.erb"
           variables({
             :app_name => app_name,
             :address => sphinx_host,
@@ -139,11 +164,11 @@ else
           cwd "/data/#{app_name}/current"
         end
 
-        ey_cloud_report "indexing #{flavor}" do
-          message "indexing #{flavor}"
+        ey_cloud_report "indexing #{flavor == 'ts' ? 'thinking_sphinx' : flavor}" do
+          message "indexing #{flavor == 'ts' ? 'thinking_sphinx' : flavor}"
         end
 
-        execute "#{flavor} index" do
+        execute "#{flavor == 'ts' ? 'thinking_sphinx' : flavor} index" do
           command "bundle exec rake #{flavor}:index"
           user node[:owner_name]
           environment({
@@ -173,7 +198,7 @@ else
     if ['solo', 'app', 'app_master'].include?(node[:instance_role])
       run_for_app(appname) do |app_name, data|
         ey_cloud_report "Sphinx" do
-          message "configuring #{flavor}"
+          message "configuring #{flavor == 'ts' ? 'thinking_sphinx' : flavor}"
         end
 
         directory "/var/run/sphinx" do
@@ -222,7 +247,7 @@ else
           owner node[:owner_name]
           group node[:owner_name]
           mode 0644
-          source "sphinx.yml.erb"
+          source "#{template_file_name}.yml.erb"
           variables({
             :app_name => app_name,
             :address => 'localhost',
@@ -248,8 +273,8 @@ else
           cwd "/data/#{app_name}/current"
         end
 
-        ey_cloud_report "indexing #{flavor}" do
-          message "indexing #{flavor}"
+        ey_cloud_report "indexing #{flavor == 'ts' ? 'thinking_sphinx' : flavor}" do
+          message "indexing #{flavor == 'ts' ? 'thinking_sphinx' : flavor}"
         end
 
         execute "#{flavor} index" do
