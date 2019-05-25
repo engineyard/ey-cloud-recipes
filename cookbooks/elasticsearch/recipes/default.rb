@@ -12,8 +12,8 @@ if ['util'].include?(node[:instance_role])
     elasticsearch_expected = 0
     node['utility_instances'].each do |elasticsearch|
       if elasticsearch['name'].include?("elasticsearch_")
-        elasticsearch_expected = elasticsearch_expected + 1 unless node['fqdn'] == elasticsearch['hostname']
-        elasticsearch_instances << "#{elasticsearch['hostname']}:9300" unless node['fqdn'] == elasticsearch['hostname']
+        elasticsearch_expected = elasticsearch_expected + 1
+        elasticsearch_instances << "#{elasticsearch['hostname']}:9300"
       end
     end
   end
