@@ -9,6 +9,9 @@ end
 
 mongo_nodes = @node[:utility_instances].select { |instance| instance[:name].match(/^mongodb_repl#{@node[:mongo_replset]}/) }
 if @node[:name] == mongo_nodes.last[:name]
+  gem_package 'aws-s3' do
+    action :install
+  end
 
   node[:applications].each do |app_name, data|
     user = node[:users].first
