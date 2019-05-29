@@ -1,0 +1,5 @@
+check process <%= @service_name %>
+  with pidfile "<%= @pid_file %>"
+  start = "/etc/init.d/<%= @service_name %> restart"
+  stop = "/etc/init.d/<%= @service_name %> stop"
+  group <%= @service_name %>
