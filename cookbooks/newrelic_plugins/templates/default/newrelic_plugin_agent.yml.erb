@@ -1,0 +1,99 @@
+%YAML 1.2
+---
+
+# Uncomment sections below to enable plugins. Please see documentation at
+# https://github.com/MeetMe/newrelic-plugin-agent#installation-instructions for
+# further information
+
+Application:
+  license_key: <%= @license_key %>
+  poll_interval: 60
+
+  #apache_httpd:
+  #  name: hostname
+  #  host: localhost
+  #  port: 80
+  #  path: /server-status
+
+  #couchdb:
+  #  name: localhost
+  #  host: localhost
+  #  port: 5984
+
+  #edgecast:
+  #  name: My Edgecase Account
+  #  account: YOUR_ACCOUNT_#
+  #  token: YOUR_API_TOKEN
+
+  #memcached:
+  #  name: localhost
+  #  host: localhost
+  #  port: 11211
+
+  #mongodb:
+  #  name: hostname
+  #  host: localhost
+  #  port: 27017
+  #  databases:
+  #  - test
+  #  - yourdbname
+
+  #nginx:
+  #  name: hostname
+  #  host: localhost
+  #  port: 80
+  #  path: /nginx_stub_status
+
+  # pgbouncer:
+  #   host: localhost
+  #   port: 6000
+  #   user: stats
+
+  # postgresql:
+  #   host: localhost
+  #   port: 5432
+  #   user: postgres
+  #   dbname: postgres
+
+  #rabbitmq:
+  #  name: rabbitmq@localhost
+  #  host: localhost
+  #  port: 15672
+  #  username: guest
+  #  password: guest
+
+  #redis:
+  #  - name: localhost
+  #    host: localhost
+  #    port: 6379
+  #    db_count: 16
+
+  #riak:
+  #  name: localhost
+  #  host: node0.riak0.scs.mtmeprod.net
+  #  port: 8098
+
+
+Daemon:
+  pidfile: /var/run/newrelic_plugin_agent.pid
+
+Logging:
+  formatters:
+    verbose:
+      format: '%(levelname) -10s %(asctime)s %(process)-6d %(processName) -15s %(threadName)-10s %(name) -45s %(funcName) -25s L%(lineno)-6d: %(message)s'
+  handlers:
+    file:
+      class : logging.handlers.RotatingFileHandler
+      formatter: verbose
+      filename: /var/log/newrelic/newrelic_plugin_agent.log
+      maxBytes: 10485760
+      backupCount: 3
+  loggers:
+    newrelic_plugin_agent:
+      level: INFO
+      propagate: True
+      handlers: [console, file]
+    requests:
+      level: ERROR
+      propagate: True
+      handlers: [console, file]

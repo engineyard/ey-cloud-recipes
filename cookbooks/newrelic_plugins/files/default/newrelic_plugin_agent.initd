@@ -1,0 +1,131 @@
+#!/bin/bash
+# chkconfig: 2345 99 60
+# description: newrelic_plugin_agent
+# processname: newrelic_plugin_agent
+# config: /etc/sysconfig/newrelic_plugin_agent
+# pidfile: /var/run/newrelic_plugin_agent.pid
+
+# Source function library.
+. /etc/init.d/functions.sh
+
+# Application
+APP="/usr/bin/newrelic_plugin_agent"
+
+# Configuration dir
+CONFIG_DIR="/etc"
+
+# PID File
+PID_FILE="/var/run/newrelic_plugin_agent.pid"
+
+# Additional arguments
+OPTS=""
+
+if [ -f /etc/sysconfig/newrelic_plugin_agent ]; then
+  # Include configuration
+  . /etc/sysconfig/newrelic_plugin_agent
+fi
+
+# Configuration file
+CONF="${CONF:-${CONFIG_DIR}/newrelic_plugin_agent.yml}"
+
+if [ ! -f "${CONF}" ]; then
+  echo -n $"cannot find newrelic_plugin_agent configuration file: '${CONF}'"
+  failure $"cannot find newrelic_plugin_agent configuration file: '${CONF}'"
+  echo
+  exit 1
+fi
+
+OPTS="-c ${CONF} ${OPTS}"
+
+dostatus() {
+  [ -e "${PID_FILE}" ] || return 1
+
+  local pid=$(cat ${PID_FILE})
+  [ -d /proc/${pid} ] || return 1
+
+  [ -z "$(grep $APP /proc/${pid}/cmdline)" ] && return 1
+  return 0
+}
+
+start() {
+  if [ ${EUID} -ne 0 ]; then
+    echo -n $"you must be root"
+    failure $"you must be root"
+    echo
+    return 1
+  fi
+
+  echo -n $"Starting ${APP}: "
+
+  dostatus
+  if [ $? -eq 0 ]; then
+    echo -n $"cannot start $APP: already running (pid: $(cat ${PID_FILE}))";
+    failure $"cannot start $APP: already running (pid: $(cat ${PID_FILE}))";
+    echo
+    return 1
+  fi
+
+  ${APP} ${OPTS} # && success || failure
+  RETVAL=$?
+
+  echo
+  return ${RETVAL}
+}
+
+stop() {
+  if [ ${EUID} -ne 0 ]; then
+    echo -n $"you must be root"
+    failure $"you must be root"
+    echo
+    return 1
+  fi
+
+  echo -n $"Stopping ${APP}: "
+
+  dostatus
+  if [ $? -ne 0 ]; then
+    echo -n $"cannot stop $APP: not running"
+    failure $"cannot stop $APP: not running"
+    echo
+    return 1
+  fi
+
+  kill `cat ${PID_FILE}`
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && rm -f ${PID_FILE}
+  echo
+  return $RETVAL
+}
+
+restart() {
+  stop
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    dostatus
+    if [ $? -eq 0 ]; then
+      echo $"$APP: running"
+      RETVAL=0
+    else
+      echo $"$APP: not running"
+      RETVAL=1
+    fi
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|status|restart}"
+    RETVAL=2
+    ;;
+esac
+
+exit $RETVAL
