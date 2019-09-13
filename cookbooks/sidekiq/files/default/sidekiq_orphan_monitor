@@ -1,0 +1,30 @@
+containsElement () {
+  local e match="$1"
+  shift
+  for e; do [[ "$e" == "$match" ]] && return 0; done
+  return 1
+}
+
+app_name=$1
+sidekiq_pids=`cat /var/run/engineyard/sidekiq/$app_name/sidekiq_*.pid`
+
+sidekiq_parent_pids=()
+for sidekiq_pid in $sidekiq_pids; do
+  parent_pid="$(ps -o ppid= $sidekiq_pid | tr -d '[:space:]')"
+  sidekiq_parent_pids+="$parent_pid "
+done
+
+running_sidekiqs="$(ps -ef | grep [s]idekiq | awk '{print $2}')"
+echo "Running sidekiqs: $running_sidekiqs"
+echo "Monit PIDs: $sidekiq_pids"
+echo "Parent PIDs: $sidekiq_parent_pids"
+for sidekiq in $running_sidekiqs; do
+  if (containsElement $sidekiq $sidekiq_pids); then
+    echo "Not terminating $sidekiq - it is being monitored by monit"
+  elif (containsElement $sidekiq $sidekiq_parent_pids); then
+    echo "Not terminating $sidekiq - it is a parent of a monit sidekiq process"
+  else
+    echo "Terminating $sidekiq"
+    sudo kill $sidekiq
+  fi
+done

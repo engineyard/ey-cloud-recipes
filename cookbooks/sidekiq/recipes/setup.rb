@@ -54,5 +54,28 @@ if util_or_app_server?(node[:sidekiq][:utility_name])
         variables(node[:sidekiq])
       end
     end
+
+    if node[:sidekiq][:orphan_monitor_enabled]
+      cookbook_file '/engineyard/bin/sidekiq_orphan_monitor' do
+        source 'sidekiq_orphan_monitor'
+        owner node[:owner_name]
+        group node[:owner_name]
+        mode 0755
+        backup false
+        action :create
+      end
+
+      cron 'sidekiq_orphan_monitor' do
+        user    node[:owner_name]
+        action  :create
+        minute  node[:sidekiq][:orphan_monitor_cron_schedule].split[0]
+        hour    node[:sidekiq][:orphan_monitor_cron_schedule].split[1]
+        day     node[:sidekiq][:orphan_monitor_cron_schedule].split[2]
+        month   node[:sidekiq][:orphan_monitor_cron_schedule].split[3]
+        weekday node[:sidekiq][:orphan_monitor_cron_schedule].split[4]
+        command "/engineyard/bin/sidekiq_orphan_monitor #{app_name}"
+      end
+    end
+
   end
 end
