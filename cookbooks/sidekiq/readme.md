@@ -62,9 +62,19 @@ sidekiq({
 })
 ```
 
-By default, the recipe will install Sidekiq on to a utility instance with the name `sidekiq`. If the utility name is `nil` or there is no utility instance matching the name given, Sidekiq will be installed on all application/solo instances.
+By default, the recipe will install Sidekiq on utility instances with the name `sidekiq`. If the utility name is `nil` or there is no utility instance matching the name given, Sidekiq will be installed on all application/solo instances.
 
 If you wish to have more than one sidekiq utility instance, name the sidekiq utility instances as "sidekiq" and also set the `utility_name` to `sidekiq`.
+
+NOTE: If you change the `utility_name` setting, say, from `sidekiq_old` to `sidekiq_new`, the sidekiq monitrc file will not be cleaned up for you, and sidekiq will continue running on the `sidekiq_old` instances. You will have to do a manual cleanup on the `sidekiq_old` instances: stop sidekiq, remove the sidekiq .monitrc file in `/etc/monit.d/`, then run `sudo monit reload`.
+
+The manual cleanup is the recommended approach for production environments. For development environments, we have provided the `sidekiq::cleanup` recipe. Just uncomment this line in `recipes/default.rb`:
+
+```
+# include_recipe "sidekiq::cleanup"
+```
+
+We do not recommend enabling it on production environments because when this is enabled, the sidekiq workers will be restarted every chef run.
 
 ## Multi Instance Deploys
 
@@ -78,10 +88,10 @@ end
 Sidekiq.configure_client do |config|
   config.redis = { :url => "redis://<your_db_server>", :namespace => 'sidekiq' }
 end
-``` 
+```
 
-More information on setting the location of your server can be found at: 
-https://github.com/mperham/sidekiq/wiki/Advanced-Options 
+More information on setting the location of your server can be found at:
+https://github.com/mperham/sidekiq/wiki/Advanced-Options
 
 ## Deploy Hooks
 
