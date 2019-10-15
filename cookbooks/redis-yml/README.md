@@ -8,7 +8,7 @@ Overview
 
 Redis.yml will help you connect to Redis on the utility instance from your Rails application
 
-Currently in the default.rb file under Recipes you utility instance is specified based on the first one it finds, if you have multiple utility instances you can specify it by removing "node['utility_instances'].first" and replace it with the commented out code. You can change the name of the instance based on whatever name you have chosen for your instance.
+First, you have to modify the `recipes/default.rb`. Make sure where is the Redis server running on and set the `redis_instance`.
 
 [1]: http://redis.io/
 [2]: http://redis.io/topics/data-types#sorted-sets
