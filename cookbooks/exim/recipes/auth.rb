@@ -38,5 +38,6 @@ remote_file "/etc/logrotate.d/exim" do
 end
 
 package "mail-client/mailx" do
+  version "8.1.2.20050715-r6"
   action :install
 end
